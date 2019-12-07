@@ -1,0 +1,36 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+.pad-width {
+  width: 24px;
+}
+.flex {
+  display: flex;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+}
+.align-center {
+  display: flex;
+  align-items: center;
+}
+.all-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.between-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.box {
+  box-sizing: border-box;
+}
