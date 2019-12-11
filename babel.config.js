@@ -7,6 +7,7 @@ module.exports = {
         libraryName: "element-ui",
         styleLibraryName: "theme-chalk"
       }
-    ]
+    ],
+    "@babel/plugin-syntax-optional-chaining"
   ]
 };

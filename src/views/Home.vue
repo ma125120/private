@@ -1,14 +1,29 @@
 <template>
   <div class="home">
     <div class="column">
-      <header class="home-header">私人影院预约管理&订单记录系统</header>
-      <TableHeader v-model="date"></TableHeader>
-      <div class="flex all-table box">
-        <ReserveTable class="rev-table"></ReserveTable>
-        <div class="column right-table box">
-          <ActTable class="act-table"></ActTable>
-          <RecordTable class="rev-record-table"></RecordTable>
-        </div>
+      <MyHeader></MyHeader>
+      <div class="page-body">
+        <el-form inline class="login-form all-center">
+          <el-input
+            class="my-input"
+            v-model="form.userName"
+            placeholder="账号"
+          ></el-input>
+          <el-input
+            class="my-input"
+            v-model="form.passWord"
+            type="password"
+            placeholder="密码"
+          ></el-input>
+          <el-button type="primary" @click="login">登录</el-button>
+        </el-form>
+
+        <section class="self-intro">
+          <div class="intro-top flex">
+            <img src="img/self/home.jpg" alt="" class="self-img">
+            <h4 class="self-title all-center box">映如简介：美团点评官方特邀讲师，美团点评运营咨询师， 餐饮老板内参、懒熊体育、美沃斯等独家合作讲师，前小米科技、得到App高级产品经理…… </h4>
+          </div>
+        </section>
       </div>
     </div>
   </div>
@@ -17,49 +32,92 @@
 <script>
 // @ is an alias to /src
 import { rooms } from "@/util/index";
-import ReserveTable from "@/components/ReserveTable";
-import ActTable from "@/components/ActTable";
-import RecordTable from "@/components/RecordTable";
-import TableHeader from "@/components/TableHeader";
 
 export default {
   name: "home",
   components: {
-    ReserveTable,
-    ActTable,
-    RecordTable,
-    TableHeader
+
   },
   data() {
     return {
       rooms,
-      date: this.$now
+      date: this.$now,
+      form: {
+        userName: '18810013034',
+        passWord: '',
+      }
     };
+  },
+  created() {
+    this.$api.user.login('18810013034', '123456');
+  },
+  methods: {
+    async login() {
+      try {
+        let user = await this.$api.user.login(this.form.userName, this.form.passWord);
+        this.$notify.success({ title: '消息', message: '登陆成功' });
+      } catch(err) {
+        this.$alertCb(err.msg)
+      }
+      
+    }
   }
 };
 </script>
 
-<style lang="scss" scoped>
-.home-header {
-  color: #ec9d29;
-  font-size: 36px;
-  padding: 24px;
-  text-align: left;
+<style lang="scss">
+@mixin input {
+  background: $input-place;
+  color: #fff;
+  font-size: 28px;
+  width: 460px;
+  height: 70px;
+}
+.login-form {
+  padding: 32px;
   background: #fff;
+  .my-input {
+    margin-right: 36px;
+  }
+  .my-input input,
+  .my-input {
+    @include input;
+    &::placeholder,
+    &:-internal-autofill-selected {
+      @include input;
+      -webkit-box-shadow: 0 0 0px 1000px $input-place inset;
+      -webkit-text-fill-color: #fff;
+    }
+  }
+  .el-button--primary {
+    width: 120px;
+    height: 70px;
+    font-size: 28px;
+  }
 }
-.all-table {
-  padding: 12px;
-  box-sizing: border-box;
+</style>
+
+<style lang="scss" scoped>
+.page-body {
+  padding: $padding;
 }
-.rev-table {
-  flex: 1;
-  overflow-x: hidden;
+.self-intro {
+  margin-top: 32px;
+  background: #fff;
+  padding: $padding;
 }
-.right-table {
-  width: 524px;
-  margin-left: 6px;
+.self-img {
+  width: 365px;
+  margin-right: 24px;
 }
-.act-table {
-  margin-bottom: 6px;
+.self-title {
+  width: 535px;
+  padding: 30px;
+  background: #F0EDED;
+  font-size: 28px;
+  line-height: 32px;
+}
+.intro-top {
+  justify-content: center;
 }
 </style>

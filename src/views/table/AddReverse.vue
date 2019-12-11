@@ -72,8 +72,7 @@
             style="width: 200px"
             v-model="form.count"
             placeholder="点击输入阿拉伯数字"
-          ></el-input
-          ><span class="ml">人</span>
+          ></el-input><span class="ml">人</span>
         </el-form-item>
         <el-form-item label="备注" prop="note">
           <el-input

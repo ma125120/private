@@ -1,4 +1,5 @@
 import Vue from "vue";
+import './http';
 
 import {
   Button,
@@ -6,6 +7,7 @@ import {
   Popconfirm,
   Table,
   TableColumn,
+  MessageBox,
   Form,
   FormItem,
   Select,
@@ -37,6 +39,15 @@ Vue.use(Option);
 Vue.use(Dialog);
 
 Vue.prototype.$notify = Notification;
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$alertCb = function(text, callback) {
+  return MessageBox.alert(text, "", {
+    confirmButtonText: "知道了",
+    callback
+  });
+};
+Vue.prototype.$confirm = MessageBox.confirm;
 Vue.use(Loading.directive);
 
 Vue.prototype.$loading = Loading.service;

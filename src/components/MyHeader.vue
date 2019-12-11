@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="my-header">
     <header class="home-header">私人影院预约管理&订单记录系统</header>
   </div>
 </template>
