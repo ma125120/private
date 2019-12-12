@@ -21,11 +21,13 @@ export default class BaseApi {
       obj[v] = toBombTime(obj[v]);
     })
     for (let key in obj) {
-      query.set(key === 'objectId' ? 'id' : key, obj[key]);
+      query.set(key, obj[key]);
+      // query.set(key === 'objectId' ? 'id' : key, obj[key]);
     }
 
     return query.save()
   }
+  
 }
 
 function toBombTime(str) {

@@ -1,3 +1,5 @@
+import { assign } from "./base"
+
 // Date类型一般为 2019-12-09 12:00这种
 // 下方的类型表示枚举类型
 // payType: 1 | 2 | 3 | 4 | 5 | 6 | 7;
@@ -7,32 +9,45 @@ const roles = {
   2: '普通店员'
 }
 
-class Users {
-  id: string;
+export class Users {
+  constructor(data: any = {}) {
+    const obj = assign(this, data) as Users
+    obj.expireDuration = `1年`;
+    return obj
+  }
+
+  objectId: string;
   // 分店店名，有则写，没有则无
   name: string;
   // 账号
-  username: string;
+  userName: string;
   // 密码
-  pwd: string;
+  passWord: string;
   // 账号类型 1 总店 2 分店 3 子账号
-  role: 1 | 2 | 3;
+  jurisdictionType: keyof typeof roles;
   // 所属分店的id
-  parentId: string;
+  branchStoreId: string;
   // 所属总管理员的id
-  superId: string;
+  companyId: string;
+  // 总公司名和曾
+  companyName: string = '';
+  // 分部数量
+  branchStoreNum: number = 0;
+  // 可以创建分店的数量
+  storeNumber: number = 0;
   // 版本状态
   version: string;
   // 有效期
-  expireDuration: string;
+  expireDuration: string = `1年`;
   // 到期时间
-  expireTime: Date;
+  overTime: Date;
   // 分店账号的创建名额
   count: number;
   // 子账号的创建名额,默认为10
   childCount: number;
   // 权限，保留字段，目前是死的
   auth: string;
+  
 }
 
 // 店员表

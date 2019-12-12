@@ -8,6 +8,7 @@ import {
   Table,
   TableColumn,
   MessageBox,
+  Message,
   Form,
   FormItem,
   Select,
@@ -39,6 +40,13 @@ Vue.use(Option);
 Vue.use(Dialog);
 
 Vue.prototype.$notify = Notification;
+Vue.prototype.$nerror = function(text) {
+  Notification.error({
+    title: "错误",
+    message: text
+  });
+};
+
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$alertCb = function(text, callback) {
@@ -47,6 +55,11 @@ Vue.prototype.$alertCb = function(text, callback) {
     callback
   });
 };
+Vue.prototype.$errorForm = function(params) {
+  const msg = params[Object.keys(params)[0]][0].message;
+  Message.error(msg);
+};
+
 Vue.prototype.$confirm = MessageBox.confirm;
 Vue.use(Loading.directive);
 

@@ -1,3 +1,26 @@
-export default {
+import {Users} from '@/types/sql'
+import api from '@/api'
+// import router from '@/router';
 
+export default {
+  async setUser({ commit, dispatch, }, user: Users) {
+    commit('saveUser', user);
+    dispatch('selectChildren', user);
+  },
+  async selectChildren({ commit, dispatch, }, user: Users) {
+    if (user.jurisdictionType === 0) {
+      let children = await api.user.findChildren(user.objectId);
+      commit('saveChildren', children);
+    }
+  },
+  async addEndUser({ commit, dispatch, state, }, obj) {
+    let data = {
+      ...obj,
+      companyId: state.user.objectId,
+      jurisdictionType: 1,
+      companyName: state.user.name || '',
+    }
+    let user = await api.user.saveChild(data);
+    dispatch('selectChildren', state.user)
+  }
 }

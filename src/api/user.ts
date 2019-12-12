@@ -1,8 +1,8 @@
-import Bmob, { User } from "@/plugins/bmob/Bmob-2.2.1.min.js";
-
+import Bmob from "@/plugins/bmob/Bmob-2.2.1.min.js";
+import { Users } from '@/types/sql'
 import BaseApi from './base'
 
-export default class Users extends BaseApi {
+export default class User extends BaseApi {
   tableName = 'FXZ_User';
   timeFields = [];
 
@@ -13,7 +13,7 @@ export default class Users extends BaseApi {
         passWord
       });
       if (res[0]) {
-        return res[0];
+        return new Users(res[0]);
       } else {
         return Promise.reject({
           code: 100,
@@ -33,5 +33,33 @@ export default class Users extends BaseApi {
     query.save().then(res => {
       console.log(res)
     })
+  }
+
+  async findChildren(id): Promise<Users[]> {
+    try {
+      let res = await this._query({
+        companyId: id,
+      });
+      return res.map(v => new Users(v));
+    } catch (err) {
+      return Promise.reject({
+        code: 100,
+        msg: '错误，未找到分店账号',
+      });
+    }
+  }
+
+  async saveChild(user) {
+    try {
+      let res = await this._edit(user);
+      console.log(res)
+      return res
+    } catch (err) {
+      console.log(err)
+      return Promise.reject({
+        code: 100,
+        msg: '错误，未找到分店账号',
+      });
+    }
   }
 }

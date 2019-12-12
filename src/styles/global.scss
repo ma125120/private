@@ -5,3 +5,11 @@ $input-place: #F2C189;
 $--color-primary: #ec9d29;
 
 $padding: 20px;
+
+body {
+  .el-dialog__title {
+    font-size: 32px;
+  }
+}
+// $--dialog-content-font-size: 20px !default;
+// $--font-size-large: 28px;

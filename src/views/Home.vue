@@ -15,7 +15,7 @@
             type="password"
             placeholder="密码"
           ></el-input>
-          <el-button type="primary" @click="login">登录</el-button>
+          <el-button type="primary" @click="login" :disabled="disabled">登录</el-button>
         </el-form>
 
         <section class="self-intro">
@@ -26,41 +26,53 @@
         </section>
       </div>
     </div>
+
+    <AddChild :isShow="isShowAddChild"></AddChild>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import { rooms } from "@/util/index";
-
+import { mapActions, mapState, } from 'vuex'
+import AddChild from './home/AddChild'
 export default {
   name: "home",
   components: {
-
+    AddChild
   },
   data() {
     return {
-      rooms,
       date: this.$now,
       form: {
         userName: '18810013034',
-        passWord: '',
+        passWord: '123456',
       }
     };
   },
   created() {
-    this.$api.user.login('18810013034', '123456');
+
   },
   methods: {
     async login() {
       try {
         let user = await this.$api.user.login(this.form.userName, this.form.passWord);
         this.$notify.success({ title: '消息', message: '登陆成功' });
+        this.setUser(user)
       } catch(err) {
         this.$alertCb(err.msg)
       }
-      
-    }
+    },
+    ...mapActions([
+      'setUser',
+    ])
+  },
+  computed: {
+    disabled() {
+      return !(this.form.userName && this.form.passWord)
+    },
+    ...mapState([
+      'isShowAddChild',
+    ]),
   }
 };
 </script>

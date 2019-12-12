@@ -1,0 +1,19 @@
+.my-dialog--title {
+  font-size: 28px;
+}
+body {
+  .my-dialog {
+    .el-form-item__label {
+      font-size: 20px;
+    }
+    .el-input__inner {
+      font-size: 20px;
+    }
+    .dialog-btn {
+      font-size: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
+      min-width: 200px;
+    }
+  }
+}
