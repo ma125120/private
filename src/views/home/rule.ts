@@ -1,5 +1,5 @@
 
-export function validateLen(val, text, cb, min, max, reg = '', regText = '') {
+export function validateLen(val, text, cb, min, max, reg?: RegExp, regText = '') {
   let len = val.length || 0;
   
   if (len > max) {

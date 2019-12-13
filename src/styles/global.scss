@@ -10,6 +10,9 @@ body {
   .el-dialog__title {
     font-size: 32px;
   }
+  .active-drop.el-dropdown-menu__item {
+    color: $--color-primary;
+  }
 }
 // $--dialog-content-font-size: 20px !default;
 // $--font-size-large: 28px;

@@ -4,6 +4,7 @@
       <img src="img/logo.png" alt="" style="width: 150px;">
       <div>私人影院预约管理&订单记录系统</div>
     </header>
+    <MyNav></MyNav>
   </div>
 </template>
 

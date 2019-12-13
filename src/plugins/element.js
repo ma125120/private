@@ -4,6 +4,9 @@ import './http';
 import {
   Button,
   Popover,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
   Popconfirm,
   Table,
   TableColumn,
@@ -38,8 +41,11 @@ Vue.use(Select);
 Vue.use(Input);
 Vue.use(Option);
 Vue.use(Dialog);
+Vue.use(Dropdown);
+Vue.use(DropdownItem);
+Vue.use(DropdownMenu);
 
-Vue.prototype.$notify = Notification;
+(Vue.prototype.$notify = Notification);
 Vue.prototype.$nerror = function(text) {
   Notification.error({
     title: "错误",

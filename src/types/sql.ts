@@ -1,4 +1,5 @@
 import { assign } from "./base"
+import dayjs from 'dayjs';
 
 // Date类型一般为 2019-12-09 12:00这种
 // 下方的类型表示枚举类型
@@ -11,12 +12,14 @@ const roles = {
 
 export class Users {
   constructor(data: any = {}) {
-    const obj = assign(this, data) as Users
-    obj.expireDuration = `1年`;
+    const obj = assign(this, data) as Users;
+    obj.overTimeStr = dayjs(obj.createdAt).add(obj.expireDuration, 'date').format(`YYYY年M月D日H时m分`);
+    obj.overTime = dayjs(obj.createdAt).add(obj.expireDuration, 'date').format(`YYYY-MM-DD HH:mm`);
     return obj
   }
 
   objectId: string;
+  overTimeStr?: string;
   // 分店店名，有则写，没有则无
   name: string;
   // 账号
@@ -35,19 +38,22 @@ export class Users {
   branchStoreNum: number = 0;
   // 可以创建分店的数量
   storeNumber: number = 0;
+  // 是否为试用版本
+  status: boolean = false;
   // 版本状态
-  version: string;
-  // 有效期
-  expireDuration: string = `1年`;
+  // version: string;
+  // 有效期，以天为单位
+  expireDuration: number = 30;
   // 到期时间
-  overTime: Date;
+  overTime: string;
   // 分店账号的创建名额
   count: number;
   // 子账号的创建名额,默认为10
   childCount: number;
   // 权限，保留字段，目前是死的
   auth: string;
-  
+  // 创建日期
+  createdAt: string;
 }
 
 // 店员表

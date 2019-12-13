@@ -16,4 +16,10 @@ body {
       min-width: 200px;
     }
   }
+
+  ul .el-dropdown-menu__item {
+    font-size: 18px;
+    height: 2em;
+    line-height: 2em;
+  }
 }
