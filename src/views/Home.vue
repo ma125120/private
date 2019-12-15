@@ -3,7 +3,7 @@
     <div class="column">
       <MyHeader></MyHeader>
       <div class="page-body">
-        <el-form inline class="login-form all-center">
+        <el-form inline class="login-form all-center" v-if="!user">
           <el-input
             class="my-input"
             v-model="form.userName"
@@ -35,6 +35,7 @@
 // @ is an alias to /src
 import { mapActions, mapState, } from 'vuex'
 import AddChild from './home/AddChild'
+
 export default {
   name: "home",
   components: {
@@ -64,7 +65,7 @@ export default {
     },
     ...mapActions([
       'setUser',
-    ])
+    ]),
   },
   computed: {
     disabled() {
@@ -72,6 +73,7 @@ export default {
     },
     ...mapState([
       'isShowAddChild',
+      'user',
     ]),
   }
 };

@@ -47,11 +47,7 @@
       <div class="all-center">
         <el-button type="text" @click="save" class="dialog-btn">保存</el-button>
       </div>
-      
     </el-form>
-    <!-- <div slot="footer" class="dialog-footer">
-      
-    </div> -->
   </el-dialog>
 </template>
 

@@ -17,20 +17,23 @@ const state: StateType = {
   menus: [
     {
       text: '房间管理',
-      path: '/setting/room',
+      name: 'room',
     },
     {
       text: '店员管理',
-      path: '/setting/staff',
+      name: 'staff',
     },
     {
       text: '账号管理',
-      path: '/setting/account',
+      name: 'account',
     },
     {
       text: '数据导出',
-      path: '/setting/export',
+      name: 'export',
     },
-  ]
+  ],
+
+  staffList: [],
+  roomList: [],
 }
 export default state

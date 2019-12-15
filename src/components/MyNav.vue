@@ -1,14 +1,17 @@
 <template>
   <div class="" v-if="user && user.objectId">
     <ul class="nav-ul all-center">
-      <li :class="`nav-item ${isWork ? 'nav-item--active' : ''}`">工作台</li>
-      <li :class="`nav-item ${isHome ? 'nav-item--active' : ''}`">首页</li>
+      <li :class="`nav-item ${isWork ? 'nav-item--active' : ''}`" @click="$pushNamed('workplace')">工作台</li>
+      <li :class="`nav-item ${isHome ? 'nav-item--active' : ''}`" @click="$pushNamed('home')">首页</li>
       <el-dropdown>
         <span class="nav-item hover">
           设置<i class="el-icon-arrow-down el-icon--right" v-if="role != 1"></i>
         </span>
-        <el-dropdown-menu slot="dropdown" v-if="role != 1">
-          <el-dropdown-item v-for="menu in menus" :key="menu.text">{{menu.text}}</el-dropdown-item>
+        <el-dropdown-menu slot="dropdown" v-if="role != 2">
+          <el-dropdown-item 
+            v-for="menu in menus"
+            @click.native="$pushNamed(menu.name)" 
+            :key="menu.text">{{menu.text}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <el-dropdown v-if="role === 0">
@@ -17,7 +20,7 @@
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item class="active-drop" v-if="nowUser">当前登录：{{nowUser.branchStoreName}}</el-dropdown-item>
-          <el-dropdown-item v-for="child in userChildren" :key="child.branchStoreName">{{child.branchStoreName}}</el-dropdown-item>
+          <el-dropdown-item v-for="child in showChildren" :key="child.branchStoreName">{{child.branchStoreName}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </ul>
@@ -27,6 +30,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapState, mapGetters } from 'vuex'
+
 export default Vue.extend({
   name: "MyNav",
   props: {
@@ -34,10 +38,10 @@ export default Vue.extend({
   },
   computed: {
     isHome() {
-      return /^\/$/g.test(this.$route.path)
+      return this.$route.path === this.$routes.home
     },
     isWork() {
-      return /^\/work/g.test(this.$route.path)
+      return this.$route.path === this.$routes.workplace
     },
     ...mapState([
       'menus',
@@ -45,7 +49,7 @@ export default Vue.extend({
       'user',
       'nowUser'
     ]),
-    ...mapGetters([ 'role' ])
+    ...mapGetters([ 'role', 'showChildren' ])
   }
 });
 </script>
@@ -55,5 +59,11 @@ export default Vue.extend({
 .nav-item {
   font-size: 24px;
   margin-right: 36px;
+  &:hover,
+  &--active {
+    color: $--color-primary;
+    cursor: pointer;
+  }
+  
 }
 </style>

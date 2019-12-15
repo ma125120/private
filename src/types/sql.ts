@@ -5,28 +5,38 @@ import dayjs from 'dayjs';
 // 下方的类型表示枚举类型
 // payType: 1 | 2 | 3 | 4 | 5 | 6 | 7;
 const roles = {
-  0: '管理员',
-  1: '店长',
-  2: '普通店员'
+  0: '公司总管理员',
+  1: '分店管理员账号',
+  2: '子账号'
 }
 
+function isTestUser(user: Users) {
+  return user.expireDuration === 30;
+}
 export class Users {
   constructor(data: any = {}) {
     const obj = assign(this, data) as Users;
-    obj.overTimeStr = dayjs(obj.createdAt).add(obj.expireDuration, 'date').format(`YYYY年M月D日H时m分`);
-    obj.overTime = dayjs(obj.createdAt).add(obj.expireDuration, 'date').format(`YYYY-MM-DD HH:mm`);
+    const overTime = dayjs(obj.createdAt).add(obj.expireDuration, 'date');
+    obj.overTimeStr = overTime.format(`YYYY年M月D日H:m`);
+    obj.overTime = overTime.format(`YYYY-MM-DD HH:mm`);
+    obj.accountType = roles[obj.jurisdictionType]
+    if (obj.jurisdictionType !== 0) {
+      obj.accountType += `：${obj.branchStoreName || obj.companyName}`
+    }
+    obj.version = dayjs(Date.now()).isAfter(overTime) ? `已到期` : isTestUser(obj) ? `试用期` : `已付费`;
     return obj
   }
 
   objectId: string;
   overTimeStr?: string;
+  accountType?: string;
   // 分店店名，有则写，没有则无
-  name: string;
+  branchStoreName: string;
   // 账号
   userName: string;
   // 密码
   passWord: string;
-  // 账号类型 1 总店 2 分店 3 子账号
+  // 账号类型 
   jurisdictionType: keyof typeof roles;
   // 所属分店的id
   branchStoreId: string;
@@ -41,7 +51,7 @@ export class Users {
   // 是否为试用版本
   status: boolean = false;
   // 版本状态
-  // version: string;
+  version: string;
   // 有效期，以天为单位
   expireDuration: number = 30;
   // 到期时间
@@ -57,27 +67,36 @@ export class Users {
 }
 
 // 店员表
-class Staff {
-  id: string;
+export class Staff {
+  constructor(data: any = {}) {
+    const obj = assign(this, data) as Staff;
+    return obj
+  }
+
+  objectId: string;
   // 店员姓名
-  name: string;
+  clerkName: string;
   // 状态， 1 在职 2 离职
-  status: 0 | 1;
+  clerkType: 1 | 2 = 1;
   // 所属分店的id，
-  parentId: string;
+  branchStoreId: string;
   // 所属总管理员的id
-  superId: string;
+  companyId: string;
 }
 
 // 房间表
-class Room {
-  id: string;
+export class Room {
+  constructor(data: any = {}) {
+    const obj = assign(this, data) as Room;
+    return obj
+  }
+  objectId: string;
   // 房间名
-  name: string;
+  roomName: string;
   // 所属分店的id，
-  parentId: string;
+  branchStoreId: string;
   // 所属总管理员的id
-  superId: string;
+  companyId: string;
 }
 
 // 预约记录表

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import './http';
-
+import routeNames from "@/router/name";
 import {
   Button,
   Popover,
@@ -45,10 +45,11 @@ Vue.use(Dropdown);
 Vue.use(DropdownItem);
 Vue.use(DropdownMenu);
 
+Vue.prototype.$message = Message;
 (Vue.prototype.$notify = Notification);
 Vue.prototype.$nerror = function(text) {
-  Notification.error({
-    title: "错误",
+  Message({
+    type: "error",
     message: text
   });
 };
@@ -80,8 +81,23 @@ Vue.prototype.$filters = {
     return row.duration || 0;
   }
 };
+Vue.filter("expire", function(val) {
+  if (val < 365) return `${val}天`;
+    return `1年`
+});
+Vue.filter("clerkType", function(val) {
+  const types = {
+    1: '在职生效',
+    2: '已停用'
+  }
+  return types[val] || types[1];
+});
 Vue.prototype.$now = now;
 
+Vue.prototype.$pushNamed = function (name) {
+  return this.$router.push(routeNames[name] || '/');
+}
+Vue.prototype.$routes = routeNames;
 const requireComponent = require.context(
   // 其组件目录的相对路径
   "../components",

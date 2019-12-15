@@ -1,6 +1,7 @@
 import { StateType } from './state'
 
 export default {
+  showChildren: (state, getters) => state.userChildren.filter(v => v.objectId !== state.nowUser.objectId),
   role: (state: StateType, getters) => {
     return state.user && state.user.jurisdictionType
   },
