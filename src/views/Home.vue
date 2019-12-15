@@ -59,6 +59,7 @@ export default {
         let user = await this.$api.user.login(this.form.userName, this.form.passWord);
         this.$notify.success({ title: '消息', message: '登陆成功' });
         this.setUser(user)
+        this.$store.commit('setLogin', true);
       } catch(err) {
         this.$alertCb(err.msg)
       }

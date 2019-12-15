@@ -23,18 +23,24 @@
           <el-dropdown-item v-for="child in showChildren" :key="child.branchStoreName">{{child.branchStoreName}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+      <li :class="`nav-item`" @click="logout">退出登录</li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 
 export default Vue.extend({
   name: "MyNav",
   props: {
     msg: String
+  },
+  methods: {
+    ...mapMutations([
+      'logout'
+    ])
   },
   computed: {
     isHome() {

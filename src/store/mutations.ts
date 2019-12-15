@@ -16,7 +16,9 @@ export default {
     if (user) {
       store.dispatch('setUser', new Users(JSON.parse(user)))
     }
-    state.nowUser = new Users(JSON.parse(nowUser));
+    if (nowUser) {
+      state.nowUser = new Users(JSON.parse(nowUser));
+    }
   },
   saveChildren(state, children) {
     state.userChildren = children;
@@ -27,8 +29,9 @@ export default {
         store.commit('chooseUserMutation', children[0])
       }
       
-      if (router.currentRoute.path === routeNames.home) {
+      if (state.isHost && router.currentRoute.path === routeNames.home) {
         router.push(routeNames.workplace)
+        store.commit('setLogin')
       }
     } else {
       state.isShowAddChild = true;
@@ -45,4 +48,18 @@ export default {
   saveRoomList(state, list) {
     state.roomList = list;
   },
+
+  logout(state) {
+    state.user = null;
+    state.nowUser = null;
+    sessionStorage.removeItem('user')
+    sessionStorage.removeItem('nowUser')
+    if (router.currentRoute.path !== routeNames.home) {
+      router.replace(routeNames.home)
+    }
+  },
+  // 用户触发的登录
+  setLogin(state, isHost = false) {
+    state.isHost = isHost;
+  }
 };
