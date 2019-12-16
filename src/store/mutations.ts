@@ -4,6 +4,7 @@ import routeNames from '@/router/name'
 import {Notification} from 'element-ui'
 import store from '@/store'
 import { Users } from '@/types/sql'
+import User from '@/api/user';
 
 export default {
   saveUser(state, user) {
@@ -20,7 +21,8 @@ export default {
       state.nowUser = new Users(JSON.parse(nowUser));
     }
   },
-  saveChildren(state, children) {
+  saveChildren(state, _children) {
+    let children = _children.map(v => new Users(v))
     state.userChildren = children;
     if (children.length > 0) {
       state.isShowAddChild = false;
@@ -36,6 +38,10 @@ export default {
     } else {
       state.isShowAddChild = true;
     }
+  },
+  saveChildAccount(state, _children) {
+    let children = _children.map(v => new Users(v))
+    state.childAccount = children;
   },
   chooseUserMutation(state, user) {
     state.nowUser = user;

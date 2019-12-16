@@ -42,6 +42,30 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/setting/Account.vue")
   },
+  {
+    path: "/setting/shop",
+    name: "shop",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/setting/Shop.vue")
+  },
+  {
+    path: "/setting/child",
+    name: "child",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/setting/ChildAccount.vue")
+  },
+  {
+    path: "/setting/child/new",
+    name: "childNew",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/setting/child/NewChild.vue")
+  },
+  {
+    path: "/setting/child/edit",
+    name: "childEdit",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/setting/child/EditChild.vue")
+  },
   
   {
     path: "/about",

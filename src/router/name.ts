@@ -4,7 +4,11 @@ const routes = {
   workplace: '/workplace',
   staff: '/setting/staff',
   room: '/setting/room',
-  account: '/setting/account'
+  account: '/setting/account',
+  child: '/setting/child',
+  shop: '/setting/shop',
+  childEdit: '/setting/child/edit',
+  childNew: '/setting/child/new',
 }
 
 export default routes

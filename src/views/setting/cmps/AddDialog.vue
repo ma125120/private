@@ -89,7 +89,5 @@ export default {
 .add-dialog.el-dialog {
   width: 480px;
 }
-.dialog-btn--exit {
-  color: #000;
-}
+
 </style>

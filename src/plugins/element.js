@@ -12,6 +12,8 @@ import {
   TableColumn,
   MessageBox,
   Message,
+  Checkbox,
+  CheckboxGroup,
   Form,
   FormItem,
   Select,
@@ -31,6 +33,8 @@ import "../styles/var.scss";
 
 Vue.use(Button);
 Vue.use(Popover);
+Vue.use(CheckboxGroup);
+Vue.use(Checkbox);
 Vue.use(Popconfirm);
 Vue.use(Table);
 Vue.use(TableColumn);

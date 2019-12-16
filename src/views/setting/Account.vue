@@ -5,16 +5,26 @@
       <div class="account-body">
         <AccountItem label="当前登录账号" :value="user.userName" />
         <AccountItem label="账号类型" :value="user.accountType" />
-        <AccountItem label="版本状态">
-          <div v-for="child in userChildren" :key="child.objectId" class="account-child">
-            <div style="margin-bottom: 24px">
-              <span>{{child.branchStoreName}}</span>
-              <span style="margin-left: 24px;">{{child.version}}</span>
+
+        <template v-if="role !== 2">
+          <template v-if="role !== 0">
+            <AccountItem label="版本状态" :value="user.version" />
+            <AccountItem label="有效期" :value="user.expireDuration | expire" />
+            <AccountItem label="到期时间" :value="user.overTimeStr" />
+          </template>
+          
+          <AccountItem label="版本状态" v-else>
+            <div v-for="child in userChildren" :key="child.objectId" class="account-child">
+              <div style="margin-bottom: 24px">
+                <span>{{child.branchStoreName}}</span>
+                <span style="margin-left: 24px;">{{child.version}}</span>
+              </div>
+              <AccountItem label="有效期" :value="child.expireDuration | expire" />
+              <AccountItem label="到期时间" :value="child.overTimeStr" />
             </div>
-            <AccountItem label="有效期" :value="child.expireDuration | expire" />
-            <AccountItem label="到期时间" :value="child.overTimeStr" />
-          </div>
-        </AccountItem>
+          </AccountItem>
+        </template>
+        
       </div>
     </div>
   </SettingLayout>
@@ -34,6 +44,9 @@ export default Vue.extend({
   computed: {
     ...mapState([
       'user', 'nowUser', 'userChildren',
+    ]),
+    ...mapGetters([
+      'role'
     ])
   }
 });

@@ -36,5 +36,6 @@ const state: StateType = {
   staffList: [],
   roomList: [],
   isHost: false,
+  childAccount: [],
 }
 export default state

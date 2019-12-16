@@ -4,7 +4,8 @@ import BaseApi from './base'
 
 export default class User extends BaseApi {
   tableName = 'FXZ_User';
-  timeFields = [];
+  timeFields = ['overTime'];
+  omitFields = ['accountType', 'status', 'versionTable', 'overTimeStr', 'passWord1', 'oldPassword', 'names']
 
   async login(userName, passWord) {
     try {
@@ -26,19 +27,14 @@ export default class User extends BaseApi {
   }
 
   edit(obj) {
-    const query = Bmob.Query(this.tableName);
-    query.set('id', obj.objectId);
-    query.set('overTime', new Date(`2020-12-10 01:00`));
-    query.set('version', '2019-12-08 00:00')
-    query.save().then(res => {
-      console.log(res)
-    })
+    return this.saveChild(obj);
   }
 
   async findChildren(id): Promise<Users[]> {
     try {
       let res = await this._query({
         companyId: id,
+        jurisdictionType: 1,
       });
       return res.map(v => new Users(v));
     } catch (err) {
@@ -52,13 +48,49 @@ export default class User extends BaseApi {
   async saveChild(user) {
     try {
       let res = await this._edit(user);
-      console.log(res)
       return res
     } catch (err) {
       console.log(err)
       return Promise.reject({
         code: 100,
         msg: '错误，未找到分店账号',
+      });
+    }
+  }
+
+  async increment(user) {
+    try {
+      await this._edit({ ...user, branchStoreNum: user.branchStoreNum + 1 })
+    } catch (err) {
+      console.log(err)
+      return Promise.reject({
+        code: 100,
+        msg: '分店账号+1失败',
+      });
+    }
+  }
+
+  async getChildAccounts(companyId, branchStoreId, ) {
+    try {
+      let res = await this._query({
+        companyId,
+        jurisdictionType: 2,
+      });
+
+      return res;
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async del(obj) {
+    try {
+      let res = await this._del(obj);
+      return res
+    } catch (err) {
+      return Promise.reject({
+        code: 100,
+        msg: '删除失败，请重试',
       });
     }
   }

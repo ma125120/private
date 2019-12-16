@@ -49,11 +49,12 @@ export default class Room extends BaseApi {
     }
   }
 
-  async isDuplicate(name, companyId) {
+  async isDuplicate(name, branchStoreId, companyId) {
     try {
       let res = await this._query({
         roomName: name,
         companyId,
+        branchStoreId,
       });
 
       return res && res.length > 0;

@@ -2,6 +2,12 @@ import { StateType } from './state'
 
 export default {
   showChildren: (state, getters) => state.userChildren.filter(v => v.objectId !== (state.nowUser || {}).objectId),
+  childNames: (state) => {
+    return state.userChildren.reduce((prev, next) => {
+      prev[next.objectId] = next.branchStoreName;
+      return prev;
+    }, {})
+  },
   role: (state: StateType, getters) => {
     return state.user && state.user.jurisdictionType
   },

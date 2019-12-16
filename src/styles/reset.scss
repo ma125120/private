@@ -22,4 +22,16 @@ body {
     height: 2em;
     line-height: 2em;
   }
+
+  .my-table .el-table__header {
+    & thead th {
+      background: #F5F0F0;
+      font-size: 20px;
+      color: #000;
+      font-weight: normal;
+    }
+  }
+  .dialog-btn--exit {
+    color: #000;
+  }
 }

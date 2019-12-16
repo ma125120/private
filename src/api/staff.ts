@@ -37,11 +37,12 @@ export default class Staff extends BaseApi {
     }
   }
 
-  async isDuplicate(name, companyId) {
+  async isDuplicate(name, branchStoreId, companyId) {
     try {
       let res = await this._query({
         clerkName: name,
         companyId,
+        branchStoreId,
       });
 
       return res && res.length > 0;

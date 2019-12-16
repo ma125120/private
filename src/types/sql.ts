@@ -16,7 +16,7 @@ function isTestUser(user: Users) {
 export class Users {
   constructor(data: any = {}) {
     const obj = assign(this, data) as Users;
-    const overTime = dayjs(obj.createdAt).add(obj.expireDuration, 'date');
+    const overTime = dayjs(obj.createdAt).add(obj.expireDuration, 'day');
     obj.overTimeStr = overTime.format(`YYYY年M月D日H:m`);
     obj.overTime = overTime.format(`YYYY-MM-DD HH:mm`);
     obj.accountType = roles[obj.jurisdictionType]
@@ -24,12 +24,15 @@ export class Users {
       obj.accountType += `：${obj.branchStoreName || obj.companyName}`
     }
     obj.version = dayjs(Date.now()).isAfter(overTime) ? `已到期` : isTestUser(obj) ? `试用期` : `已付费`;
+    obj.versionTable = dayjs(Date.now()).isAfter(overTime) ? `已到期请续费\n到期时间：\n   ${overTime.format(`YYYYMMDD`)}` : `已付费生效`;
     return obj
   }
 
   objectId: string;
   overTimeStr?: string;
   accountType?: string;
+  versionTable?: string;
+  branchStoreNames?: string[];
   // 分店店名，有则写，没有则无
   branchStoreName: string;
   // 账号
@@ -44,7 +47,7 @@ export class Users {
   companyId: string;
   // 总公司名和曾
   companyName: string = '';
-  // 分部数量
+  // 分部数量,为0时表示第一次创建，需要新手指引
   branchStoreNum: number = 0;
   // 可以创建分店的数量
   storeNumber: number = 0;
@@ -56,10 +59,6 @@ export class Users {
   expireDuration: number = 30;
   // 到期时间
   overTime: string;
-  // 分店账号的创建名额
-  count: number;
-  // 子账号的创建名额,默认为10
-  childCount: number;
   // 权限，保留字段，目前是死的
   auth: string;
   // 创建日期
