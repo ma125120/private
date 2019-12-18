@@ -83,6 +83,7 @@ export default Vue.extend({
   },
   methods: {
     edit(obj) {
+      this.$router.push(this.$routes.childEdit + `?id=${obj.objectId}`);
       // this.obj = obj;
       // this.isEdit = true;
     },

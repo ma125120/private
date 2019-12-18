@@ -45,6 +45,9 @@ export default Vue.extend({
   watch: {
     val(val) {
       this.$emit("change", val);
+    },
+    value(val) {
+      this.val = val;
     }
   },
   data() {

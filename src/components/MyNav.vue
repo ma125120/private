@@ -23,6 +23,7 @@
           <el-dropdown-item v-for="child in showChildren" :key="child.branchStoreName">{{child.branchStoreName}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+      <li :class="`nav-item hover`" @click="logout">帮助<i class="el-icon-arrow-down el-icon--right"></i></li>
       <li :class="`nav-item`" @click="logout">退出登录</li>
     </ul>
   </div>

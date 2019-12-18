@@ -82,6 +82,18 @@ export default class User extends BaseApi {
       console.log(err)
     }
   }
+  async getChildAccount(objectId) {
+    try {
+      let res = await this._query({
+        objectId,
+        // jurisdictionType: 2,
+      });
+
+      return res && res[0] || {};
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   async del(obj) {
     try {

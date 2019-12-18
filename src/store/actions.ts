@@ -130,10 +130,20 @@ export default {
       companyId: state.nowUser.companyId,
       companyName: state.nowUser.companyName || '',
     }
+
     let res = await api.user.edit(data);
     Message({ message: `添加成功`, type: 'success' })
 
     let children = [{ ...data, objectId: res.objectId, }, ...state.childAccount, ]
+    commit('saveChildAccount', children)
+  },
+  async editChildAccount({ commit, dispatch, state, }, obj) {
+    let res = await api.user.edit(obj);
+    Message({ message: `编辑成功`, type: 'success' })
+
+    let index = state.childAccount.findIndex(v => v.objectId === obj.objectId)
+    let children = [...state.childAccount]
+    children[index] = obj;
     commit('saveChildAccount', children)
   },
   async getChildAccounts({ commit, dispatch, state, }) {
