@@ -1,5 +1,6 @@
 
 import { Users } from '@/types/sql'
+import { now } from '@/util/date'
 export type StateType = {
   user: Users,
   nowUser: Users,
@@ -37,5 +38,8 @@ const state: StateType = {
   roomList: [],
   isHost: false,
   childAccount: [],
+
+  records: [],
+  selectDay: now,
 }
 export default state

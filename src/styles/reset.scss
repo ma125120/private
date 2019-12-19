@@ -2,6 +2,7 @@
   font-size: 28px;
 }
 body {
+  font-family: "Microsoft Yahei";
   .my-dialog {
     .el-form-item__label {
       font-size: 20px;
@@ -42,6 +43,19 @@ body {
   .el-checkbox__inner::after {
     left: 8px;
     height: 12px;
+  }
+
+  .el-button {
+    font-size: 18px;
+  }
+}
+body {
+  .el-dialog__title {
+    font-size: 32px;
+  }
+
+  .active-drop.el-dropdown-menu__item {
+    color: $--color-primary;
   }
 }
 

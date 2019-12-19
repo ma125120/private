@@ -1,5 +1,6 @@
 import { assign } from "./base"
 import dayjs from 'dayjs';
+import { hours, minutes } from "@/util/date";
 
 // Date类型一般为 2019-12-09 12:00这种
 // 下方的类型表示枚举类型
@@ -98,15 +99,38 @@ export class Room {
   companyId: string;
 }
 
+const toDay = (str) => {
+  return dayjs(typeof str === 'string' ? str : str.iso).format(`YYYY-MM-DD HH:mm`)
+}
 // 预约记录表
-class Reservation {
+export class Reservation {
+  constructor(data: any = {}) {
+    const obj = assign(this, data) as Reservation;
+    obj.startTime = toDay(obj.startTime)
+    obj.endTime = toDay(obj.endTime)
+    let _start = dayjs(obj.startTime)
+    let _end = dayjs(obj.endTime)
+    obj.startDate = _start.format(`YYYY-MM-DD`);
+    obj.startHour = _start.format(`HH`);
+    obj.startMinute = _start.format(`mm`);
+    obj.durationHour = Math.floor(obj.duration) + '';
+    obj.durationMinute = (obj.duration + '').split('.')[1] || '0';
+    return obj
+  }
+  
+  startDate: String;
+  startHour = "00";
+  startMinute = "00";
+  durationHour = hours[0].id;
+  durationMinute = minutes[0].id;
+
   id: string;
   // 房间id
   roomId: string;
   // 到店时间
-  startTime: Date;
+  startTime: string;
   // 离店时间
-  endTime: Date;
+  endTime: string;
   // 人数
   count: number;
   // 备注

@@ -1,5 +1,5 @@
 <template>
-  <div class="add-reverse--page">
+  <div class="add-reverse--page my-dialog">
     <MyHeader></MyHeader>
     <div class="add-reverse">
       <div class="fix-place"></div>
@@ -36,19 +36,30 @@
         label-width="228px"
         label-position="left"
       >
-        <el-form-item label="房间" prop="room">
-          <MySelect v-model="form.room" :options="rooms"></MySelect>
+        <el-form-item label="房间" prop="roomId">
+          <MySelect 
+            v-model="form.roomId" 
+            :options="roomList" 
+            labelKey="roomName" />
         </el-form-item>
         <el-form-item label="到店日期" prop="startDate">
+          <span 
+            :class="`my-radio--label hover ${form.startDate === now ? 'active' : ''}`"
+            @click="form.startDate = now">今天</span>
           <MyDatePicker v-model="form.startDate"></MyDatePicker>
         </el-form-item>
         <el-form-item label="到店时间" required>
           <div class="align-center">
-            <MySelect v-model="form.startHour" :options="hoursWith0"></MySelect>
+            <MySelect 
+              v-model="form.startHour" 
+              :options="hoursWith0" 
+              idKey="id" 
+              labelKey="name"></MySelect>
             <div class="pad-width"></div>
             <MySelect
               v-model="form.startMinute"
               :options="minutesWith0"
+               idKey="id" labelKey="name"
             ></MySelect>
           </div>
         </el-form-item>
@@ -58,10 +69,12 @@
               v-model="form.durationHour"
               @change="$emit('change')"
               :options="hours"
+               idKey="id" labelKey="name"
             ></MySelect>
             <div class="pad-width"></div>
             <MySelect
               v-model="form.durationMinute"
+               idKey="id" labelKey="name"
               @change="$emit('change')"
               :options="minutes"
             ></MySelect>
@@ -70,6 +83,7 @@
         <el-form-item label="人数" prop="count">
           <el-input
             style="width: 200px"
+            type="number"
             v-model="form.count"
             placeholder="点击输入阿拉伯数字"
           ></el-input><span class="ml">人</span>
@@ -91,7 +105,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="员工" prop="staff">
-          <MySelect v-model="form.staff" :options="staffes"></MySelect>
+          <MySelect v-model="form.staffId" :options="staffOptions"></MySelect>
         </el-form-item>
       </el-form>
     </div>
@@ -108,10 +122,11 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { now, hoursWith0, hours, minutesWith0, minutes } from "@/util/date";
+import { now, hoursWith0, hours, minutesWith0, minutes, DATE_STR_DETAIL } from "@/util/date";
 import { rooms, staffes } from "@/util/mock";
 import { records, record2form, getReverseForm } from "@/util/index";
 import dayjs from "dayjs";
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 
 export default Vue.extend({
   name: "HelloWorld",
@@ -121,17 +136,13 @@ export default Vue.extend({
   data() {
     return {
       dialogVisible: false,
-      rooms,
-      staffes: staffes.map(staff => ({
-        ...staff,
-        name: staff.id + " " + staff.name
-      })),
+      now,
       hoursWith0,
       hours,
       minutesWith0,
       minutes,
       rules: {
-        room: [{ required: true, message: "请选择房间" }],
+        roomId: [{ required: true, message: "请选择房间" }],
         startDate: [{ required: true, message: "请选择到店日期" }],
         startTime: [{ required: true, message: "请选择到店日期" }],
         duration: [
@@ -154,11 +165,16 @@ export default Vue.extend({
     this.fetchData();
   },
   methods: {
-    fetchData() {
+    ...mapActions([
+      'addRecord',
+    ]),
+    async fetchData() {
       const { id } = this.$route.query;
-      if (id === 0 || id) {
-        const data = records.find(v => v.id + "" === id);
-        data && (this.form = record2form(data));
+      if (id) {
+        let data = await this.$api.record.find(id);
+        this.form = data;
+        // const data = records.find(v => v.id + "" === id);
+        // data && (this.form = record2form(data));
       }
     },
     computeStart() {
@@ -168,17 +184,12 @@ export default Vue.extend({
       this.duration = this.durationHour + ":" + this.durationMinute;
     },
     save() {
-      this.$refs.form.validate((vaild, params) => {
+      this.$refs.form.validate(async (vaild, params) => {
         if (vaild) {
           const form = this.getRealForm();
-          if (form.id) {
-            const index = records.findIndex(v => v.id + "" === form.id + "");
-            records[index] = form;
-          } else {
-            records.push({ ...form, id: Date.now() });
-          }
+          await this.addRecord(form);
 
-          this.$router.replace("/");
+          this.$pushNamed('workplace');
         } else {
           const msg = params[Object.keys(params)[0]][0].message;
           this.$notify.error({
@@ -191,14 +202,18 @@ export default Vue.extend({
     getRealForm() {
       let form = { ...this.form };
       form.startTime = dayjs(form.startDate)
-        .add(form.startHour, "hour")
-        .add(form.startMinute, "minute");
+        .add( parseInt(form.startHour) , "hour")
+        .add(parseInt(form.startMinute), "minute").format(DATE_STR_DETAIL);
+      form.count = +form.count;
       form.endTime = dayjs(form.startTime)
-        .add(form.durationHour, "hour")
-        .add(form.durationMinute, "minute");
-      form.room = this.rooms.filter(v => v.id + "" === form.room)[0];
-      form.staff = this.staffes.filter(v => v.id + "" === form.staff)[0];
+        .add(parseInt(form.durationHour), "hour")
+        .add(parseInt(form.durationMinute), "minute")
+        .format(DATE_STR_DETAIL);
+      form.roomName = this.roomMap[form.roomId];
+      form.staffName = this.staffMap[form.staffId];
       form.duration = +form.durationHour + +form.durationMinute / 60;
+      form.parentId = this.nowUser.objectId;
+      form.superId = this.nowUser.companyId;
 
       return form;
     },
@@ -225,6 +240,18 @@ export default Vue.extend({
     durationMinute() {
       this.computeDuration();
     }
+  },
+  computed: {
+    ...mapState([
+      'roomList',
+      'nowUser',
+      // 'staffOptions',
+    ]),
+    ...mapGetters([
+      'staffOptions',
+      'staffMap',
+      'roomMap'
+    ])
   }
 });
 </script>
@@ -241,6 +268,8 @@ export default Vue.extend({
   top: 95px;
   left: 70px;
   right: 70px;
+  background: #f0efef;
+  z-index: 5;
 }
 .add-title {
   font-size: 28px;
@@ -257,5 +286,21 @@ export default Vue.extend({
 }
 .pd-btn {
   margin: 0 12px;
+}
+.my-radio--label {
+  font-size: 18px;
+  margin-right: 32px;
+  background: #fff;
+  border: 1px solid #fff;
+  color: #000;
+  width: 120px;
+  border-radius: 4px;
+  @include all-center();
+  display: inline-flex;
+  &.active {
+    color: $--color-primary;
+    border: 1px solid $--color-primary;
+  }
+  
 }
 </style>

@@ -50,6 +50,11 @@ export default Vue.extend({
     changeDate(val) {
       this.$emit("change", val);
     }
+  },
+  watch: {
+    date(val) {
+      this.date1 = val;
+    }
   }
 });
 </script>

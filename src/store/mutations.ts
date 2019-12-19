@@ -18,7 +18,7 @@ export default {
       store.dispatch('setUser', new Users(JSON.parse(user)))
     }
     if (nowUser) {
-      state.nowUser = new Users(JSON.parse(nowUser));
+      store.commit('chooseUserMutation', new Users(JSON.parse(nowUser)))
     }
   },
   saveChildren(state, _children) {
@@ -46,12 +46,34 @@ export default {
   chooseUserMutation(state, user) {
     state.nowUser = user;
     sessionStorage.nowUser = JSON.stringify(user);
+    store.dispatch('getStaffList')
+    store.dispatch('getRoomList')
   },
 
   saveStaffList(state, list) {
     state.staffList = list;
   },
+  addStaffList(state, item) {
+    const list = [ item, ...state.staffList, ]
+    state.staffList = list;
+  },
+  editStaff(state, item) {
+    const index = state.staffList.findIndex(v => v.objectId === item.objectId)
+    const list = [...state.staffList]
+    list[index] = item;
+    state.staffList = list;
+  },
   saveRoomList(state, list) {
+    state.roomList = list;
+  },
+  addRoomList(state, item) {
+    const list = [item, ...state.roomList,]
+    state.roomList = list;
+  },
+  editRoom(state, item) {
+    const index = state.roomList.findIndex(v => v.objectId === item.objectId)
+    const list = [...state.roomList]
+    list[index] = item;
     state.roomList = list;
   },
 
@@ -67,5 +89,23 @@ export default {
   // 用户触发的登录
   setLogin(state, isHost = false) {
     state.isHost = isHost;
+  },
+
+  addRecordMutation(state, item) {
+    let id = item.objectId;
+    if (id) {
+      const list = [...state.records]
+      const index = list.findIndex(v => v.objectId === id);
+      list[index] = item;
+      state.records = list;
+    } else {
+      state.records = [ item, ...state.records, ];
+    }
+  },
+  changeDayMutation(state, time) {
+    state.selectDay = time;
+  },
+  saveRecords(state, list) {
+    state.records = list;
   }
 };

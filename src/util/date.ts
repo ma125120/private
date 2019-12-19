@@ -15,7 +15,8 @@ export function getDiff(date1, date2) {
 export const isSameDate = (date1, date2) =>
   dayjs(date1).isSame(dayjs(date2), "date");
 
-const DATE_STR = "YYYY-MM-DD";
+export const DATE_STR = "YYYY-MM-DD";
+export const DATE_STR_DETAIL = "YYYY-MM-DD HH:mm";
 
 export const now = dayjs(new Date()).format(DATE_STR);
 export const weeks = ["日", "一", "二", "三", "四", "五", "六"];

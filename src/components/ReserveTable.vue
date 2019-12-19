@@ -18,7 +18,7 @@
             <div class="td" v-for="text in comHeaders" :key="text"></div>
             <el-popover
               v-for="child in record.children"
-              :key="child.id"
+              :key="child.objectId"
               placement="bottom"
               width="180"
               trigger="manual"
@@ -37,7 +37,7 @@
                 "
                 @mouseleave="child.visible = false"
                 @contextmenu.prevent="
-                  showPop(child.id, $event);
+                  showPop(child.objectId, $event);
                   child.visible = false;
                 "
                 :style="
@@ -109,7 +109,8 @@
 
 <script>
 // @ is an alias to /src
-import { rooms, records, formatRecord } from "@/util/index";
+import { formatRecord } from "@/util/index";
+import { mapState, mapGetters } from 'vuex';
 const headers = new Array(17)
   .fill(0)
   .map((v, i) => i + 8 + ":00")
@@ -121,6 +122,17 @@ export default {
   computed: {
     comHeaders() {
       return this.headers.slice(1)
+    },
+    ...mapState([
+      // 'records',
+    ]),
+    ...mapGetters([
+      'realRecords',
+    ])
+  },
+  watch: {
+    realRecords(list) {
+      this.records = list;
     }
   },
   data() {
@@ -133,7 +145,8 @@ export default {
       x: 0,
       y: 0,
       rooms,
-      records: formatRecord(records),
+      records: [],
+      // records: formatRecord(records),
       headers: ["预约分布表", ...headers]
     };
   },
@@ -158,7 +171,7 @@ export default {
       }
     },
     del() {
-      const index = records.findIndex(v => v.id === this.activeId);
+      const index = records.findIndex(v => v.activeId === this.activeId);
       records.splice(index, 1);
       this.records = formatRecord(records);
 

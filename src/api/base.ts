@@ -12,7 +12,7 @@ export default class BaseApi {
       query.equalTo(key, "==", obj[key]);
     }
     filters.forEach(v => {
-      query.equalTo(v[0], v[1], v[2]);
+      query.equalTo(v[0], v[1], toBombTime(v[2]));
     });
 
     return query.find();

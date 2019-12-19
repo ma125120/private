@@ -2,9 +2,9 @@
   <el-select v-model="val" @change="change" placeholder="请选择" clearable>
     <el-option
       v-for="item in options"
-      :key="item.id"
-      :label="item.name"
-      :value="item.id + ''"
+      :key="item[idKey]"
+      :label="item[labelKey]"
+      :value="item[idKey]"
     >
     </el-option>
   </el-select>
@@ -26,7 +26,15 @@ export default Vue.extend({
       default() {
         return [];
       }
-    }
+    },
+    labelKey: {
+      type: String,
+      default: 'name'
+    },
+    idKey: {
+      type: String,
+      default: 'objectId'
+    },
   },
   created() {
     this.val = this.value;
@@ -34,6 +42,9 @@ export default Vue.extend({
   watch: {
     val(val) {
       this.$emit("change", val);
+    },
+    value(val) {
+      this.val = val;
     }
   },
   data() {
@@ -43,7 +54,6 @@ export default Vue.extend({
   },
   methods: {
     change(val) {
-      console.log(val);
       this.$emit("change", val);
     }
   }

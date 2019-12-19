@@ -10,7 +10,7 @@
 
 <script>
 // @ is an alias to /src
-import { rooms } from "@/util/index";
+// import { rooms } from "@/util/index";
 import TableHeader from "@/components/TableHeader";
 
 export default {
@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-      rooms,
+      // rooms,
       date: this.$now
     };
   }

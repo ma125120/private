@@ -20,7 +20,10 @@
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item class="active-drop" v-if="nowUser">当前登录：{{nowUser.branchStoreName}}</el-dropdown-item>
-          <el-dropdown-item v-for="child in showChildren" :key="child.branchStoreName">{{child.branchStoreName}}</el-dropdown-item>
+          <el-dropdown-item 
+            v-for="child in showChildren"
+            @click.native="chooseUser(child)" 
+            :key="child.branchStoreName">{{child.branchStoreName}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <li :class="`nav-item hover`" @click="logout">帮助<i class="el-icon-arrow-down el-icon--right"></i></li>
@@ -31,7 +34,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default Vue.extend({
   name: "MyNav",
@@ -41,6 +44,9 @@ export default Vue.extend({
   methods: {
     ...mapMutations([
       'logout'
+    ]),
+    ...mapActions([
+      'chooseUser'
     ])
   },
   computed: {

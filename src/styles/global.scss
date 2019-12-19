@@ -6,13 +6,10 @@ $--color-primary: #ec9d29;
 
 $padding: 20px;
 
-body {
-  .el-dialog__title {
-    font-size: 32px;
-  }
-  .active-drop.el-dropdown-menu__item {
-    color: $--color-primary;
-  }
+@mixin all-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 // $--dialog-content-font-size: 20px !default;
 // $--font-size-large: 28px;

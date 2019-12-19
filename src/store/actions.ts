@@ -2,6 +2,8 @@ import {Users} from '@/types/sql'
 import api from '@/api'
 // import router from '@/router';
 import { Message } from 'element-ui'
+import dayjs from 'dayjs';
+import { DATE_STR_DETAIL } from '../util/date';
 
 export default {
   async setUser({ commit, dispatch, }, user: Users) {
@@ -30,10 +32,6 @@ export default {
   },
   async chooseUser({ commit, dispatch, state, }, user) {
     commit(`chooseUserMutation`, user);
-    // 获取该用户的record
-    // let records = await api.user.saveChild(user);
-    // console.log(records)
-    // dispatch('selectChildren', state.user);
   },
   async add_staff({ commit, dispatch, state, }, name) {
     if (!name) return;
@@ -52,7 +50,7 @@ export default {
 
     let res = await api.staff.save(staff);
     Message({ message: `添加成功`, type: 'success' })
-    dispatch('getStaffList')
+    commit('addStaffList', { ...staff, objectId: res.objectId })
   },
   async edit_staff({ commit, dispatch, state, }, obj) {
     if (!obj.clerkName) return;
@@ -64,7 +62,7 @@ export default {
 
     let res = await api.staff.edit(obj);
     Message({ message: `修改成功`, type: 'success' })
-    dispatch('getStaffList');
+    commit('editStaff', { ...obj })
   },
   async getStaffList({ commit, state, }) {
     let list = await api.staff.getList(state.nowUser.objectId, state.nowUser.companyId);
@@ -88,7 +86,7 @@ export default {
 
     let res = await api.room.save(room);
     Message({ message: `添加成功`, type: 'success' })
-    dispatch('getRoomList')
+    commit('addRoomList', { ...room, objectId: res.objectId })
   },
   async edit_room({ commit, dispatch, state, }, obj) {
     if (!obj.roomName) return;
@@ -100,7 +98,7 @@ export default {
 
     let res = await api.room.edit(obj);
     Message({ message: `修改成功`, type: 'success' })
-    dispatch('getRoomList');
+    commit('editRoom', { ...obj })
   },
   async del_room({ commit, dispatch, state, }, obj) {
     let res = await api.room.del(obj);
@@ -154,5 +152,34 @@ export default {
     let res = await api.user.del(obj);
     Message({ message: `删除成功`, type: 'success' })
     dispatch('getChildAccounts');
+  },
+
+  async addRecord({ commit, dispatch, state, }, obj) {
+    console.log(obj)
+    let res = await api.record.edit(obj);
+    let type = obj.objectId ? 'add' : 'edit'
+
+    Message({ message: `${type === 'add' ? '添加' : '编辑'}成功`, type: 'success' })
+    commit('addRecordMutation', { ...obj, ...res });
+  },
+
+  async changeDay({ commit, dispatch, state, }, val) {
+    const start = val + ` 08:00:00`;
+    const end = dayjs(val).add(1, 'day').add(7, 'hour').format(DATE_STR_DETAIL + ':ss');
+    commit('changeDayMutation', val)
+
+    dispatch('getAllRecords')
+  },
+  async getAllRecords({ commit, dispatch, state, }, val) {
+    dispatch('getRecords')
+  },
+  async getRecords({ commit, dispatch, state, }) {
+    const val = state.selectDay;
+    const start = val + ` 08:00:00`;
+    const end = dayjs(val).add(1, 'day').add(7, 'hour').format(DATE_STR_DETAIL + ':ss');
+    const list = await api.record.getList(state.nowUser.companyId, state.nowUser.objectId, start, end)
+    console.log(list)
+    commit('saveRecords', list)
+    // dispatch('getAllRecords')
   },
 }

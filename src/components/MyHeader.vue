@@ -1,4 +1,5 @@
 <template>
+<div style="height: 100px">
   <div class="my-header between-center">
     <header class="home-header all-center">
       <img src="img/logo.png" alt="" style="width: 150px;">
@@ -6,6 +7,8 @@
     </header>
     <MyNav></MyNav>
   </div>
+</div>
+  
 </template>
 
 <script>
@@ -29,6 +32,11 @@ export default {
   
 }
 .my-header {
-background: #fff;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 6;
 }
 </style>

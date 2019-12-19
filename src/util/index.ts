@@ -1,7 +1,6 @@
 import { Room, Staff, Record } from "@/types/index";
 import { getDiff, now, hours, minutes } from "./date";
 import { rooms, staffes } from "./mock";
-export { rooms, staffes } from "./mock";
 
 export const records = [
   {
@@ -75,7 +74,7 @@ export const HEIGHT = 50;
 export const WIDTH = 118;
 
 export const getReverseForm = () => ({
-  room: null,
+  roomId: null,
   startDate: now,
   startTime: "",
   endTime: "",
@@ -83,7 +82,7 @@ export const getReverseForm = () => ({
   count: 0,
   note: "",
   mobile: "",
-  staff: null,
+  staffId: null,
   startHour: "00",
   startMinute: "00",
   durationHour: hours[0].id,
@@ -92,15 +91,16 @@ export const getReverseForm = () => ({
 
 export const record2form = (record = getReverseForm()) => ({
   ...record,
-  staff: record.staff && record.staff.id + "",
-  room: record.room && record.room.id + ""
+  // staff: record.staff && record.staff.id + "",
+  // room: record.room && record.room.id + ""
 });
 
 export const formatRecord = (arr: any[], now = "2019-12-06 08:00") => {
-  const rooms = new Set(arr.map(v => v.room.name));
+  const rooms = new Set(arr.map(v => v.roomName));
   let results = [];
   [...rooms].map((room, i) => {
-    let children = arr.filter(v => v.room.name === room);
+    let children = arr.filter(v => v.roomName === room);
+    console.log(children)
     children = children.map(v => ({
       ...v,
       top: i + 1,
@@ -109,7 +109,7 @@ export const formatRecord = (arr: any[], now = "2019-12-06 08:00") => {
       width: getDiff(v.endTime, v.startTime).per
     }));
     if (children.length > 0) {
-      results.push({ roomName: room, roomId: children[0].room.id, children });
+      results.push({ roomName: room, roomId: children[0].roomId, children });
     }
   });
 

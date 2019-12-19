@@ -7,7 +7,7 @@
         </div>
       </el-table-column>
       <el-table-column
-        :prop="'room.name'"
+        prop="roomName"
         align="center"
         width="118px"
         label="房间"
@@ -53,8 +53,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { rooms, records, formatRecord } from "@/util/index";
+import { records, formatRecord } from "@/util/index";
 import dayjs from "dayjs";
+import { mapGetters, mapState } from 'vuex';
 let nowDate = dayjs(Date.now());
 
 export default Vue.extend({
@@ -69,7 +70,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      records,
+      // records,
       tableData: [
         {
           id: 1,
@@ -87,6 +88,14 @@ export default Vue.extend({
         }
       ]
     };
+  },
+  computed: {
+    ...mapGetters([
+      'realRecords'
+    ]),
+    ...mapState([
+      'records'
+    ])
   }
 });
 </script>

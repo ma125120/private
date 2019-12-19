@@ -34,6 +34,7 @@ import Vue from "vue";
 import { shortcuts } from "@/util/date";
 import { now, weeks } from "@/util/date";
 import dayjs from "dayjs";
+import { mapState, mapActions } from 'vuex';
 
 export default Vue.extend({
   name: "TableHeader",
@@ -62,11 +63,23 @@ export default Vue.extend({
   methods: {
     changeDate(val) {
       this.$emit("change", val);
-    }
+      this.changeDay(val)
+    },
+    ...mapActions([
+      'changeDay'
+    ])
   },
   computed: {
     day() {
       return weeks[dayjs(this.date1).day()];
+    },
+    ...mapState([
+      'selectDay',
+    ])
+  },
+  watch: {
+    selectDay(val) {
+      this.date1 = val;
     }
   }
 });
