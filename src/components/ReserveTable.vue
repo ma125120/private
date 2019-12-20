@@ -144,7 +144,6 @@ export default {
       left: 0,
       x: 0,
       y: 0,
-      rooms,
       records: [],
       // records: formatRecord(records),
       headers: ["预约分布表", ...headers]

@@ -89,6 +89,7 @@ export default {
   height: 70px;
 }
 .login-form {
+  margin-top: 20px;
   padding: 32px;
   background: #fff;
   .my-input {
@@ -115,9 +116,10 @@ export default {
 <style lang="scss" scoped>
 .page-body {
   padding: $padding;
+  padding-top: 0;
 }
 .self-intro {
-  margin-top: 32px;
+  margin-top: 20px;
   background: #fff;
   padding: $padding;
 }

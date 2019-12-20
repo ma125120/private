@@ -70,7 +70,7 @@ export default {
         return ;
       }
 
-      let params = this.obj ? ({ ...this.obj, [this.nameField]: this.name, }) : this.name
+      let params = this.obj ? ({ ...this.obj, [this.nameField]: this.name, }) : { [this.nameField]: this.name}
 
       await this.$store.dispatch(`${this.obj && this.obj.objectId ? 'edit' : 'add'}_${this.type}`, params)
       this.close();

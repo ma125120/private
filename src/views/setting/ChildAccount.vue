@@ -5,14 +5,14 @@
       <header class="shop-header align-center" style="margin: 24px 32px;">
         <el-button 
           type="primary" 
-          icon="el-icon-plus" 
-          :disabled="disabled"
-          @click="$pushNamed('childNew')">创建新子账号</el-button>
+          icon="el-icon-plus"
+          :class="`${disabled ? 'dis' : ''}`"
+          @click="add">创建新子账号</el-button>
         <div style="margin-left: 32px;color: #101010; font-size: 18px;">
           （子账号建议给普通店员共用，只有工作台权限，没有设置权限，最多可创建10个）
         </div>
       </header>
-      <el-table :data="childAccount" class="shop-table" style="width: 100%" height="340">
+      <el-table :data="childAccount" class="shop-table" style="width: 100%">
         <el-table-column
           prop="userName"
           align="center"
@@ -82,6 +82,13 @@ export default Vue.extend({
     this.$store.dispatch(`getChildAccounts`)
   },
   methods: {
+    add() {
+      if (this.disabled) {
+        this.$nerror(`子账号最多创建10个`)
+      } else {
+        this.$pushNamed('childNew')
+      }
+    },
     edit(obj) {
       this.$router.push(this.$routes.childEdit + `?id=${obj.objectId}`);
       // this.obj = obj;
@@ -97,7 +104,7 @@ export default Vue.extend({
       'user',
     ]),
     disabled() {
-      return this.childAccount.length >= this.user.storeNumber;
+      return this.childAccount.length >= 10;
     }
   }
 });
@@ -121,8 +128,6 @@ export default Vue.extend({
       cursor: pointer;
     }
     .table-icon {
-      cursor: pointer;
-      width: 32px;
       &--del {
         width: 36px;
         margin-left: 40px;

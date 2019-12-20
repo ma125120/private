@@ -46,15 +46,15 @@ export default {
   chooseUserMutation(state, user) {
     state.nowUser = user;
     sessionStorage.nowUser = JSON.stringify(user);
-    store.dispatch('getStaffList')
-    store.dispatch('getRoomList')
+    store.dispatch('getStaffList');
+    store.dispatch('getRoomList');
   },
 
   saveStaffList(state, list) {
     state.staffList = list;
   },
   addStaffList(state, item) {
-    const list = [ item, ...state.staffList, ]
+    const list = [...state.staffList, item, ]
     state.staffList = list;
   },
   editStaff(state, item) {

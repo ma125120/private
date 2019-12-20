@@ -5,7 +5,7 @@ import BaseApi from './base'
 export default class User extends BaseApi {
   tableName = 'FXZ_User';
   timeFields = ['overTime'];
-  omitFields = ['accountType', 'status', 'versionTable', 'overTimeStr', 'passWord1', 'oldPassword', 'names']
+  omitFields = ['accountType', 'status', 'versionTable', 'version', 'overTimeStr', 'passWord1', 'oldPassword', 'names',]
 
   async login(userName, passWord) {
     try {

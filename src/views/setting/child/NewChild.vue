@@ -18,20 +18,20 @@
         <el-form-item label="密码" prop="passWord">
           <el-input
             v-model="form.passWord"
-            placeholder="请输入6-12个字符"
+            placeholder="请输入6-12个字符（数字或英文字母）"
           ></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="passWord1">
           <el-input
             v-model="form.passWord1"
-            placeholder="请输入6-12个字符"
+            placeholder="请输入6-12个字符（数字或英文字母）"
           ></el-input>
         </el-form-item>
         <el-form-item label="所属分店" prop="branchStoreIds">
           <MyCheckbox
             v-model="form.branchStoreIds"
             :options="userChildren"
-            placeholder="请输入6-12个字符"
+            placeholder="请输入6-12个字符（数字或英文字母）"
           ></MyCheckbox>
         </el-form-item>
         <el-form-item label="权限" prop="branchStoreId">
@@ -72,6 +72,8 @@ export default {
       // eslint-disabled
       if (value != this.form.passWord) {
         cb(new Error('保存失败，2遍密码需一致'));
+      } else if (!/^\w+$/g.test(value)) {
+        cb(new Error('密码只能由数字和英文组成'));
       } else {
         validateLen(value, `确认密码`, cb, 6, 12)
       }
@@ -102,7 +104,11 @@ export default {
           { required: true, message: "密码还没有填写" },
           {
             validator(rule, value, cb) {
-              validateLen(value, `密码`, cb, 6, 12)
+              if (!/^\w+$/g.test(value)) {
+                cb(new Error('密码只能由数字和英文组成'));
+              } else {
+                validateLen(value, `密码`, cb, 6, 12)
+              }
             },
             trigger: 'change',
           },
@@ -183,7 +189,7 @@ export default {
 }
 .account-header {
   border-bottom: 5px solid #bbb;
-  padding: 0 0 32px 32px;
+  padding: 0 0 24px 32px;
   margin-bottom: 24px;
 }
 .new-child {

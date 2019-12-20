@@ -33,13 +33,11 @@ export default {
   async chooseUser({ commit, dispatch, state, }, user) {
     commit(`chooseUserMutation`, user);
   },
-  async add_staff({ commit, dispatch, state, }, name) {
+  async add_staff({ commit, dispatch, state, }, obj) {
+    let name = obj.clerkName;
     if (!name) return;
     let isDuplicate = await api.staff.isDuplicate(name, state.nowUser.objectId, state.nowUser.companyId);
-    if (isDuplicate) {
-      Message({ message: `创建失败，姓名必须和已创建的店员名不同`, type: 'error' });
-      return ;
-    }
+    validateDuplicate(isDuplicate, `修改失败，姓名必须和已创建的店员名不同`)
 
     let staff = {
       clerkType: 1,
@@ -53,12 +51,10 @@ export default {
     commit('addStaffList', { ...staff, objectId: res.objectId })
   },
   async edit_staff({ commit, dispatch, state, }, obj) {
-    if (!obj.clerkName) return;
+    let name = obj.clerkName;
+    if (!name) return;
     let isDuplicate = await api.staff.isDuplicate(name, state.nowUser.objectId, state.nowUser.companyId);
-    if (isDuplicate) {
-      Message({ message: `修改失败，姓名必须和已创建的店员名不同`, type: 'error' });
-      return;
-    }
+    validateDuplicate(isDuplicate, `修改失败，姓名必须和已创建的店员名不同`)
 
     let res = await api.staff.edit(obj);
     Message({ message: `修改成功`, type: 'success' })
@@ -69,14 +65,11 @@ export default {
     commit('saveStaffList', list)
   },
 
-  async add_room({ commit, dispatch, state, }, name) {
+  async add_room({ commit, dispatch, state, }, obj) {
+    let name = obj.roomName;
     if (!name) return;
     let isDuplicate = await api.room.isDuplicate(name, state.nowUser.objectId, state.nowUser.companyId);
-    if (isDuplicate) {
-      Message({
-        message: `创建失败，名称必须和已创建的房间名不同`, type: 'error' });
-      return;
-    }
+    validateDuplicate(isDuplicate, `修改失败，姓名必须和已创建的房间名不同`)
 
     let room = {
       companyId: state.user.objectId,
@@ -89,12 +82,10 @@ export default {
     commit('addRoomList', { ...room, objectId: res.objectId })
   },
   async edit_room({ commit, dispatch, state, }, obj) {
+    let name = obj.roomName;
     if (!obj.roomName) return;
     let isDuplicate = await api.room.isDuplicate(name, state.nowUser.objectId, state.nowUser.companyId);
-    if (isDuplicate) {
-      Message({ message: `修改失败，姓名必须和已创建的房间名不同`, type: 'error' });
-      return;
-    }
+    validateDuplicate(isDuplicate, `修改失败，姓名必须和已创建的房间名不同`)
 
     let res = await api.room.edit(obj);
     Message({ message: `修改成功`, type: 'success' })
@@ -103,7 +94,10 @@ export default {
   async del_room({ commit, dispatch, state, }, obj) {
     let res = await api.room.del(obj);
     Message({ message: `删除成功`, type: 'success' })
-    dispatch('getRoomList');
+    
+    const list = state.roomList;
+    list.splice(list.findIndex(v => v.objectId === obj.objectId), 1)
+    commit('saveRoomList', list);
   },
   async getRoomList({ commit, state, }) {
     let list = await api.room.getList(state.nowUser.objectId, state.nowUser.companyId);
@@ -155,7 +149,6 @@ export default {
   },
 
   async addRecord({ commit, dispatch, state, }, obj) {
-    console.log(obj)
     let res = await api.record.edit(obj);
     let type = obj.objectId ? 'add' : 'edit'
 
@@ -178,8 +171,15 @@ export default {
     const start = val + ` 08:00:00`;
     const end = dayjs(val).add(1, 'day').add(7, 'hour').format(DATE_STR_DETAIL + ':ss');
     const list = await api.record.getList(state.nowUser.companyId, state.nowUser.objectId, start, end)
-    console.log(list)
     commit('saveRecords', list)
     // dispatch('getAllRecords')
   },
+}
+
+function validateDuplicate(isValid, text = `修改失败，姓名必须和已创建的房间名不同`) {
+  if (isValid) {
+    Message({ message: text, type: 'error' });
+    throw new Error(text)
+    return;
+  }
 }

@@ -1,7 +1,7 @@
 <template>
-  <div class="setting-layout">
+  <div class="setting-layout box">
     <MyHeader></MyHeader>
-    <div class="setting-body flex">
+    <div class="setting-body flex box">
       <SideTabs class="setting-tabs"></SideTabs>
       <div class="setting-right--body" style="flex: 1;">
         <slot></slot>

@@ -5,8 +5,8 @@
         <div style="margin: 0 40px">店员管理</div>
         <el-button type="primary" icon="el-icon-plus" @click="isShow = true">创建店员</el-button>
       </header>
-      <el-table :data="staffList" class="staff-table" style="width: 100%" height="340">
-        <el-table-column label="员工ID" width="180px" align="center">
+      <el-table :data="staffList" class="staff-table" style="width: 100%">
+        <el-table-column label="员工ID" width="180px" align="left">
           <div slot-scope="{ row, $index }" class="">
             {{ padId($index + 1) }}
           </div>

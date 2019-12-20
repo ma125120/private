@@ -48,6 +48,23 @@ body {
   .el-button {
     font-size: 18px;
   }
+  .setting-layout .el-table .cell {
+    padding-left: 44px;
+  }
+  .el-popconfirm__main {
+    font-size: 20px;
+  }
+  .table-icon {
+    cursor: pointer;
+    width: 28px;
+  }
+  .el-dropdown {
+    color: #000;
+  }
+  .el-button--primary.dis {
+    background: #bbb;
+    border-color: #bbb;
+  }
 }
 body {
   .el-dialog__title {

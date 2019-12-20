@@ -1,10 +1,10 @@
 <template>
   <ul class="side-tabs">
     <li class="side-tabs-item--first hover all-center" @click="$pushNamed('workplace')">
-      <i class="el-icon-arrow-left"></i>
+      <i class="el-icon-arrow-left" ></i>
       <div>返回工作台</div>
     </li>
-    <li class="side-tabs-item--first"></li>
+    <!-- <li class="side-tabs-item--first"></li> -->
     <li class="side-tabs-item--box">
       <div :class="`side-tabs-item ${path === $routes.room ? 'active' : ''}`" @click="$pushNamed('room')">房间管理</div>
     </li>
@@ -16,11 +16,11 @@
         :class="`side-tabs-item ${path === $routes.account ? 'active' : ''}`" 
         @click="$pushNamed('account')">账号管理<i class="el-icon-arrow-down el-icon--right"></i></div>
     </li>
-    <li class="side-tabs-item--box" v-if="role === 0">
+    <li class="side-tabs-item--box side-tab-child none-border" v-if="role === 0">
       <div :class="`side-tabs-item ${path === $routes.shop ? 'active' : ''}`" @click="$pushNamed('shop')">管理分店账号</div>
     </li>
-    <li class="side-tabs-item--box">
-      <div :class="`side-tabs-item ${path === $routes.child ? 'active' : ''}`" @click="$pushNamed('child')">管理子账号</div>
+    <li class="side-tabs-item--box side-tab-child">
+      <div :class="`side-tabs-item ${isChild ? 'active' : ''}`" @click="$pushNamed('child')">管理子账号</div>
     </li>
     <li class="side-tabs-item--box">
       <div :class="`side-tabs-item ${path === $routes.excel ? 'active' : ''}`" @click="$pushNamed('excel')">数据导出</div>
@@ -45,6 +45,9 @@ export default Vue.extend({
     path() {
       return this.$route.path;
     },
+    isChild() {
+      return this.path.startsWith(this.$routes.child)
+    },
     ...mapGetters([
       'role'
     ])
@@ -61,9 +64,15 @@ export default Vue.extend({
   min-width: 280px;
 }
 .side-tabs-item {
+  
   &--box {
-    padding: 4px 0;
     border-bottom: 1px solid #bbb;
+    &.side-tab-child {
+      font-size: 20px;
+      &.none-border {
+        border-bottom: 0;
+      }
+    }
   }
   padding: 30px 60px;
   
@@ -80,13 +89,9 @@ export default Vue.extend({
     &:hover {
       color: $--color-primary;
     }
-    i {
-      margin-top: 6px;
-    }
     .el-icon-arrow-left {
       color: $--color-primary;
     }
   }
-  
 }
 </style>

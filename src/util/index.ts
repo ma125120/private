@@ -100,7 +100,6 @@ export const formatRecord = (arr: any[], now = "2019-12-06 08:00") => {
   let results = [];
   [...rooms].map((room, i) => {
     let children = arr.filter(v => v.roomName === room);
-    console.log(children)
     children = children.map(v => ({
       ...v,
       top: i + 1,

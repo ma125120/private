@@ -15,9 +15,9 @@
           
           <AccountItem label="版本状态" v-else>
             <div v-for="child in userChildren" :key="child.objectId" class="account-child">
-              <div style="margin-bottom: 24px">
+              <div style="margin-bottom: 32px">
                 <span>{{child.branchStoreName}}</span>
-                <span style="margin-left: 24px;">{{child.version}}</span>
+                <span style="margin-left: 32px;">{{child.version}}</span>
               </div>
               <AccountItem label="有效期" :value="child.expireDuration | expire" />
               <AccountItem label="到期时间" :value="child.overTimeStr" />
@@ -60,13 +60,16 @@ export default Vue.extend({
   }
   &-header {
     border-bottom: 5px solid #bbb;
-    padding: 0 0 32px 32px;
+    padding: 0 0 24px 32px;
   }
   &-body {
     padding: 32px;
   }
   &-child {
     border-bottom: 1px solid #bbb;
+    &+& {
+      margin-top: 32px;
+    }
   }
 }
 </style>

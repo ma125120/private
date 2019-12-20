@@ -1,7 +1,7 @@
 <template>
   <el-dialog 
-    :close-on-click-modal="!isFirst"
-    :close-on-press-escape="!isFirst"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
     :show-close="false"
     center
     custom-class="add-dialog my-dialog"
@@ -19,14 +19,12 @@
       label-position="right">
       <el-form-item label="分店店名" prop="branchStoreName">
         <el-input
-          
           v-model="form.branchStoreName"
-          placeholder="请输入分店店名"
+          placeholder="请输入4-12个英文字母"
         ></el-input>
       </el-form-item>
       <el-form-item label="账号" prop="userName">
         <el-input
-          
           v-model="form.userName"
           placeholder="请输入4-12个英文字母"
         ></el-input>
@@ -34,16 +32,17 @@
       <el-form-item label="密码" prop="passWord">
         <el-input
           v-model="form.passWord"
-          placeholder="请输入6-12个字符"
+          placeholder="请输入6-12个字符（数字或英文字母）"
         ></el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="passWord1">
         <el-input
           v-model="form.passWord1"
-          placeholder="请输入6-12个字符"
+          placeholder="请输入6-12个字符（数字或英文字母）"
         ></el-input>
       </el-form-item>
       <div class="all-center">
+        <el-button type="text" v-if="!isFirst" class="dialog-btn dialog-btn--exit" @click="close(false)">取消</el-button>
         <el-button type="text" @click="save" class="dialog-btn">保存</el-button>
       </div>
     </el-form>
@@ -56,7 +55,7 @@ import { validateLen } from './rule'
 import { mapActions, } from 'vuex';
 
 export default {
-  name: "HelloWorld",
+  name: "AddChild",
   props: {
     isShow: Boolean,
     isFirst: Boolean,
@@ -66,6 +65,8 @@ export default {
       // eslint-disabled
       if (value != this.form.passWord) {
         cb(new Error('保存失败，2遍密码需一致'));
+      } else if (!/^\w+$/g.test(value)) {
+        cb(new Error('密码只能由数字和英文组成'));
       } else {
         validateLen(value, `确认密码`, cb, 6, 12)
       }
@@ -104,7 +105,11 @@ export default {
           { required: true, message: "密码还没有填写" },
           {
             validator(rule, value, cb) {
-              validateLen(value, `密码`, cb, 6, 12)
+              if (!/^\w+$/g.test(value)) {
+                cb(new Error('密码只能由数字和英文组成'));
+              } else {
+                validateLen(value, `密码`, cb, 6, 12)
+              }
             },
             trigger: 'change',
           },
@@ -144,7 +149,16 @@ export default {
     ]),
     close() {
       this.$emit('update:isShow', false)
+      this.form = {
+        branchStoreName: '',
+        userName: '',
+        passWord: '',
+        passWord1: '',
+      }
     }
+  },
+  computed: {
+
   }
 };
 </script>

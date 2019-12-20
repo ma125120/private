@@ -5,7 +5,7 @@
         <div style="margin: 0 40px">房间管理</div>
         <el-button type="primary" icon="el-icon-plus" @click="isShow = true">创建房间</el-button>
       </header>
-      <el-table :data="roomList" class="room-table" style="width: 100%" height="340">
+      <el-table :data="roomList" class="room-table" style="width: 100%">
         <el-table-column
           prop="roomName"
           align="left"
@@ -88,12 +88,10 @@ export default Vue.extend({
       cursor: pointer;
     }
     .table-icon {
-      cursor: pointer;
-      width: 32px;
       &--del {
         width: 36px;
         margin-left: 40px;
-        margin-bottom: -2px;
+        margin-bottom: -4px;
       }
     }
   }

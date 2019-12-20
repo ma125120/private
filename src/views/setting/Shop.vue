@@ -7,13 +7,14 @@
           type="primary" 
           icon="el-icon-plus" 
           :disabled="disabled"
-          @click="isShow = true">创建分店管理员账号</el-button>
+          :class="`${disabled ? 'dis' : ''}`"
+          @click="add">创建分店管理员账号</el-button>
         <div style="margin-left: 32px;color: #101010; font-size: 18px;">
-          <template v-if="disabled">（你的分店账号名额已用完，如要增加请联系客服微信 2829672684 购买，分店管理员拥有其所属店的所有功能权限） </template>
+          <template v-if="disabled">（你的分店账号名额已用完，如要增加请联系客服微信 2829672684 购买，分店管理员拥有其所属分店的所有功能权限） </template>
           <template v-else>（你有{{user.storeNumber}}个分店的创建名额，如需增加名额请联系客服微信2829672684购买，分店管理员拥有其所属店的所有功能权限） </template>
         </div>
       </header>
-      <el-table :data="userChildren" class="shop-table" style="width: 100%" height="340">
+      <el-table :data="userChildren" class="shop-table" style="width: 100%">
         <el-table-column
           prop="branchStoreName"
           align="center"
@@ -75,6 +76,13 @@ export default Vue.extend({
     // this.$store.dispatch(`getShopList`)
   },
   methods: {
+    add() {
+      if (this.disabled) {
+        this.$nerror(`你的分店管理员账号创建名额已用完`)
+      } else {
+        this.isShow = true;
+      }
+    },
     edit(obj) {
       this.obj = obj;
       this.isEdit = true;
@@ -113,8 +121,6 @@ export default Vue.extend({
       cursor: pointer;
     }
     .table-icon {
-      cursor: pointer;
-      width: 32px;
       &--del {
         width: 36px;
         margin-left: 40px;
