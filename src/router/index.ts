@@ -66,6 +66,12 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/setting/child/EditChild.vue")
   },
+  {
+    path: "/workplace/act/add",
+    name: "actAdd",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/table/AddAct.vue")
+  },
   
   {
     path: "/about",

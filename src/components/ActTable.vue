@@ -1,7 +1,8 @@
 <template>
-  <div class="act--table" ref="root">
-    <div class="table-header">
+  <div class="act--table m-table" ref="root">
+    <div class="table-header align-center">
       <div class="bold">实际到店表</div>
+      <el-button type="primary" @click="$pushNamed('actAdd')">新增项目</el-button>
     </div>
     <el-table :data="tableData" border style="width: 100%" height="340">
       <el-table-column label="" align="center" width="118px">
@@ -89,8 +90,15 @@ export default Vue.extend({
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .table-header {
-  padding: 6px;
+  padding: 11px 6px;
   background: #fff;
+  & .el-button {
+    width: 80px;
+    height: 26px;
+    font-size: 14px;
+    padding: 0;
+    margin-left: 12px;
+  }
 }
 .table-edit--icon {
   color: #e51c23;

@@ -7,7 +7,8 @@ body {
     .el-form-item__label {
       font-size: 20px;
     }
-    .el-input__inner {
+    .el-input__inner,
+    .el-textarea {
       font-size: 20px;
     }
     .dialog-btn {
@@ -64,6 +65,12 @@ body {
   .el-button--primary.dis {
     background: #bbb;
     border-color: #bbb;
+  }
+  .m-table {
+    border: 1px solid #bbb;
+    thead th {
+      color: #000;
+    }
   }
 }
 body {

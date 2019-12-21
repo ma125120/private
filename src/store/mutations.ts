@@ -102,6 +102,12 @@ export default {
       state.records = [ item, ...state.records, ];
     }
   },
+  delRecordMutation(state, item) {
+    const list = [...state.records]
+    const index = list.findIndex(v => v.objectId === item.objectId);
+    list.splice(index, 1);
+    state.records = list;
+  },
   changeDayMutation(state, time) {
     state.selectDay = time;
   },

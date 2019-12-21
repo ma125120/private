@@ -28,7 +28,7 @@ export default {
     }
     let user = await api.user.saveChild(data);
     dispatch('selectChildren', state.user)
-    api.user.increment(state.user)
+    api.user.increment(state.user);
   },
   async chooseUser({ commit, dispatch, state, }, user) {
     commit(`chooseUserMutation`, user);
@@ -149,16 +149,24 @@ export default {
   },
 
   async addRecord({ commit, dispatch, state, }, obj) {
+    await api.record.checkTime(obj, state.nowUser.companyId, state.nowUser.objectId,);
+
     let res = await api.record.edit(obj);
     let type = obj.objectId ? 'add' : 'edit'
 
     Message({ message: `${type === 'add' ? '添加' : '编辑'}成功`, type: 'success' })
     commit('addRecordMutation', { ...obj, ...res });
   },
+  async delRecord({ commit, dispatch, state, }, obj) {
+    let res = await api.record.del(obj);
+
+    Message({ message: `删除成功`, type: 'success' })
+    commit('delRecordMutation', obj);
+  },
 
   async changeDay({ commit, dispatch, state, }, val) {
     const start = val + ` 08:00:00`;
-    const end = dayjs(val).add(1, 'day').add(7, 'hour').format(DATE_STR_DETAIL + ':ss');
+    const end = dayjs(val).add(1, 'day').add(8, 'hour').format(DATE_STR_DETAIL + ':ss');
     commit('changeDayMutation', val)
 
     dispatch('getAllRecords')

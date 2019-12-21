@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="val" @change="change" placeholder="请选择" clearable>
+  <el-select :style="`width: ${this.width}px`" v-model="val" @change="change" placeholder="请选择" clearable>
     <el-option
       v-for="item in options"
       :key="item[idKey]"
@@ -26,6 +26,10 @@ export default Vue.extend({
       default() {
         return [];
       }
+    },
+    width: {
+      type: Number,
+      default: 290,
     },
     labelKey: {
       type: String,

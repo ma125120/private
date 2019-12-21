@@ -1,6 +1,7 @@
 <template>
-  <div class="reverse-table" @click="showPop(undefined)">
+  <div class="reverse-table m-table" @click="showPop(undefined)">
     <div class="table-outer">
+      <div class="no-text" v-if="records.length === 0">暂无数据</div>
       <div class="table-inner" ref="table" @scroll="scrollWatch">
         <div
           class="table"
@@ -20,13 +21,13 @@
               v-for="child in record.children"
               :key="child.objectId"
               placement="bottom"
-              width="180"
               trigger="manual"
               v-model="child.visible"
             >
-              <div>
+              <div class="table-note">
                 <div>顾客电话：{{ child.mobile }}</div>
                 <div>到店时间：{{ child.startTime | time }}</div>
+                <div>时长：{{ child.duration }}h</div>
                 <div>离店时间：{{ child.endTime | time }}</div>
                 <div v-if="child.note">备注：{{ child.note }}</div>
               </div>
@@ -110,7 +111,8 @@
 <script>
 // @ is an alias to /src
 import { formatRecord } from "@/util/index";
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
+
 const headers = new Array(17)
   .fill(0)
   .map((v, i) => i + 8 + ":00")
@@ -150,6 +152,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions([
+      'delRecord',
+    ]),
     scrollWatch(event) {
       const { scrollTop, scrollLeft } = this.$refs.table;
       const diffTop = Math.abs(scrollTop - this.top);
@@ -169,10 +174,8 @@ export default {
         this.y = clientY;
       }
     },
-    del() {
-      const index = records.findIndex(v => v.activeId === this.activeId);
-      records.splice(index, 1);
-      this.records = formatRecord(records);
+    async del() {
+      await this.delRecord({ objectId: this.activeId });
 
       this.activeId = undefined;
       this.visible = false;
@@ -268,5 +271,18 @@ td,
   i {
     margin-right: 6px;
   }
+}
+.table-note {
+  font-size: 18px;
+}
+.no-text {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  right: 0;
+  font-size: 20px;
+  color: #999;
+  margin: 32px;
+  // text-align: left;
 }
 </style>

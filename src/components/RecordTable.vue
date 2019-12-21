@@ -1,5 +1,5 @@
 <template>
-  <div class="record--table" ref="root">
+  <div class="record--table m-table" ref="root">
     <el-table :data="records" border style="width: 100%" height="340">
       <el-table-column label="预约" width="60px">
         <div slot-scope="{ row, $index }" class="align-center">

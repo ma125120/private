@@ -11,7 +11,7 @@
             class="pd-btn"
             title="退出后，已编辑的信息将被删除"
             @onConfirm="save"
-            @onCancel="$pushNamed('workplace')"
+            @onCancel="$router.replace('/')"
           >
             <el-button type="primary" plain slot="reference"
               >返回到工作台</el-button
@@ -54,13 +54,11 @@
               v-model="form.startHour" 
               :options="hoursWith0" 
               idKey="id" 
-              :width="88"
               labelKey="name"></MySelect>
             <div class="pad-width"></div>
             <MySelect
               v-model="form.startMinute"
               :options="minutesWith0"
-              :width="88"
                idKey="id" labelKey="name"
             ></MySelect>
           </div>
@@ -71,23 +69,20 @@
               v-model="form.durationHour"
               @change="$emit('change')"
               :options="hours"
-              :width="88"
                idKey="id" labelKey="name"
             ></MySelect>
-            <div class="select-label">h</div>
+            <div class="pad-width"></div>
             <MySelect
               v-model="form.durationMinute"
                idKey="id" labelKey="name"
-               :width="88"
               @change="$emit('change')"
               :options="minutes"
             ></MySelect>
-            <div class="select-label">min</div>
           </div>
         </el-form-item>
         <el-form-item label="人数" prop="count">
           <el-input
-            style="width: 290px"
+            style="width: 200px"
             type="number"
             v-model="form.count"
             placeholder="点击输入阿拉伯数字"
@@ -97,14 +92,14 @@
           <el-input
             type="textarea"
             maxlength="40"
-            style="width: 290px"
+            style="width: 200px"
             v-model="form.note"
             placeholder="多行输入，最多40字"
           ></el-input>
         </el-form-item>
         <el-form-item label="顾客手机号" prop="mobile">
           <el-input
-            style="width: 290px"
+            style="width: 200px"
             v-model="form.mobile"
             placeholder="点击输入阿拉伯数字"
           ></el-input>
@@ -225,9 +220,11 @@ export default Vue.extend({
     back() {
       this.dialogVisible = true;
     },
-    async del() {
-      await this.delRecord(this.obj);
-      this.$pushNamed('workplace')
+    del() {
+      const index = records.findIndex(v => v.id + "" === this.form.id);
+      console.log(records, this.form);
+      records.splice(index, 1);
+      this.$router.replace("/");
     }
   },
   watch: {
@@ -304,8 +301,6 @@ export default Vue.extend({
     color: $--color-primary;
     border: 1px solid $--color-primary;
   }
-}
-.select-label {
-  padding: 0 12px 0 6px;
+  
 }
 </style>

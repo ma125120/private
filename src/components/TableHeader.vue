@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue";
 import { shortcuts } from "@/util/date";
 import { now, weeks } from "@/util/date";
@@ -40,22 +40,28 @@ export default Vue.extend({
   name: "TableHeader",
   model: {
     event: "change",
-    prop: "date"
+    // prop: "date"
   },
   props: {
-    date: {
-      type: String || Number,
-      default: now
-    }
+    // date: {
+    //   type: String || Number,
+    //   default: now
+    // }
   },
-  created() {},
+  created() {
+    this.date1 = this.selectDay
+  },
   data() {
+    let disFn = (time) => {
+      let nowTime = this.user && dayjs(this.user.createdAt).subtract(1, 'day').valueOf() || Date.now();
+      return time.getTime() < nowTime;
+    }
+    let selectDay = this.selectDay;
+
     return {
-      date1: now,
+      date1: selectDay || now,
       options: {
-        disabledDate(time) {
-          return time.getTime() < Date.now();
-        },
+        disabledDate: disFn,
         shortcuts
       }
     };
@@ -63,7 +69,7 @@ export default Vue.extend({
   methods: {
     changeDate(val) {
       this.$emit("change", val);
-      this.changeDay(val)
+      this.changeDay(val);
     },
     ...mapActions([
       'changeDay'
@@ -75,7 +81,8 @@ export default Vue.extend({
     },
     ...mapState([
       'selectDay',
-    ])
+      'user'
+    ]),
   },
   watch: {
     selectDay(val) {

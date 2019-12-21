@@ -9,6 +9,7 @@ const routes = {
   shop: '/setting/shop',
   childEdit: '/setting/child/edit',
   childNew: '/setting/child/new',
+  actAdd: "/workplace/act/add",
 }
 
 export default routes
