@@ -30,9 +30,9 @@ export const minutesWith0 = new Array(60)
   .map((v, i) => `${i}`.padStart(2, "0"))
   .map(v => ({ id: v, name: v }));
 
-export const hours = new Array(23)
+export const hours = new Array(24)
   .fill(0)
-  .map((v, i) => i + 1 + "")
+  .map((v, i) => i + "")
   .map(v => ({ id: v, name: v }));
 export const minutes = new Array(60)
   .fill(0)

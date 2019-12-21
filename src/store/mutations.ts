@@ -93,13 +93,13 @@ export default {
 
   addRecordMutation(state, item) {
     let id = item.objectId;
-    if (id) {
-      const list = [...state.records]
-      const index = list.findIndex(v => v.objectId === id);
+    const list = [...state.records]
+    const index = list.findIndex(v => v.objectId === id);
+    if (index === -1) {
+      state.records = [item, ...state.records,];
+    } else {
       list[index] = item;
       state.records = list;
-    } else {
-      state.records = [ item, ...state.records, ];
     }
   },
   delRecordMutation(state, item) {
@@ -108,10 +108,30 @@ export default {
     list.splice(index, 1);
     state.records = list;
   },
+  addActMutation(state, item) {
+    let id = item.objectId;
+    const list = [...state.acts]
+    const index = list.findIndex(v => v.objectId === id);
+    if (index === -1) {
+      state.acts = [item, ...state.acts,];
+    } else {
+      list[index] = item;
+      state.acts = list;
+    }
+  },
+  delActMutation(state, item) {
+    const list = [...state.acts]
+    const index = list.findIndex(v => v.objectId === item.objectId);
+    list.splice(index, 1);
+    state.acts = list;
+  },
   changeDayMutation(state, time) {
     state.selectDay = time;
   },
   saveRecords(state, list) {
     state.records = list;
+  },
+  saveActs(state, list) {
+    state.acts = list;
   }
 };

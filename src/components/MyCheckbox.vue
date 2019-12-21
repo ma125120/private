@@ -1,10 +1,19 @@
 <template>
   <el-checkbox-group v-model="val" @change="change">
-    <el-checkbox 
-      v-for="item in options"
-      :key="item[idKey]"
-      size="medium"
-      :label="item[idKey]">{{item[labelKey]}}</el-checkbox>
+    <template v-if="type === 'default'">
+      <el-checkbox 
+        v-for="item in options"
+        :key="item[idKey]"
+        size="medium"
+        :label="item[idKey]">{{item[labelKey]}}</el-checkbox>
+    </template>
+    <template v--else>
+      <el-checkbox-button 
+        v-for="item in options"
+        :key="item[idKey]"
+        size="medium"
+        :label="item[idKey]">{{item[labelKey]}}</el-checkbox-button>
+    </template>
   </el-checkbox-group>
 </template>
 
@@ -23,6 +32,10 @@ export default Vue.extend({
       default() {
         return [];
       }
+    },
+    type: {
+      type: String,
+      default: 'default'
     },
     labelKey: {
       type: String,

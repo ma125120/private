@@ -1,6 +1,6 @@
 import { StateType } from './state'
 import { formatRecord } from "@/util/index";
-const arr2map = (arr, label) => arr.reduce((prev, next) => (prev[next.objectId] = next[label], prev), {})
+export const arr2map = (arr, label, id = 'objectId') => arr.reduce((prev, next) => (prev[next[id]] = next[label], prev), {})
 
 export default {
   showChildren: (state, getters) => state.userChildren.filter(v => v.objectId !== (state.nowUser || {}).objectId),

@@ -1,6 +1,7 @@
 import { assign } from "./base"
 import dayjs from 'dayjs';
 import { hours, minutes } from "@/util/date";
+import { arr2map } from '@/util/index'
 
 // Date类型一般为 2019-12-09 12:00这种
 // 下方的类型表示枚举类型
@@ -147,17 +148,56 @@ export class Reservation {
   superId: string;
 }
 
+export const actStatus = [
+  { id: '1', name: '已结' },
+  { id: '2', name: '未结' },
+]
+// 付款方式 1团购 2微信 3支付宝 4美团预定 5现金 6美团买单
+export const payTypes = [
+  { id: '1', name: '团购' },
+  { id: '2', name: '微信' },
+  { id: '3', name: '支付宝' },
+  { id: '4', name: '美团预定' },
+  { id: '5', name: '现金' },
+  { id: '6', name: '美团买单' },
+]
+export const payMap = arr2map(payTypes, 'name', 'id');
+export const actStatusMap = arr2map(payTypes, 'name', 'id');
 // 实际到店表
-class Actual {
+export class Actual {
+  constructor(data: any = {}) {
+    const obj = assign(this, data) as Actual;
+    obj.startTime = toDay(obj.startTime);
+    obj.endTime = toDay(obj.endTime);
+    let _start = dayjs(obj.startTime);
+    let _end = dayjs(obj.endTime);
+    obj.startDate = _start.format(`YYYY-MM-DD`);
+    obj.startHour = _start.format(`HH`);
+    obj.endMinute = _end.format(`mm`);
+    obj.endHour = _end.format(`HH`);
+    obj.startMinute = _start.format(`mm`);
+    obj.durationHour = Math.floor(obj.duration) + '';
+    obj.durationMinute = (obj.duration + '').split('.')[1] || '0';
+    obj.payTypeStr = obj.payType.map(v => payMap[v]).join(',')
+    return obj
+  }
   id: string;
+  startHour: string;
+  startMinute: string;
+  durationHour: string;
+  durationMinute: string;
+  endHour: string;
+  endMinute: string;
+  payTypeStr: string;
   // 房间id
   roomId: string;
   // 到店时间
-  startTime: Date;
+  startTime: string;
+  startDate: string;
   // 持续时长，以 h 为单位
   duration: number;
   // 离店时间
-  endTime: Date;
+  endTime: string;
   // 缴费状态 1 已结 2 未结
   status: 1 | 2;
   // 房间费
@@ -170,8 +210,8 @@ class Actual {
   discount: number;
   // 实收总金额
   actMoney: number;
-  // 付款方式
-  payType: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  // 付款方式[]
+  payType: (1 | 2 | 3 | 4 | 5 | 6 | 7)[] = [];
   // 人数
   count: number;
   // 房间以外收费明细

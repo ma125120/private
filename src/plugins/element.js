@@ -1,6 +1,8 @@
 import Vue from "vue";
 import './http';
 import routeNames from "@/router/name";
+import { actStatusMap } from "@/types/sql";
+
 import {
   Button,
   Popover,
@@ -14,7 +16,9 @@ import {
   Message,
   Checkbox,
   CheckboxGroup,
+  CheckboxButton,
   Form,
+  InputNumber,
   FormItem,
   Select,
   Option,
@@ -31,6 +35,8 @@ import camelCase from "lodash/camelCase";
 
 import "../styles/var.scss";
 
+Vue.use(InputNumber);
+Vue.use(CheckboxButton);
 Vue.use(Button);
 Vue.use(Popover);
 Vue.use(CheckboxGroup);
@@ -95,6 +101,9 @@ Vue.filter("clerkType", function(val) {
     2: '已停用'
   }
   return types[val] || types[1];
+});
+Vue.filter("payStatus", function(val) {
+  return actStatusMap[val] || '';
 });
 Vue.prototype.$now = now;
 

@@ -2,13 +2,13 @@
   <div class="act--table m-table" ref="root">
     <div class="table-header align-center">
       <div class="bold">实际到店表</div>
-      <el-button type="primary" @click="$pushNamed('actAdd')">新增项目</el-button>
+      <el-button type="primary" @click="isShow = true">新增项目</el-button>
     </div>
-    <el-table :data="tableData" border style="width: 100%" height="340">
+    <el-table :data="acts" border style="width: 100%" height="340">
       <el-table-column label="" align="center" width="118px">
         <div slot-scope="{ row, $index }" class="align-center">
           {{ $index + 1 }}
-          <i class="el-icon-edit table-edit--icon hover"></i>
+          <img src="img/edit.png" alt="" class="edit-icon" @click="edit(row)" />
         </div>
       </el-table-column>
       <el-table-column
@@ -28,34 +28,87 @@
         </div>
       </el-table-column>
       <el-table-column
+        prop="startTime"
+        align="center"
+        width="118px"
+        label="离店时间"
+      >
+        <div slot-scope="{ row }">
+          {{ row.endTime | time }}
+        </div>
+      </el-table-column>
+      <el-table-column
+        prop="startTime"
+        align="center"
+        width="118px"
+        label="缴费状态"
+      >
+        <div slot-scope="{ row }">
+          {{ row.status | payStatus }}
+        </div>
+      </el-table-column>
+      <el-table-column
+        prop="roomCharge"
+        align="center"
+        width="118px"
+        label="房间费"
+      ></el-table-column>
+      <el-table-column
+        prop="snackFee"
+        align="center"
+        width="118px"
+        label="小吃费"
+      ></el-table-column>
+      <el-table-column
+        prop="shouldPay"
+        align="center"
+        width="118px"
+        label="应收总金额"
+      ></el-table-column>
+      <el-table-column
+        prop="discount"
+        align="center"
+        width="118px"
+        label="优惠金额"
+      ></el-table-column>
+      <el-table-column
+        prop="actMoney"
+        align="center"
+        width="118px"
+        label="实收总金额"
+      ></el-table-column>
+      <el-table-column
+        prop="payTypeStr"
+        align="center"
+        width="118px"
+        label="付款方式"
+      ></el-table-column>
+      <el-table-column
         fixed="right"
         prop="duration"
         align="center"
         width="118px"
         label="实际时长/h"
       ></el-table-column>
-      <el-table-column
-        prop="endTime"
-        align="center"
-        width="118px"
-        label="离店时间"
-      >
+      <!-- <el-table-column prop="" align="center" label="其他">
         <div slot-scope="{ row }">{{ row.endTime | time }}</div>
-      </el-table-column>
-      <el-table-column prop="" align="center" label="其他">
-        <!-- <div slot-scope="{ row }">{{ row.endTime | time }}</div> -->
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
+    <AddAct :isShow.sync="isShow" :obj="obj"></AddAct>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue";
 import dayjs from "dayjs";
+import AddAct from '@/views/table/AddAct';
+import { mapState } from 'vuex';
+
 let nowDate = dayjs(Date.now());
 
 export default Vue.extend({
   name: "ActTable",
+  components: { AddAct },
   props: {
     now: String
   },
@@ -66,23 +119,21 @@ export default Vue.extend({
   },
   data() {
     return {
-      tableData: [
-        {
-          id: 1,
-          roomName: "dsa",
-          startTime: "2019-09-20 06:12",
-          endTime: "2019-09-20 08:12",
-          duration: 2
-        },
-        {
-          id: 2,
-          roomName: "手打",
-          startTime: "2019-09-20 16:12",
-          endTime: "2019-09-20 20:12",
-          duration: 4
-        }
-      ]
+      isShow: false,
+      obj: {},
+      tableData: []
     };
+  },
+  computed: {
+    ...mapState([
+      'acts'
+    ])
+  },
+  methods: {
+    edit(obj) {
+      this.isShow = true;
+      this.obj = obj;
+    }
   }
 });
 </script>
@@ -100,10 +151,11 @@ export default Vue.extend({
     margin-left: 12px;
   }
 }
-.table-edit--icon {
-  color: #e51c23;
-  font-size: 24px;
-  padding-left: 6px;
+.edit-icon {
+  width: 24px;
+  padding-left: 12px;
+  margin-top: -4px;
+  cursor: pointer;
 }
 .act--table {
   background: #fff;

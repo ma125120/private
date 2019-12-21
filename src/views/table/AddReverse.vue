@@ -86,12 +86,12 @@
           </div>
         </el-form-item>
         <el-form-item label="人数" prop="count">
-          <el-input
+          <MyNumber
             style="width: 290px"
             type="number"
             v-model="form.count"
             placeholder="点击输入阿拉伯数字"
-          ></el-input><span class="ml">人</span>
+          ></MyNumber><span class="ml">人</span>
         </el-form-item>
         <el-form-item label="备注" prop="note">
           <el-input
@@ -149,13 +149,14 @@ export default Vue.extend({
       rules: {
         roomId: [{ required: true, message: "请选择房间" }],
         startDate: [{ required: true, message: "请选择到店日期" }],
-        startTime: [{ required: true, message: "请选择到店日期" }],
+        startTime: [{ required: true, message: "请选择到店时间" }],
         duration: [
           {
             validator(rule, value, cb) {
-              console.log(rule, value);
               if (!value || value === "0:0") {
                 cb(new Error("请选择预计时长"));
+              } else {
+                cb();
               }
             },
             require: true,
@@ -196,11 +197,7 @@ export default Vue.extend({
 
           this.$pushNamed('workplace');
         } else {
-          const msg = params[Object.keys(params)[0]][0].message;
-          this.$notify.error({
-            title: "错误",
-            message: msg
-          });
+          this.$errorForm(params);
         }
       });
     },
@@ -214,8 +211,8 @@ export default Vue.extend({
         .add(parseInt(form.durationHour), "hour")
         .add(parseInt(form.durationMinute), "minute")
         .format(DATE_STR_DETAIL);
-      form.roomName = this.roomMap[form.roomId];
-      form.staffName = this.staffMap[form.staffId];
+      form.roomName = this.roomMap[form.roomId] || '';
+      form.staffName = this.staffMap[form.staffId] || '';
       form.duration = +form.durationHour + +form.durationMinute / 60;
       form.parentId = this.nowUser.objectId;
       form.superId = this.nowUser.companyId;

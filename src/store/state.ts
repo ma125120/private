@@ -40,6 +40,7 @@ const state: StateType = {
   childAccount: [],
 
   records: [],
+  acts: [],
   selectDay: now,
 }
 export default state

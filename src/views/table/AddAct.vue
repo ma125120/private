@@ -1,35 +1,15 @@
 <template>
-  <div class="add-reverse--page my-dialog">
-    <MyHeader></MyHeader>
-    <div class="add-reverse">
-      <div class="fix-place"></div>
-      <div class="add-fix align-center">
-        <h3 class="add-title">预约信息</h3>
-        <div class="btn-groups">
-          <el-button type="primary" @click="save">保存</el-button>
-          <el-popconfirm
-            class="pd-btn"
-            title="退出后，已编辑的信息将被删除"
-            @onConfirm="save"
-            @onCancel="$router.replace('/')"
-          >
-            <el-button type="primary" plain slot="reference"
-              >返回到工作台</el-button
-            >
-          </el-popconfirm>
-
-          <el-button
-            type="primary"
-            plain
-            icon="el-icon-delete"
-            v-if="$route.query.id"
-            @click="dialogVisible = true"
-            >删除本条预约记录</el-button
-          >
-        </div>
-      </div>
+  <el-dialog 
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    :show-close="false"
+    center
+    custom-class="my-dialog sm-dialog"
+    @close="close"
+    :visible.sync="show">
+    <div class="add-act">
       <el-form
-        ref="form"
+        ref="dForm"
         class="my-form"
         :model="form"
         :rules="rules"
@@ -42,101 +22,180 @@
             :options="roomList" 
             labelKey="roomName" />
         </el-form-item>
-        <el-form-item label="到店日期" prop="startDate">
-          <span 
-            :class="`my-radio--label hover ${form.startDate === now ? 'active' : ''}`"
-            @click="form.startDate = now">今天</span>
-          <MyDatePicker v-model="form.startDate"></MyDatePicker>
-        </el-form-item>
-        <el-form-item label="到店时间" required>
+        <el-form-item label="到店时间" required prop="startTime">
           <div class="align-center">
             <MySelect 
               v-model="form.startHour" 
-              :options="hoursWith0" 
+              :options="hoursWith0"
+              @change="computeTime"
               idKey="id" 
+              :width="82"
               labelKey="name"></MySelect>
             <div class="pad-width"></div>
             <MySelect
               v-model="form.startMinute"
               :options="minutesWith0"
+              @change="computeTime"
+              :width="82"
                idKey="id" labelKey="name"
             ></MySelect>
           </div>
         </el-form-item>
-        <el-form-item label="预计时长" required>
+        <el-form-item label="实际时长" required prop="duration">
           <div class="align-center">
             <MySelect
               v-model="form.durationHour"
-              @change="$emit('change')"
+              @change="computeTime();$emit('change')"
               :options="hours"
+              :width="82"
                idKey="id" labelKey="name"
             ></MySelect>
             <div class="pad-width"></div>
             <MySelect
               v-model="form.durationMinute"
-               idKey="id" labelKey="name"
-              @change="$emit('change')"
+              @change="computeTime();$emit('change')"
+              idKey="id" labelKey="name"
+              :width="82"
               :options="minutes"
             ></MySelect>
           </div>
         </el-form-item>
-        <el-form-item label="人数" prop="count">
-          <el-input
-            style="width: 200px"
-            type="number"
-            v-model="form.count"
-            placeholder="点击输入阿拉伯数字"
-          ></el-input><span class="ml">人</span>
+        <el-form-item label="离店时间" required>
+          <div class="align-center">
+            <MySelect
+              v-model="form.endHour" 
+              :options="hoursWith0" 
+              disabled
+              idKey="id" 
+              :width="82"
+              labelKey="name"></MySelect>
+            <div class="pad-width"></div>
+            <MySelect
+              v-model="form.endMinute"
+              :options="minutesWith0"
+              :width="82"
+              disabled
+               idKey="id" labelKey="name"
+            ></MySelect>
+          </div>
         </el-form-item>
-        <el-form-item label="备注" prop="note">
+        <el-form-item label="缴费状态" required prop="status">
+          <MySelect
+            v-model="form.status" 
+            :options="actStatus" 
+            idKey="id" 
+            :width="120"
+            labelKey="name"></MySelect>
+        </el-form-item>
+        <el-form-item label="房间费" prop="roomCharge">
+          <MyNumber
+            style="width: 290px"
+            controls-position="right"
+            v-model="form.roomCharge"
+            @blur="computePay"
+            placeholder="仅限阿拉伯数字输入"
+          ></MyNumber><span class="ml">元</span>
+        </el-form-item>
+        <el-form-item label="小吃费" prop="snackFee">
+          <MyNumber
+            style="width: 290px"
+            v-model="form.snackFee"
+            controls-position="right"
+            @blur="computePay"
+            placeholder="仅限阿拉伯数字输入"
+          ></MyNumber><span class="ml">元</span>
+        </el-form-item>
+        <el-form-item label="应收总金额" prop="shouldPay">
+          <MyNumber
+            style="width: 290px"
+            v-model="form.shouldPay"
+            controls-position="right"
+            disabled
+            placeholder="仅限阿拉伯数字输入"
+          ></MyNumber><span class="ml">元</span>
+        </el-form-item>
+        <el-form-item label="优惠金额" prop="discount">
+          <MyNumber
+            style="width: 290px"
+            v-model="form.discount"
+            controls-position="right"
+            placeholder="仅限阿拉伯数字输入"
+          ></MyNumber><span class="ml">元</span>
+        </el-form-item>
+        <el-form-item label="实收总金额" prop="actMoney">
+          <MyNumber
+            style="width: 290px"
+            v-model="form.actMoney"
+            controls-position="right"
+            placeholder="仅限阿拉伯数字输入"
+          ></MyNumber><span class="ml">元</span>
+        </el-form-item>
+        <el-form-item label="付款方式">
+          <MyCheckbox
+            v-model="form.payType"
+            type="button" 
+            :options="payTypes" 
+            idKey="id" 
+            :width="120"
+            labelKey="name"></MyCheckbox>
+        </el-form-item>
+        
+        <el-form-item label="人数" prop="count">
+          <MyNumber
+            style="width: 290px"
+            v-model="form.count"
+            controls-position="right"
+            placeholder="仅限阿拉伯数字输入"
+          ></MyNumber><span class="ml">人</span>
+        </el-form-item>
+
+        <el-form-item label="房间以外收费明细" prop="note">
           <el-input
             type="textarea"
             maxlength="40"
-            style="width: 200px"
+            style="width: 290px"
             v-model="form.note"
             placeholder="多行输入，最多40字"
           ></el-input>
         </el-form-item>
-        <el-form-item label="顾客手机号" prop="mobile">
-          <el-input
-            style="width: 200px"
-            v-model="form.mobile"
-            placeholder="点击输入阿拉伯数字"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="员工" prop="staff">
+        <el-form-item label="员工" prop="staffId">
           <MySelect v-model="form.staffId" :options="staffOptions"></MySelect>
         </el-form-item>
+
+        <div class="dialog-footer">
+          <el-button @click="close">取 消</el-button>
+          <el-button type="primary" @click="save">确 定</el-button>
+        </div>
       </el-form>
     </div>
-
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-      <span>退出后，已编辑的信息将被删除</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="$router.push('/')">取 消</el-button>
-        <el-button type="primary" @click="del">确 定</el-button>
-      </span>
-    </el-dialog>
-  </div>
+    
+  </el-dialog>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { now, hoursWith0, hours, minutesWith0, minutes, DATE_STR_DETAIL } from "@/util/date";
 import { rooms, staffes } from "@/util/mock";
-import { records, record2form, getReverseForm } from "@/util/index";
+import { records, record2form, getActForm } from "@/util/index";
 import dayjs from "dayjs";
+import { actStatus, payTypes } from '@/types/sql'
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 
 export default Vue.extend({
-  name: "HelloWorld",
+  name: "AddAct",
   props: {
-    msg: String
+    isShow: Boolean,
+    obj: {
+      type: Object,
+      default() { return {} },
+    },
   },
   data() {
     return {
       dialogVisible: false,
       now,
+      show: true,
+      actStatus, payTypes,
       hoursWith0,
       hours,
       minutesWith0,
@@ -144,13 +203,16 @@ export default Vue.extend({
       rules: {
         roomId: [{ required: true, message: "请选择房间" }],
         startDate: [{ required: true, message: "请选择到店日期" }],
-        startTime: [{ required: true, message: "请选择到店日期" }],
+        startTime: [{ required: true, message: "请选择到店时间" }],
+        status: [{ required: true, message: "请选择缴费状态" }],
+        payType: [{ required: true, message: "请选择付款方式" }],
         duration: [
           {
             validator(rule, value, cb) {
-              console.log(rule, value);
               if (!value || value === "0:0") {
-                cb(new Error("请选择预计时长"));
+                cb(new Error("请选择实际时长"));
+              } else {
+                cb();
               }
             },
             require: true,
@@ -158,87 +220,97 @@ export default Vue.extend({
           }
         ]
       },
-      form: getReverseForm()
+      form: { ...getActForm(), durationHour: "2", }
     };
   },
   created() {
-    this.fetchData();
+    this.show = this.isShow;
+    this.watchProps(this.obj)
   },
   methods: {
     ...mapActions([
-      'addRecord',
+      'addAct',
     ]),
+    watchProps(obj) {
+      if (obj.objectId) {
+        this.form = { ...obj }
+      }
+    },
     async fetchData() {
       const { id } = this.$route.query;
       if (id) {
         let data = await this.$api.record.find(id);
         this.form = data;
-        // const data = records.find(v => v.id + "" === id);
-        // data && (this.form = record2form(data));
       }
     },
-    computeStart() {
-      this.startTime = this.startHour + this.startMinute;
-    },
-    computeDuration() {
-      this.duration = this.durationHour + ":" + this.durationMinute;
-    },
-    save() {
-      this.$refs.form.validate(async (vaild, params) => {
-        if (vaild) {
-          const form = this.getRealForm();
-          await this.addRecord(form);
-
-          this.$pushNamed('workplace');
-        } else {
-          const msg = params[Object.keys(params)[0]][0].message;
-          this.$notify.error({
-            title: "错误",
-            message: msg
-          });
-        }
-      });
-    },
-    getRealForm() {
+    computeTime() {
       let form = { ...this.form };
       form.startTime = dayjs(form.startDate)
         .add( parseInt(form.startHour) , "hour")
         .add(parseInt(form.startMinute), "minute").format(DATE_STR_DETAIL);
-      form.count = +form.count;
-      form.endTime = dayjs(form.startTime)
+
+      let endTime = dayjs(form.startTime)
         .add(parseInt(form.durationHour), "hour")
-        .add(parseInt(form.durationMinute), "minute")
-        .format(DATE_STR_DETAIL);
-      form.roomName = this.roomMap[form.roomId];
-      form.staffName = this.staffMap[form.staffId];
+        .add(parseInt(form.durationMinute), "minute");
+      this.form.endHour = (endTime.get('hour') + '').padStart(2, '0');
+      this.form.endMinute = (endTime.get('minute') + '').padStart(2, '0');
+
+      this.form.endTime = form.endTime = endTime.format(DATE_STR_DETAIL)
+      this.form.startTime = form.startTime;
+      this.form.duration = +form.durationHour + +form.durationMinute / 60;
+      
+      return { ...this.form };
+    },
+    computePay() {
+      this.form.shouldPay = parseInt(this.form.roomCharge || 0) + parseInt(this.form.snackFee || 0);
+    },
+    save() {
+      const form = this.getRealForm();
+      this.$refs.dForm.validate(async (vaild, params) => {
+        if (vaild) {
+          // const form = this.getRealForm();
+          await this.addAct(form);
+
+          this.$emit('update:isShow', false);
+        } else {
+          this.$errorForm(params)
+        }
+      });
+    },
+    getRealForm() {
+      let form = this.computeTime();
+      form.count = +form.count || 0;
+      form.discount = +form.discount || 0;
+      form.shouldPay = +form.shouldPay || 0;
+      form.snackFee = +form.snackFee || 0;
+      form.status = +form.status || 0;
+      form.roomCharge = +form.roomCharge || 0;
+      form.actMoney = +form.actMoney || 0;
+      form.roomName = this.roomMap[form.roomId] || '';
+      form.staffName = this.staffMap[form.staffId] || '';
       form.duration = +form.durationHour + +form.durationMinute / 60;
       form.parentId = this.nowUser.objectId;
       form.superId = this.nowUser.companyId;
 
-      return form;
+      return { ...form };
     },
     back() {
       this.dialogVisible = true;
     },
     del() {
-      const index = records.findIndex(v => v.id + "" === this.form.id);
-      console.log(records, this.form);
-      records.splice(index, 1);
-      this.$router.replace("/");
+
+    },
+    close() {
+      this.$emit('update:isShow', false);
+      this.form = { ...getActForm(), durationHour: "2", };
     }
   },
   watch: {
-    startHour() {
-      this.computeStart();
+    isShow(val) {
+      this.show = val;
     },
-    startMinute() {
-      this.computeStart();
-    },
-    durationHour() {
-      this.computeDuration();
-    },
-    durationMinute() {
-      this.computeDuration();
+    obj(val) {
+      this.watchProps(val)
     }
   },
   computed: {
@@ -279,7 +351,7 @@ export default Vue.extend({
   height: 85px;
 }
 .my-form {
-  padding-top: 24px;
+  margin-top: -24px;
 }
 .ml {
   margin-left: 12px;
@@ -301,6 +373,10 @@ export default Vue.extend({
     color: $--color-primary;
     border: 1px solid $--color-primary;
   }
-  
+}
+.dialog-footer {
+  position: absolute;
+  right: 32px;
+  bottom: 32px;
 }
 </style>

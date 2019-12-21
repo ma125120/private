@@ -152,7 +152,7 @@ export default {
     await api.record.checkTime(obj, state.nowUser.companyId, state.nowUser.objectId,);
 
     let res = await api.record.edit(obj);
-    let type = obj.objectId ? 'add' : 'edit'
+    let type = obj.objectId ? 'edit' : 'add'
 
     Message({ message: `${type === 'add' ? '添加' : '编辑'}成功`, type: 'success' })
     commit('addRecordMutation', { ...obj, ...res });
@@ -162,6 +162,21 @@ export default {
 
     Message({ message: `删除成功`, type: 'success' })
     commit('delRecordMutation', obj);
+  },
+  async addAct({ commit, dispatch, state, }, obj) {
+    await api.act.checkTime(obj, state.nowUser.companyId, state.nowUser.objectId);
+
+    let res = await api.act.edit(obj);
+    let type = obj.objectId ? 'edit' : 'add'
+
+    Message({ message: `${type === 'add' ? '添加' : '编辑'}成功`, type: 'success' })
+    commit('addActMutation', { ...obj, ...res });
+  },
+  async delAct({ commit, dispatch, state, }, obj) {
+    let res = await api.act.del(obj);
+
+    Message({ message: `删除成功`, type: 'success' })
+    commit('delActMutation', obj);
   },
 
   async changeDay({ commit, dispatch, state, }, val) {
@@ -173,14 +188,21 @@ export default {
   },
   async getAllRecords({ commit, dispatch, state, }, val) {
     dispatch('getRecords')
+    dispatch('getActs')
   },
   async getRecords({ commit, dispatch, state, }) {
     const val = state.selectDay;
     const start = val + ` 08:00:00`;
-    const end = dayjs(val).add(1, 'day').add(7, 'hour').format(DATE_STR_DETAIL + ':ss');
+    const end = dayjs(val).add(1, 'day').add(8, 'hour').format(DATE_STR_DETAIL + ':ss');
     const list = await api.record.getList(state.nowUser.companyId, state.nowUser.objectId, start, end)
     commit('saveRecords', list)
-    // dispatch('getAllRecords')
+  },
+  async getActs({ commit, dispatch, state, }) {
+    const val = state.selectDay;
+    const start = val + ` 08:00:00`;
+    const end = dayjs(val).add(1, 'day').add(8, 'hour').format(DATE_STR_DETAIL + ':ss');
+    const list = await api.act.getList(state.nowUser.companyId, state.nowUser.objectId, start, end)
+    commit('saveActs', list)
   },
 }
 
