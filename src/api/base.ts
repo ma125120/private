@@ -1,6 +1,14 @@
 import Bmob from "@/plugins/bmob/Bmob-2.2.1.min.js";
 import dayjs from 'dayjs';
 
+function toBombTime(str) {
+  if (typeof str === 'string') {
+    return { '__type': 'Date', iso: dayjs(str).format(`YYYY-MM-DD HH:mm:ss`), }
+  } else if (str.__type === 'Date') {
+    return str
+  }
+}
+
 export default class BaseApi {
   tableName = ''
   timeFields = []
@@ -12,9 +20,25 @@ export default class BaseApi {
       query.equalTo(key, "==", obj[key]);
     }
     filters.forEach(v => {
-      query.equalTo(v[0], v[1], toBombTime(v[2]));
+      query.equalTo(v[0], v[1], v[1] === '!=' ? v[2] : toBombTime(v[2]));
     });
 
+    return query.find();
+  }
+
+  _getQuery(filters) {
+    const query = Bmob.Query(this.tableName);
+    filters.forEach(v => {
+      query.equalTo(v[0], v[1], (v[1] === '!=' || v[1] === '==') ? v[2] : toBombTime(v[2]));
+    });
+
+    return query;
+  }
+  getQueryOr(...args) {
+    const query = Bmob.Query(this.tableName);
+    let arr = args.map(v => this._getQuery(v))
+
+    query.or(...arr)
     return query.find();
   }
 
@@ -45,12 +69,6 @@ export default class BaseApi {
     const query = Bmob.Query(this.tableName);
     return query.destroy(obj.objectId)
   }
+  toBombTime = toBombTime
 }
 
-function toBombTime(str) {
-  if (typeof str === 'string') {
-    return { '__type': 'Date', iso: dayjs(str).format(`YYYY-MM-DD HH:mm:ss`), }
-  } else if (str.__type === 'Date') {
-    return str
-  }
-}

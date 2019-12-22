@@ -34,7 +34,7 @@
         align="center"
         :formatter="$filters.duration"
         width="118px"
-        label="实际时长/h"
+        label="预计时长/h"
       ></el-table-column>
       <el-table-column
         prop="endTime"
@@ -44,9 +44,24 @@
       >
         <div slot-scope="{ row }">{{ row.endTime | time }}</div>
       </el-table-column>
-      <el-table-column prop="" align="center" label="其他">
-        <!-- <div slot-scope="{ row }"></div> -->
-      </el-table-column>
+      <el-table-column
+        prop="count"
+        align="center"
+        width="118px"
+        label="人数"
+      ></el-table-column>
+      <el-table-column
+        prop="note"
+        align="center"
+        width="208px"
+        label="备注"
+      ></el-table-column>
+      <el-table-column
+        prop="staffName"
+        align="center"
+        width="208px"
+        label="预定员工"
+      ></el-table-column>
     </el-table>
   </div>
 </template>
@@ -71,22 +86,7 @@ export default Vue.extend({
   data() {
     return {
       // records,
-      tableData: [
-        {
-          id: 1,
-          roomName: "dsa",
-          startTime: "2019-09-20 06:12",
-          endTime: "2019-09-20 08:12",
-          duration: 2
-        },
-        {
-          id: 2,
-          roomName: "手打",
-          startTime: "2019-09-20 16:12",
-          endTime: "2019-09-20 20:12",
-          duration: 4
-        }
-      ]
+      tableData: []
     };
   },
   computed: {

@@ -232,7 +232,7 @@ export default Vue.extend({
       'addAct',
     ]),
     watchProps(obj) {
-      if (obj.objectId) {
+      if (obj && obj.objectId) {
         this.form = { ...obj }
       }
     },
@@ -257,7 +257,7 @@ export default Vue.extend({
 
       this.form.endTime = form.endTime = endTime.format(DATE_STR_DETAIL)
       this.form.startTime = form.startTime;
-      this.form.duration = +form.durationHour + +form.durationMinute / 60;
+      this.form.duration = +(+form.durationHour + +form.durationMinute / 60).toFixed(2);
       
       return { ...this.form };
     },
@@ -303,6 +303,7 @@ export default Vue.extend({
     close() {
       this.$emit('update:isShow', false);
       this.form = { ...getActForm(), durationHour: "2", };
+      console.log(this.form)
     }
   },
   watch: {

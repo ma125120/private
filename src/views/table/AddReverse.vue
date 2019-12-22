@@ -213,7 +213,7 @@ export default Vue.extend({
         .format(DATE_STR_DETAIL);
       form.roomName = this.roomMap[form.roomId] || '';
       form.staffName = this.staffMap[form.staffId] || '';
-      form.duration = +form.durationHour + +form.durationMinute / 60;
+      form.duration = +(+form.durationHour + +form.durationMinute / 60).toFixed(2);
       form.parentId = this.nowUser.objectId;
       form.superId = this.nowUser.companyId;
 

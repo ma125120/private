@@ -12,6 +12,13 @@ const roles = {
   2: '子账号'
 }
 
+function getMinuteNum(num) {
+  let str = (num + '').split('.')[1] || '0'
+  str = '0.' + str;
+
+  return Math.round(+str * 60) + '';
+}
+
 function isTestUser(user: Users) {
   return user.expireDuration === 30;
 }
@@ -115,7 +122,7 @@ export class Reservation {
     obj.startHour = _start.format(`HH`);
     obj.startMinute = _start.format(`mm`);
     obj.durationHour = Math.floor(obj.duration) + '';
-    obj.durationMinute = (obj.duration + '').split('.')[1] || '0';
+    obj.durationMinute = getMinuteNum(obj.duration);
     return obj
   }
   
@@ -177,7 +184,7 @@ export class Actual {
     obj.endHour = _end.format(`HH`);
     obj.startMinute = _start.format(`mm`);
     obj.durationHour = Math.floor(obj.duration) + '';
-    obj.durationMinute = (obj.duration + '').split('.')[1] || '0';
+    obj.durationMinute = getMinuteNum(obj.duration);
     obj.payTypeStr = obj.payType.map(v => payMap[v]).join(',')
     return obj
   }

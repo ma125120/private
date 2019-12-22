@@ -3,7 +3,7 @@ import router from '@/router';
 import routeNames from '@/router/name'
 import {Notification} from 'element-ui'
 import store from '@/store'
-import { Users } from '@/types/sql'
+import { Users, Reservation, Actual } from '@/types/sql'
 import User from '@/api/user';
 
 export default {
@@ -93,12 +93,13 @@ export default {
 
   addRecordMutation(state, item) {
     let id = item.objectId;
+    let obj = new Reservation(item)
     const list = [...state.records]
     const index = list.findIndex(v => v.objectId === id);
     if (index === -1) {
-      state.records = [item, ...state.records,];
+      state.records = [obj , ...state.records,];
     } else {
-      list[index] = item;
+      list[index] = obj;
       state.records = list;
     }
   },
@@ -110,12 +111,13 @@ export default {
   },
   addActMutation(state, item) {
     let id = item.objectId;
+    let obj = new Actual(item)
     const list = [...state.acts]
     const index = list.findIndex(v => v.objectId === id);
     if (index === -1) {
-      state.acts = [item, ...state.acts,];
+      state.acts = [obj, ...state.acts,];
     } else {
-      list[index] = item;
+      list[index] = obj;
       state.acts = list;
     }
   },

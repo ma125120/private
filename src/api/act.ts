@@ -2,6 +2,8 @@ import Bmob from "@/plugins/bmob/Bmob-2.2.1.min.js";
 import { Actual as ActClass } from '@/types/sql'
 import BaseApi from './base'
 import { Message } from 'element-ui';
+import { checkTime } from './record'
+import { getRange } from '@/util/date'
 
 export default class Act extends BaseApi {
   tableName = 'FXZ_Actual';
@@ -84,25 +86,22 @@ export default class Act extends BaseApi {
       console.log(err)
     }
   }
-  async checkTime(obj, companyId, branchStoreId) {
-    if (!obj.objectId) return;
+  async checkTime(obj, superId, parentId) {
+    let [start, end] = getRange(obj.startDate);
 
-    try {
-      let res = await this._query({
-        companyId,
-        branchStoreId,
-      }, [
-        'startTime', '>=', obj.startTime,
-        'endTime', '>=', obj.endTime,
-        'objectId', '!=', obj.objectId,
-      ]);
+    let res = await this._query({
+      superId: obj.superId,
+      parentId: obj.parentId,
+      roomId: obj.roomId,
+    }, [
+      [`startTime`, '>=', start,],
+      [`endTime`, '<=', end,]
+    ]);
+    res = res.map(v => new ActClass(v))
 
-      if (res && res.length > 0) {
-        Message({ message: `保存失败，此房间该时间段已有预约项目，请修改`, type: 'error' })
-        throw new Error('保存失败，此房间该时间段已有预约项目，请修改');
-      }
-    } catch (err) {
-      console.log(err)
+    if (res && res.length > 0 && checkTime(res, obj)) {
+      Message({ message: `保存失败，此房间该时间段已有项目，请修改`, type: 'error' })
+      throw new Error('保存失败，此房间该时间段已有项目，请修改');
     }
   }
 }

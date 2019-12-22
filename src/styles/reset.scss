@@ -72,10 +72,23 @@ body {
       color: #000;
     }
   }
+  .green-border td {
+    border: 3px solid #0A886D;
+    border-right: 0;
+    border-left: 0;
+    &:nth-of-type(1) {
+      border-left: 3px solid #0A886D;
+    }
+    &:nth-last-of-type() {
+      border-right: 3px solid #0A886D;
+    }
+  }
+
 }
 body {
   .el-dialog.sm-dialog {
     margin-top: 5vh !important;
+    min-width: 900px;
   }
   .el-dialog__title {
     font-size: 32px;

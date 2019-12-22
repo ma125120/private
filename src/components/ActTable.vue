@@ -4,8 +4,15 @@
       <div class="bold">实际到店表</div>
       <el-button type="primary" @click="isShow = true">新增项目</el-button>
     </div>
-    <el-table :data="acts" border style="width: 100%" height="340">
-      <el-table-column label="" align="center" width="118px">
+    <el-table 
+      :data="acts" 
+      border 
+      style="width: 100%"
+      :row-class-name="getRowClass"
+      @click.native="showPop()"
+      @row-contextmenu="showPop" 
+      height="340">
+      <el-table-column label="" align="center" width="118px" fixed="left">
         <div slot-scope="{ row, $index }" class="align-center">
           {{ $index + 1 }}
           <img src="img/edit.png" alt="" class="edit-icon" @click="edit(row)" />
@@ -95,6 +102,28 @@
       </el-table-column> -->
     </el-table>
     <AddAct :isShow.sync="isShow" :obj="obj"></AddAct>
+
+    <el-popover
+      placement="bottom"
+      width="40"
+      trigger="manual"
+      popper-class="my-pop"
+      v-model="visible"
+    >
+      <div class="pop-item" @click="edit(obj)">
+        <i class="el-icon-edit"></i>编辑该条
+      </div>
+      <el-popconfirm title="确认删除本行预约信息吗？" @onConfirm="del">
+        <div class="pop-item" slot="reference">
+          <i class="el-icon-delete-solid"></i>删除该条
+        </div>
+      </el-popconfirm>
+
+      <div
+        slot="reference"
+        :style="`position: fixed; top: ${y}px; left: ${x}px; z-index: 10;`"
+      ></div>
+    </el-popover>
   </div>
 </template>
 
@@ -102,7 +131,7 @@
 import Vue from "vue";
 import dayjs from "dayjs";
 import AddAct from '@/views/table/AddAct';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 let nowDate = dayjs(Date.now());
 
@@ -120,20 +149,65 @@ export default Vue.extend({
   data() {
     return {
       isShow: false,
-      obj: {},
-      tableData: []
+      visible: false,
+      obj: null,
+      x: 0,
+      y: 0,
+      tableData: [],
     };
   },
   computed: {
     ...mapState([
       'acts'
-    ])
+    ]),
+    activeId() {
+      return this.obj && this.obj.objectId
+    }
   },
   methods: {
     edit(obj) {
       this.isShow = true;
       this.obj = obj;
-    }
+    },
+    getRowClass({row, rowIndex}) {
+      if (row.objectId === this.activeId) {
+        return 'green-border'
+      }
+      return ''
+    },
+    showPop(row, column, evt) {
+      if (!row) {
+        this.obj = null;
+        this.visible = false;
+        return ;
+      }
+
+      evt.preventDefault();
+      if (this.visible) {
+        this.visible = false;
+      }
+      if (evt) {
+        const { clientX, clientY } = evt;
+        this.x = clientX;
+        this.y = clientY;
+      }
+
+      setTimeout(() => {
+        this.obj = row;
+
+        this.visible = true;
+      }, 50)
+      
+    },
+    async del() {
+      await this.delAct(this.obj);
+
+      this.activeId = null;
+      this.visible = false;
+    },
+    ...mapActions([
+      'delAct'
+    ]),
   }
 });
 </script>
@@ -161,4 +235,16 @@ export default Vue.extend({
   background: #fff;
   position: relative;
 }
+.pop-item {
+  text-align: center;
+  padding: 6px 12px;
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+  i {
+    margin-right: 6px;
+  }
+}
+
 </style>
