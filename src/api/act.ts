@@ -6,6 +6,7 @@ import { checkTime } from './record'
 import { getRange } from '@/util/date'
 
 export default class Act extends BaseApi {
+  sort = 'createdAt'
   tableName = 'FXZ_Actual';
   timeFields = ['startTime', 'endTime', '', ''];
   omitFields = ['startHour', 'payTypeStr', 'startMinute', 'durationHour', 'durationMinute', 'endHour', 'endMinute', 'passWord1', 'oldPassword', 'names']

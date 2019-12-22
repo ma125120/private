@@ -108,7 +108,8 @@ Vue.filter("payStatus", function(val) {
 Vue.prototype.$now = now;
 
 Vue.prototype.$pushNamed = function (name) {
-  return this.$router.push(routeNames[name] || '/');
+  if (this.$route.path === routeNames[name]) return ;
+  return this.$router.push(routeNames[name] || "/");
 }
 Vue.prototype.$routes = routeNames;
 const requireComponent = require.context(

@@ -57,7 +57,7 @@
           class="left-fixed--table"
           cellspacing="0"
           cellpadding="0"
-          :style="`top: -${this.top}px; height: 380px;`"
+          :style="`top: -${this.top}px;`"
         >
           <div class="tr">
             <div class="bold td">预约分布表</div>
@@ -102,9 +102,10 @@
 
       <div
         slot="reference"
-        :style="`position: absolute; top: ${y}px; left: ${x}px`"
+        :style="`position: fixed; top: ${y}px; left: ${x}px`"
       ></div>
     </el-popover>
+    <slot></slot>
   </div>
 </template>
 
@@ -167,12 +168,19 @@ export default {
     showPop(id, evt) {
       this.activeId = id;
 
-      this.visible = evt !== undefined;
+      // this.visible = evt !== undefined;
       if (evt) {
         const { clientX, clientY } = evt;
         this.x = clientX;
         this.y = clientY;
       }
+
+      if (this.visible) {
+        this.visible = false;
+      }
+      setTimeout(() => {
+        this.visible = true;
+      }, 50)
     },
     async del() {
       await this.delRecord({ objectId: this.activeId });
@@ -191,7 +199,8 @@ $gray: #ebeef5;
 }
 .table-outer {
   width: 100%;
-  height: 400px;
+  height: 100%;
+  // height: 400px;
   overflow: hidden;
   position: relative;
   background: #fff;
@@ -259,18 +268,6 @@ td,
   position: absolute;
   top: 0;
   left: 300px;
-}
-
-.pop-item {
-  text-align: center;
-  padding: 6px 12px;
-  &:hover {
-    background: rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-  }
-  i {
-    margin-right: 6px;
-  }
 }
 .table-note {
   font-size: 18px;

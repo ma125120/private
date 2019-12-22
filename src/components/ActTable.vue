@@ -10,7 +10,7 @@
       style="width: 100%"
       :row-class-name="getRowClass"
       @click.native="showPop()"
-      @row-contextmenu="showPop" 
+      @row-contextmenu="showPop"
       height="340">
       <el-table-column label="" align="center" width="118px" fixed="left">
         <div slot-scope="{ row, $index }" class="align-center">
@@ -113,7 +113,7 @@
       <div class="pop-item" @click="edit(obj)">
         <i class="el-icon-edit"></i>编辑该条
       </div>
-      <el-popconfirm title="确认删除本行预约信息吗？" @onConfirm="del">
+      <el-popconfirm title="确定要删除本行信息吗？" @onConfirm="del">
         <div class="pop-item" slot="reference">
           <i class="el-icon-delete-solid"></i>删除该条
         </div>
@@ -124,6 +124,8 @@
         :style="`position: fixed; top: ${y}px; left: ${x}px; z-index: 10;`"
       ></div>
     </el-popover>
+
+    <slot />
   </div>
 </template>
 
@@ -197,7 +199,6 @@ export default Vue.extend({
 
         this.visible = true;
       }, 50)
-      
     },
     async del() {
       await this.delAct(this.obj);

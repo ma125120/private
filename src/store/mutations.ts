@@ -4,7 +4,8 @@ import routeNames from '@/router/name'
 import {Notification} from 'element-ui'
 import store from '@/store'
 import { Users, Reservation, Actual } from '@/types/sql'
-import User from '@/api/user';
+// import User from '@/api/user';
+import { scroll5 } from '@/util'
 
 export default {
   saveUser(state, user) {
@@ -97,7 +98,8 @@ export default {
     const list = [...state.records]
     const index = list.findIndex(v => v.objectId === id);
     if (index === -1) {
-      state.records = [obj , ...state.records,];
+      store.dispatch('getRecords')
+      // state.records = [obj , ...state.records,];
     } else {
       list[index] = obj;
       state.records = list;
@@ -115,7 +117,8 @@ export default {
     const list = [...state.acts]
     const index = list.findIndex(v => v.objectId === id);
     if (index === -1) {
-      state.acts = [obj, ...state.acts,];
+      store.dispatch('getActs')
+      // state.acts = [obj, ...state.acts,];
     } else {
       list[index] = obj;
       state.acts = list;
@@ -132,8 +135,10 @@ export default {
   },
   saveRecords(state, list) {
     state.records = list;
+    scroll5(`record--table`, list.length);
   },
   saveActs(state, list) {
     state.acts = list;
+    scroll5(`act--table`, list.length);
   }
 };

@@ -1,6 +1,11 @@
 <template>
   <div class="record--table m-table" ref="root">
-    <el-table :data="records" border style="width: 100%" height="340">
+    <el-table 
+      :data="records"
+      border
+      @click.native="showPop()"
+      @row-contextmenu="showPop"
+      style="width: 100%" height="340">
       <el-table-column label="预约" width="60px">
         <div slot-scope="{ row, $index }" class="align-center">
           {{ $index + 1 }}
@@ -63,6 +68,30 @@
         label="预定员工"
       ></el-table-column>
     </el-table>
+
+    <el-popover
+      placement="bottom"
+      width="40"
+      trigger="manual"
+      popper-class="my-pop"
+      v-model="visible"
+    >
+      <div class="pop-item" @click="$router.push(`/reverse?id=${activeId}`)">
+        <i class="el-icon-edit"></i>编辑该条
+      </div>
+      <el-popconfirm title="确定要删除本行信息吗？" @onConfirm="del">
+        <div class="pop-item" slot="reference">
+          <i class="el-icon-delete-solid"></i>删除该条
+        </div>
+      </el-popconfirm>
+
+      <div
+        slot="reference"
+        :style="`position: fixed; top: ${y}px; left: ${x}px; z-index: 10;`"
+      ></div>
+    </el-popover>
+
+    <slot />
   </div>
 </template>
 
@@ -70,7 +99,7 @@
 import Vue from "vue";
 import { records, formatRecord } from "@/util/index";
 import dayjs from "dayjs";
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState, mapActions } from 'vuex';
 let nowDate = dayjs(Date.now());
 
 export default Vue.extend({
@@ -86,7 +115,11 @@ export default Vue.extend({
   data() {
     return {
       // records,
-      tableData: []
+      tableData: [],
+      visible: false,
+      obj: null,
+      x: 0,
+      y: 0,
     };
   },
   computed: {
@@ -96,6 +129,40 @@ export default Vue.extend({
     ...mapState([
       'records'
     ])
+  },
+  methods: {
+    ...mapActions([
+      'delRecord',
+    ]),
+    showPop(row, column, evt) {
+      if (!row) {
+        this.obj = null;
+        this.visible = false;
+        return ;
+      }
+
+      evt.preventDefault();
+      if (this.visible) {
+        this.visible = false;
+      }
+      if (evt) {
+        const { clientX, clientY } = evt;
+        this.x = clientX;
+        this.y = clientY;
+      }
+
+      setTimeout(() => {
+        this.obj = row;
+
+        this.visible = true;
+      }, 50)
+    },
+    async del() {
+      await this.delRecord(this.obj);
+
+      this.obj = null;
+      this.visible = false;
+    },
   }
 });
 </script>

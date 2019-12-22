@@ -6,6 +6,7 @@ import { getRange } from '@/util/date'
 import dayjs from 'dayjs';
 
 export default class Reservation extends BaseApi {
+  sort = 'createdAt'
   tableName = 'FXZ_Reservation';
   timeFields = ['startTime', 'endTime'];
   omitFields = ['startHour', 'startMinute', 'durationHour', 'durationMinute', 'passWord1', 'oldPassword', 'names']
@@ -128,5 +129,5 @@ export function checkTime(arr, obj) {
 }
 
 function isBefore(date1, date2) {
-  return date1.diff(date2) <= 0;
+  return date1.diff(date2) < 0;
 }

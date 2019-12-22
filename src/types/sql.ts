@@ -169,7 +169,7 @@ export const payTypes = [
   { id: '6', name: '美团买单' },
 ]
 export const payMap = arr2map(payTypes, 'name', 'id');
-export const actStatusMap = arr2map(payTypes, 'name', 'id');
+export const actStatusMap = arr2map(actStatus, 'name', 'id');
 // 实际到店表
 export class Actual {
   constructor(data: any = {}) {
@@ -185,7 +185,7 @@ export class Actual {
     obj.startMinute = _start.format(`mm`);
     obj.durationHour = Math.floor(obj.duration) + '';
     obj.durationMinute = getMinuteNum(obj.duration);
-    obj.payTypeStr = obj.payType.map(v => payMap[v]).join(',')
+    obj.payTypeStr = obj.payType.map(v => payMap[v]).join(' ')
     return obj
   }
   id: string;

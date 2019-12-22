@@ -2,6 +2,7 @@ const routes = {
   home: '/',
   addReverse: '/reverse',
   workplace: '/workplace',
+  work: '/workplace',
   staff: '/setting/staff',
   room: '/setting/room',
   account: '/setting/account',
@@ -10,6 +11,12 @@ const routes = {
   childEdit: '/setting/child/edit',
   childNew: '/setting/child/new',
   actAdd: "/workplace/act/add",
+
+  reverse: '/work/reverse',
+  act: '/work/act',
+  record: '/work/record',
+
+  intro: '/intro',
 }
 
 export default routes

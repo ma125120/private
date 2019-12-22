@@ -17,6 +17,11 @@ ul, ol {
   display: flex;
   flex-direction: column;
 }
+.flex-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
 .align-center {
   display: flex;
   align-items: center;
@@ -38,4 +43,10 @@ ul, ol {
 }
 .box {
   box-sizing: border-box;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
 }

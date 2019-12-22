@@ -1,19 +1,15 @@
 <template>
-  <div class="home">
+  <div class="adverse">
     <div class="column max-vh">
       <MyHeader></MyHeader>
       <TableHeader></TableHeader>
       <div class="flex all-table box flex-1">
         <ReserveTable class="rev-table">
-          <MyScale :width="30" url="reverse" />
+          <MyScale :width="30" url="work" size="sm" />
         </ReserveTable>
         <div class="column right-table box">
-          <ActTable class="act-table">
-            <MyScale :width="24" url="act" />
-          </ActTable>
-          <RecordTable class="rev-record-table">
-            <MyScale :width="24" url="record" />
-          </RecordTable>
+          <MyScale :width="30" url="act" pos="relative" text="实际到店表" />
+          <MyScale :width="30" url="record" pos="relative" text="预约记录表" />
         </div>
       </div>
     </div>
@@ -21,21 +17,13 @@
 </template>
 
 <script>
-
-import ReserveTable from "@/components/ReserveTable";
-import ActTable from "@/components/ActTable";
-import RecordTable from "@/components/RecordTable";
-import TableHeader from "@/components/TableHeader";
 import dayjs from 'dayjs';
-import { DATE_STR_DETAIL } from '../util/date';
+import { DATE_STR_DETAIL } from '@/util/date';
 
 export default {
-  name: "home",
+  name: "Reverse",
   components: {
-    ReserveTable,
-    ActTable,
-    RecordTable,
-    TableHeader
+  
   },
   data() {
     return {
@@ -46,11 +34,7 @@ export default {
     this.$store.dispatch('getAllRecords')
   },
   methods: {
-    changeDate(val) {
-      const start = val + ` 08:00:00`;
-      const end = dayjs(val).add(1, 'day').add(7, 'hour').format(DATE_STR_DETAIL + ':ss')
-      
-    }
+
   }
 };
 </script>
@@ -72,7 +56,10 @@ export default {
   overflow-x: hidden;
 }
 .right-table {
-  width: 524px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  // width: 524px;
   margin-left: 6px;
 }
 .act-table {

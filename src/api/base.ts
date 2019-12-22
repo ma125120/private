@@ -13,6 +13,7 @@ export default class BaseApi {
   tableName = ''
   timeFields = []
   omitFields = []
+  sort = ''
 
   _query(obj: any, filters = []) {
     const query = Bmob.Query(this.tableName);
@@ -22,6 +23,9 @@ export default class BaseApi {
     filters.forEach(v => {
       query.equalTo(v[0], v[1], v[1] === '!=' ? v[2] : toBombTime(v[2]));
     });
+    if (this.sort) {
+      query.order(this.sort)
+    }
 
     return query.find();
   }

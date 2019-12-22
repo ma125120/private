@@ -67,10 +67,28 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/setting/child/EditChild.vue")
   },
   {
-    path: "/workplace/act/add",
-    name: "actAdd",
+    path: "/work/reverse",
+    name: "reverse",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/table/AddAct.vue")
+      import(/* webpackChunkName: "about" */ "../views/work/Reverse.vue")
+  },
+  {
+    path: "/work/act",
+    name: "act",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/work/Act.vue")
+  },
+  {
+    path: "/work/record",
+    name: "record",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/work/Record.vue")
+  },
+  {
+    path: "/intro",
+    name: "intro",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/home/Introduce.vue")
   },
   
   {

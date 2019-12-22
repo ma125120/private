@@ -12,9 +12,9 @@ export default {
 </script>
 
 <style lang="scss">
-#app {
+body {
   background: #f0efef;
-  height: 100vh;
+  // min-height: 100vh;
 }
 .bold {
   font-weight: bold;

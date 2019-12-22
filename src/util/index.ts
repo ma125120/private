@@ -1,7 +1,7 @@
-import { Room, Staff, Record } from "@/types/index";
+// import { Room, Staff, Record } from "@/types/index";
 import { getDiff, now, hours, minutes } from "./date";
 // import { rooms, staffes } from "./mock";
-
+import router from '@/router'
 export const arr2map = (arr, label, id = 'objectId') => arr.reduce((prev, next) => (prev[next[id]] = next[label], prev), {})
 
 export const records = [];
@@ -72,3 +72,23 @@ export const formatRecord = (arr: any[], now = "2019-12-06 08:00") => {
 
   return results;
 };
+
+function wait(ms) {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, ms)
+  });
+}
+
+export async function scroll5(name, len) {
+
+  if (len <= 5 || !router.currentRoute.path.startsWith('/work')) return ;
+
+  await wait(50);
+  const scrollEl = document.querySelector(`.${name} .el-table__body-wrapper`);
+  const el = document.querySelectorAll(`.${name} .el-table__body tbody tr`)
+
+  if (el && el[len - 5]) {
+    const { top = 0 } = el[len - 5].getBoundingClientRect();
+    scrollEl.scrollTop = top;
+  }
+}
