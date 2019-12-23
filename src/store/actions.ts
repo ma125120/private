@@ -1,9 +1,10 @@
-import {Users} from '@/types/sql'
+import { Users, getOvertime } from '@/types/sql'
 import api from '@/api'
+
 // import router from '@/router';
 import { Message } from 'element-ui'
 import dayjs from 'dayjs';
-import { DATE_STR_DETAIL } from '../util/date';
+import { DATE_STR_DETAIL, getToday } from '../util/date';
 
 export default {
   async setUser({ commit, dispatch, }, user: Users) {
@@ -18,17 +19,29 @@ export default {
       commit('chooseUserMutation', user);
     }
   },
-  async addEndUser({ commit, dispatch, state, }, obj) {
+  async addEndUser({ commit, dispatch, state, }, { form, isFirst }) {
     let data = {
-      ...obj,
+      ...form,
       companyId: state.user.objectId,
+      companyName: state.user.companyName || '',
       jurisdictionType: 1,
       expireDuration: 365,
-      companyName: state.user.companyName || '',
+      createTime: getToday().str,
+      overTime: getOvertime(form.version),
     }
+    if (!isFirst) {
+      let user = await api.user.checkActive(data, state.user.objectId);
+      data.expireDuration = user.expireDuration;
+      data.objectId = user.objectId;
+      data.version = user.version;
+      data.overTime = getOvertime(data.version);
+      data.isActivation = 1;
+    }
+
     let user = await api.user.saveChild(data);
+    Message({ message: `${form.objectId ? '编辑' : '激活'}成功`, type: 'success' })
     dispatch('selectChildren', state.user)
-    api.user.increment(state.user);
+    // api.user.increment(state.user);
   },
   async chooseUser({ commit, dispatch, state, }, user) {
     commit(`chooseUserMutation`, user);

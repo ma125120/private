@@ -7,7 +7,7 @@
         size="medium"
         :label="item[idKey]">{{item[labelKey]}}</el-checkbox>
     </template>
-    <template v--else>
+    <template v-else>
       <el-checkbox-button 
         v-for="item in options"
         :key="item[idKey]"

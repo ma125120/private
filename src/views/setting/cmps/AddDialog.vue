@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'addEndUser'
+    
     ]),
     async save() {
       if (!this.name) {

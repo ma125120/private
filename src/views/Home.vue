@@ -83,11 +83,13 @@ export default {
   methods: {
     async login() {
       try {
+        console.log(this.$api)
         let user = await this.$api.user.login(this.form.userName, this.form.passWord);
         // this.$notify.success({ title: '消息', message: '登陆成功' });
         this.setUser(user)
         this.$store.commit('setLogin', true);
       } catch(err) {
+        console.log(err)
         this.$alertCb(err.msg)
       }
     },
@@ -152,6 +154,7 @@ export default {
 }
 .self-img {
   width: 365px;
+  height: 243px;
   margin-right: 24px;
 }
 .self-title {

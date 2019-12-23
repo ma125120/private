@@ -1,6 +1,6 @@
 import { assign } from "./base"
 import dayjs from 'dayjs';
-import { hours, minutes } from "@/util/date";
+import { hours, minutes, toDayjs, DATE_STR_DETAIL1 } from "@/util/date";
 import { arr2map } from '@/util/index'
 
 // Date类型一般为 2019-12-09 12:00这种
@@ -10,6 +10,22 @@ const roles = {
   0: '公司总管理员',
   1: '分店管理员账号',
   2: '子账号'
+}
+
+export const over2time = (str = '试用30天') => {
+  const obj = {
+    '已付费(季度)': [3, 'month'],
+    '已付费(半年度)': [6, 'month'],
+    '已付费(年度)': [1, 'year'],
+    '试用30天': [30, 'day'],
+  }
+
+  return obj[str] || [];
+}
+
+export const getOvertime = (str) => {
+  const times = over2time(str);
+  return dayjs().add(times[0], times[1]).format(DATE_STR_DETAIL1);
 }
 
 function getMinuteNum(num) {
@@ -25,15 +41,18 @@ function isTestUser(user: Users) {
 export class Users {
   constructor(data: any = {}) {
     const obj = assign(this, data) as Users;
-    const overTime = dayjs(obj.createdAt).add(obj.expireDuration, 'day');
+    // const overTime = dayjs(obj.createdAt).add(obj.expireDuration, 'day');
+    const overTime = toDayjs(obj.overTime)
     obj.overTimeStr = overTime.format(`YYYY年M月D日H:m`);
     obj.overTime = overTime.format(`YYYY-MM-DD HH:mm`);
     obj.accountType = roles[obj.jurisdictionType]
     if (obj.jurisdictionType !== 0) {
       obj.accountType += `：${obj.branchStoreName || obj.companyName}`
     }
-    obj.version = dayjs(Date.now()).isAfter(overTime) ? `已到期` : isTestUser(obj) ? `试用期` : `已付费`;
-    obj.versionTable = dayjs(Date.now()).isAfter(overTime) ? `已到期请续费\n到期时间：\n   ${overTime.format(`YYYYMMDD`)}` : `已付费生效`;
+
+    const isOver = dayjs(Date.now()).isAfter(overTime);
+    obj.version = isOver ? `已到期` : obj.version;
+    obj.versionTable = isOver ? `已到期请续费\n到期时间：\n   ${overTime.format(`YYYYMMDD`)}` : `已付费生效`;
     return obj
   }
 
@@ -42,6 +61,10 @@ export class Users {
   accountType?: string;
   versionTable?: string;
   branchStoreNames?: string[];
+  // 激活时间
+  createTime: string;
+  // 	是否激活 （ 0未激活 1已激活 ）
+  isActivation: number;
   // 分店店名，有则写，没有则无
   branchStoreName: string;
   // 账号

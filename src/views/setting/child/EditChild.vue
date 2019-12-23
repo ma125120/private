@@ -12,7 +12,7 @@
         <el-form-item label="账号" prop="userName">
           <el-input
             v-model="form.userName"
-            placeholder="请输入4-12个英文字母"
+            placeholder="请输入4-12个英文字母（数字或英文字母）"
           ></el-input>
         </el-form-item>
         <el-form-item label="原密码" prop="oldPassWord">
@@ -98,8 +98,8 @@ export default {
           { required: true, message: "账号还没有填写" },
           {
             validator(rule, value, cb) {
-              if (!/^[a-zA-Z]+$/g.test(value)) {
-                cb(new Error('保存失败，账号只能由英文字母构成'));
+              if (!/^\w+$/g.test(value)) {
+                cb(new Error('保存失败，账号只能由数字或英文字母构成'));
               } else {
                 validateLen(value, `账号`, cb, 4, 12)
               }

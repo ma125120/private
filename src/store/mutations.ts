@@ -10,11 +10,11 @@ import { scroll5 } from '@/util'
 export default {
   saveUser(state, user) {
     state.user = user;
-    sessionStorage.user = JSON.stringify(user);
+    localStorage.user = JSON.stringify(user);
   },
   restoreUser(state) {
     if (state.nowUser && state.user) return ;
-    let { user, nowUser, } = sessionStorage;
+    let { user, nowUser, } = localStorage;
     if (user) {
       store.dispatch('setUser', new Users(JSON.parse(user)))
     }
@@ -23,7 +23,7 @@ export default {
     }
   },
   saveChildren(state, _children) {
-    let children = _children.map(v => new Users(v))
+    let children = _children.map(v => new Users(v));
     state.userChildren = children;
     if (children.length > 0) {
       state.isShowAddChild = false;
@@ -46,7 +46,7 @@ export default {
   },
   chooseUserMutation(state, user) {
     state.nowUser = user;
-    sessionStorage.nowUser = JSON.stringify(user);
+    localStorage.nowUser = JSON.stringify(user);
     store.dispatch('getStaffList');
     store.dispatch('getRoomList');
   },
@@ -81,8 +81,8 @@ export default {
   logout(state) {
     state.user = null;
     state.nowUser = null;
-    sessionStorage.removeItem('user')
-    sessionStorage.removeItem('nowUser')
+    localStorage.removeItem('user')
+    localStorage.removeItem('nowUser')
     if (router.currentRoute.path !== routeNames.home) {
       router.replace(routeNames.home)
     }

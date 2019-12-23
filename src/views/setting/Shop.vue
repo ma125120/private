@@ -6,7 +6,6 @@
         <el-button 
           type="primary" 
           icon="el-icon-plus" 
-          :disabled="disabled"
           :class="`${disabled ? 'dis' : ''}`"
           @click="add">创建分店管理员账号</el-button>
         <div style="margin-left: 32px;color: #101010; font-size: 18px;">
@@ -41,6 +40,7 @@
         </el-table-column>
         <el-table-column
           align="center"
+          width="280px"
           prop="versionTable"
           label="状态"
         >
@@ -97,6 +97,7 @@ export default Vue.extend({
       'user',
     ]),
     disabled() {
+      return false;
       return this.userChildren.length >= this.user.storeNumber;
     }
   }

@@ -20,13 +20,13 @@
       <el-form-item label="分店店名" prop="branchStoreName">
         <el-input
           v-model="form.branchStoreName"
-          placeholder="请输入4-12个英文字母"
+          placeholder="请输入2-12个字符，建议汉字，如：二店"
         ></el-input>
       </el-form-item>
       <el-form-item label="账号" prop="userName">
         <el-input
           v-model="form.userName"
-          placeholder="请输入4-12个英文字母"
+          placeholder="请输入4-12个英文字母（数字或英文字母）"
         ></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="passWord">
@@ -52,7 +52,7 @@
 <script>
 import Vue from "vue";
 import { validateLen } from './rule'
-import { mapActions, } from 'vuex';
+import { mapActions, mapState, } from 'vuex';
 
 export default {
   name: "AddChild",
@@ -84,7 +84,11 @@ export default {
           { required: true, message: "分店店名还没有填写" },
           {
             validator(rule, value, cb) {
-              validateLen(value, `分店店名`, cb, 2, 12)
+              if (!/^[\w\u4e00-\u9fa5]+$/g.test(value)) {
+                cb(new Error('保存失败，账号只能由中英文、数字、字母构成'));
+              } else {
+                validateLen(value, `分店店名`, cb, 2, 12)
+              }
             },
           },
         ],
@@ -92,8 +96,8 @@ export default {
           { required: true, message: "账号还没有填写" },
           {
             validator(rule, value, cb) {
-              if (!/^[a-zA-Z]+$/g.test(value)) {
-                cb(new Error('保存失败，账号只能由英文字母构成'));
+              if (!/^\w+$/g.test(value)) {
+                cb(new Error('保存失败，账号只能由数字或英文字母构成'));
               } else {
                 validateLen(value, `账号`, cb, 4, 12)
               }
@@ -135,10 +139,20 @@ export default {
   methods: {
     async save() {
       this.$refs.form.validate(async (vaild, params) => {
+        const { form, isFirst, user, } = this;
+        const obj = { ...form };
+        if (isFirst) {
+          obj.version = user.version
+        }
+
         if (vaild) {
-          await this.addEndUser(this.form);
+          await this.addEndUser({
+            form: obj,
+            isFirst
+          });
           this.$emit('update:isShow', false);
           this.show = false;
+          
         } else {
           this.$errorForm(params);
         }
@@ -158,7 +172,9 @@ export default {
     }
   },
   computed: {
-
+    ...mapState([
+      'user'
+    ])
   }
 };
 </script>

@@ -1,11 +1,12 @@
 import Bmob from "@/plugins/bmob/Bmob-2.2.1.min.js";
 import { Users } from '@/types/sql'
 import BaseApi from './base'
+import { showError } from '@/util'
 
 export default class User extends BaseApi {
   tableName = 'FXZ_User';
-  timeFields = ['overTime'];
-  omitFields = ['accountType', 'status', 'versionTable', 'version', 'overTimeStr', 'passWord1', 'oldPassword', 'names',]
+  timeFields = ['overTime', 'createTime'];
+  omitFields = ['accountType', 'status', 'versionTable', 'overTimeStr', 'passWord1', 'oldPassword', 'names',]
 
   async login(userName, passWord) {
     try {
@@ -30,6 +31,27 @@ export default class User extends BaseApi {
     return this.saveChild(obj);
   }
 
+  async checkActive(data, companyId) {
+    let res = await this._query({
+      companyId,
+      jurisdictionType: 1,
+      userName: data.userName,
+      passWord: data.passWord,
+    });
+    if (!res || res.length === 0) {
+      showError('账号名或密码错误');
+      throw new Error('');
+    }
+
+    const user = res && res[0] || {} as Users;
+    if (user.isActivation) {
+      showError('账号已激活，请更换账号');
+      throw new Error('');
+    }
+
+    return user;
+  }
+
   async findChildren(id): Promise<Users[]> {
     try {
       let res = await this._query({
@@ -38,6 +60,7 @@ export default class User extends BaseApi {
       });
       return res.map(v => new Users(v));
     } catch (err) {
+      console.log(err)
       return Promise.reject({
         code: 100,
         msg: '错误，未找到分店账号',
@@ -46,6 +69,17 @@ export default class User extends BaseApi {
   }
 
   async saveChild(user) {
+    let { userName, passWord, objectId } = user;
+    if (!objectId) {
+      let result = await this._query({
+        userName,
+      });
+      if (result && result.length > 0) {
+        showError('该账号已存在，请更换账号名');
+        throw new Error('')
+      }
+    }
+    
     try {
       let res = await this._edit(user);
       return res
@@ -53,21 +87,21 @@ export default class User extends BaseApi {
       console.log(err)
       return Promise.reject({
         code: 100,
-        msg: '错误，未找到分店账号',
+        msg: '错误，保存分店账号失败',
       });
     }
   }
 
   async increment(user) {
-    try {
-      await this._edit({ ...user, branchStoreNum: user.branchStoreNum + 1 })
-    } catch (err) {
-      console.log(err)
-      return Promise.reject({
-        code: 100,
-        msg: '分店账号+1失败',
-      });
-    }
+    // try {
+    //   await this._edit({ ...user, branchStoreNum: user.branchStoreNum + 1 })
+    // } catch (err) {
+    //   console.log(err)
+    //   return Promise.reject({
+    //     code: 100,
+    //     msg: '分店账号+1失败',
+    //   });
+    // }
   }
 
   async getChildAccounts(companyId, branchStoreId, ) {

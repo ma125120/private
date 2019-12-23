@@ -1,5 +1,6 @@
 // import { Room, Staff, Record } from "@/types/index";
 import { getDiff, now, hours, minutes } from "./date";
+import { Message } from 'element-ui'
 // import { rooms, staffes } from "./mock";
 import router from '@/router'
 export const arr2map = (arr, label, id = 'objectId') => arr.reduce((prev, next) => (prev[next[id]] = next[label], prev), {})
@@ -92,3 +93,10 @@ export async function scroll5(name, len) {
     scrollEl.scrollTop = top;
   }
 }
+
+export const showError = text => {
+  Message({
+    type: "error",
+    message: text
+  });
+};

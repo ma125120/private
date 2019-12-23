@@ -1,7 +1,7 @@
 import Vue from "vue";
-import './http';
 import routeNames from "@/router/name";
 import { actStatusMap } from "@/types/sql";
+import { showError } from '@/util'
 
 import {
   Button,
@@ -33,6 +33,7 @@ import { now } from "@/util/date";
 import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
 
+import "./http";
 import "../styles/var.scss";
 
 Vue.use(InputNumber);
@@ -57,12 +58,8 @@ Vue.use(DropdownMenu);
 
 Vue.prototype.$message = Message;
 (Vue.prototype.$notify = Notification);
-Vue.prototype.$nerror = function(text) {
-  Message({
-    type: "error",
-    message: text
-  });
-};
+
+Vue.prototype.$nerror = showError;
 
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;

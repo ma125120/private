@@ -12,11 +12,19 @@ export function getDiff(date1, date2) {
   };
 }
 
+export function getToday() {
+  const now = dayjs(new Date()).format(DATE_STR_DETAIL + ':ss');
+  return {
+    str: now,
+  }
+}
+
 export const isSameDate = (date1, date2) =>
   dayjs(date1).isSame(dayjs(date2), "date");
 
 export const DATE_STR = "YYYY-MM-DD";
 export const DATE_STR_DETAIL = "YYYY-MM-DD HH:mm";
+export const DATE_STR_DETAIL1 = "YYYY-MM-DD HH:mm:ss";
 
 export const now = dayjs(new Date()).format(DATE_STR);
 export const weeks = ["日", "一", "二", "三", "四", "五", "六"];
@@ -57,21 +65,6 @@ export const shortcuts = [
       );
     }
   }
-  // {
-  //   text: '昨天',
-  //   onClick(picker) {
-  //     const date = new Date();
-  //     date.setTime(date.getTime() - 3600 * 1000 * 24);
-  //     picker.$emit('pick', date);
-  //   }
-  // }, {
-  //   text: '一周前',
-  //   onClick(picker) {
-  //     const date = new Date();
-  //     date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-  //     picker.$emit('pick', date);
-  //   }
-  // }
 ];
 
 export const getRange = (date) => {
@@ -80,4 +73,8 @@ export const getRange = (date) => {
   const end = dayjs(val).add(1, 'day').add(8, 'hour').format(DATE_STR_DETAIL + ':ss');
 
   return [start, end]
+}
+
+export const toDayjs = (date) => {
+  return dayjs(date && date.iso ? date.iso : date)
 }
