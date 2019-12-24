@@ -10,8 +10,7 @@
           <el-popconfirm
             class="pd-btn"
             title="退出后，已编辑的信息将被删除"
-            @onConfirm="save"
-            @onCancel="$pushNamed('workplace')"
+            @onConfirm="$pushNamed('workplace')"
           >
             <el-button type="primary" plain slot="reference"
               >返回到工作台</el-button
@@ -40,6 +39,7 @@
           <MySelect 
             v-model="form.roomId" 
             :options="roomList" 
+            placeholder="请选择房间"
             labelKey="roomName" />
         </el-form-item>
         <el-form-item label="到店日期" prop="startDate">
@@ -90,27 +90,29 @@
             style="width: 290px"
             type="number"
             v-model="form.count"
+            text="人数"
             placeholder="点击输入阿拉伯数字"
           ></MyNumber><span class="ml">人</span>
         </el-form-item>
         <el-form-item label="备注" prop="note">
           <el-input
             type="textarea"
-            maxlength="40"
+            maxlength="100"
             style="width: 290px"
             v-model="form.note"
-            placeholder="多行输入，最多40字"
+            placeholder="多行输入，最多100字"
           ></el-input>
         </el-form-item>
         <el-form-item label="顾客手机号" prop="mobile">
           <el-input
             style="width: 290px"
             v-model="form.mobile"
+            maxlength="11"
             placeholder="点击输入阿拉伯数字"
           ></el-input>
         </el-form-item>
         <el-form-item label="员工" prop="staff">
-          <MySelect v-model="form.staffId" :options="staffOptions"></MySelect>
+          <MySelect v-model="form.staffId" :options="staffOptions" placeholder="请选择员工"></MySelect>
         </el-form-item>
       </el-form>
     </div>
@@ -132,6 +134,7 @@ import { rooms, staffes } from "@/util/mock";
 import { records, record2form, getReverseForm } from "@/util/index";
 import dayjs from "dayjs";
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
+import { validateNum } from '@/util/rule'
 
 export default Vue.extend({
   name: "HelloWorld",
@@ -150,6 +153,19 @@ export default Vue.extend({
         roomId: [{ required: true, message: "请选择房间" }],
         startDate: [{ required: true, message: "请选择到店日期" }],
         startTime: [{ required: true, message: "请选择到店时间" }],
+        note: [
+          {
+            validator(rule, value, cb) {
+              if (value.length > 100) {
+                cb(new Error('备注字数超出限制'));
+              } else {
+                cb();
+              }
+            },
+            require: false,
+            trigger: "change"
+          }
+        ],
         duration: [
           {
             validator(rule, value, cb) {
@@ -190,6 +206,8 @@ export default Vue.extend({
       this.duration = this.durationHour + ":" + this.durationMinute;
     },
     save() {
+      validateNum(this.form);
+
       this.$refs.form.validate(async (vaild, params) => {
         if (vaild) {
           const form = this.getRealForm();

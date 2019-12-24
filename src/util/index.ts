@@ -1,3 +1,4 @@
+import { isSameDate } from './date';
 // import { Room, Staff, Record } from "@/types/index";
 import { getDiff, now, hours, minutes } from "./date";
 import { Message } from 'element-ui'
@@ -54,8 +55,10 @@ export const record2form = (record = getReverseForm()) => ({
   // room: record.room && record.room.id + ""
 });
 
-export const formatRecord = (arr: any[], now = "2019-12-06 08:00") => {
-  const rooms = new Set(arr.map(v => v.roomName));
+export const formatRecord = (arr: any[], now = "2019-12-06 08:00", roomlist) => {
+  if (!roomlist) return [];
+
+  const rooms = new Set(roomlist.map(v => v.roomName));
   let results = [];
   [...rooms].map((room, i) => {
     let children = arr.filter(v => v.roomName === room);
@@ -63,11 +66,13 @@ export const formatRecord = (arr: any[], now = "2019-12-06 08:00") => {
       ...v,
       top: i + 1,
       visible: false,
-      left: getDiff(v.startTime, now).per,
+      left: getDiff(v.startTime, now, 'left').per,
       width: getDiff(v.endTime, v.startTime).per
     }));
     if (children.length > 0) {
       results.push({ roomName: room, roomId: children[0].roomId, children });
+    } else {
+      results.push({ roomName: room, roomId: Date.now() + Math.random(), children: [], });
     }
   });
 
@@ -80,9 +85,9 @@ function wait(ms) {
   });
 }
 
-export async function scroll5(name, len) {
+export async function scroll5(name, len, date) {
 
-  if (len <= 5 || !router.currentRoute.path.startsWith('/work')) return ;
+  if (len <= 5 || !router.currentRoute.path.startsWith('/work') || !isSameDate(date, new Date())) return ;
 
   await wait(50);
   const scrollEl = document.querySelector(`.${name} .el-table__body-wrapper`);
@@ -94,9 +99,12 @@ export async function scroll5(name, len) {
   }
 }
 
-export const showError = text => {
+export const showError = (text, needThrow = false) => {
   Message({
     type: "error",
     message: text
   });
+  if (needThrow) {
+    throw new Error(text)
+  }
 };

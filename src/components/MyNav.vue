@@ -21,7 +21,7 @@
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item class="active-drop" v-if="nowUser">当前登录：{{nowUser.branchStoreName}}</el-dropdown-item>
           <el-dropdown-item 
-            v-for="child in userChildren"
+            v-for="child in showChildren"
             @click.native="choose(child)" 
             :key="child.objectId">{{child.branchStoreName}}</el-dropdown-item>
         </el-dropdown-menu>

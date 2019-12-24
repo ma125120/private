@@ -1,6 +1,9 @@
 import dayjs from "dayjs";
 
-export function getDiff(date1, date2) {
+export function getDiff(date1, date2, type = 'width') {
+  if (type === 'left' && dayjs(date1).isBefore(dayjs(date2))) {
+    date1 = dayjs(date1).add(1, 'day')
+  }
   let diff = dayjs(date1).diff(dayjs(date2)) / 1000;
   let hour = Math.abs(Math.floor((diff / 3600) % 24));
   let minute = Math.abs(Math.floor((diff % 3600) / 60));
@@ -13,9 +16,11 @@ export function getDiff(date1, date2) {
 }
 
 export function getToday() {
-  const now = dayjs(new Date()).format(DATE_STR_DETAIL + ':ss');
+  const nowDate = dayjs(new Date())
+  const now = nowDate.format(DATE_STR_DETAIL + ':ss');
   return {
     str: now,
+    hm: nowDate.format('HH:mm')
   }
 }
 
@@ -44,7 +49,7 @@ export const hours = new Array(24)
   .map(v => ({ id: v, name: v }));
 export const minutes = new Array(60)
   .fill(0)
-  .map((v, i) => i + "")
+  .map((v, i) => `${i}`.padStart(2, "0"))
   .map(v => ({ id: v, name: v }));
 
 export const shortcuts = [

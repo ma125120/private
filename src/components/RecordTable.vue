@@ -6,8 +6,8 @@
       @click.native="showPop()"
       @row-contextmenu="showPop"
       style="width: 100%" height="340">
-      <el-table-column label="预约" width="60px">
-        <div slot-scope="{ row, $index }" class="align-center">
+      <el-table-column label="预约 记录表" width="60px" align="center">
+        <div slot-scope="{ row, $index }" class="all-center">
           {{ $index + 1 }}
         </div>
       </el-table-column>

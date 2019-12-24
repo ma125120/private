@@ -168,7 +168,7 @@ export default {
     showPop(id, evt) {
       this.activeId = id;
 
-      // this.visible = evt !== undefined;
+      let isShow = evt !== undefined;
       if (evt) {
         const { clientX, clientY } = evt;
         this.x = clientX;
@@ -179,7 +179,7 @@ export default {
         this.visible = false;
       }
       setTimeout(() => {
-        this.visible = true;
+        this.visible = isShow;
       }, 50)
     },
     async del() {

@@ -55,6 +55,11 @@ body {
   .el-popconfirm__main {
     font-size: 20px;
   }
+  .el-popover,
+  .el-popover[role] div.popper__arrow::after {
+    background: #efefef;
+    border-color: #efefef;
+  }
   .table-icon {
     cursor: pointer;
     width: 28px;
@@ -84,7 +89,13 @@ body {
       border-right: 3px solid #0A886D;
     }
   }
-
+  .btn-groups .el-button--primary.is-plain {
+    background: #fff;
+    border: 1px solid $color;
+    &:hover {
+      color: $color;
+    }
+  }
 }
 body {
   .el-dialog.sm-dialog {
@@ -125,6 +136,10 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 4px;
+}
+
+.record--table .el-table__header thead th:first-of-type {
+  font-size: 12px;
 }
 
 .max-vh {

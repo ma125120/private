@@ -49,8 +49,10 @@ export default {
   async add_staff({ commit, dispatch, state, }, obj) {
     let name = obj.clerkName;
     if (!name) return;
-    let isDuplicate = await api.staff.isDuplicate(name, state.nowUser.objectId, state.nowUser.companyId);
-    validateDuplicate(isDuplicate, `修改失败，姓名必须和已创建的店员名不同`)
+    if (obj.objectId) {
+      let isDuplicate = await api.staff.isDuplicate(name, obj.objectId, state.nowUser.objectId, state.nowUser.companyId);
+      validateDuplicate(isDuplicate, `修改失败，店员名必须和已创建的店员名不同`)
+    }
 
     let staff = {
       clerkType: 1,
@@ -66,7 +68,7 @@ export default {
   async edit_staff({ commit, dispatch, state, }, obj) {
     let name = obj.clerkName;
     if (!name) return;
-    let isDuplicate = await api.staff.isDuplicate(name, state.nowUser.objectId, state.nowUser.companyId);
+    let isDuplicate = await api.staff.isDuplicate(name, obj.objectId, state.nowUser.objectId, state.nowUser.companyId);
     validateDuplicate(isDuplicate, `修改失败，姓名必须和已创建的店员名不同`)
 
     let res = await api.staff.edit(obj);
@@ -82,7 +84,7 @@ export default {
     let name = obj.roomName;
     if (!name) return;
     let isDuplicate = await api.room.isDuplicate(name, state.nowUser.objectId, state.nowUser.companyId);
-    validateDuplicate(isDuplicate, `修改失败，姓名必须和已创建的房间名不同`)
+    validateDuplicate(isDuplicate, `修改失败，房间名必须和已创建的房间名不同`)
 
     let room = {
       companyId: state.user.objectId,
@@ -205,18 +207,26 @@ export default {
   },
   async getRecords({ commit, dispatch, state, }) {
     const val = state.selectDay;
-    const start = val + ` 08:00:00`;
-    const end = dayjs(val).add(1, 'day').add(8, 'hour').format(DATE_STR_DETAIL + ':ss');
+    const start = val + ` 00:00:00`;
+    const end = dayjs(val).add(1, 'day').format(DATE_STR_DETAIL + ':ss');
     const list = await api.record.getList(state.nowUser.companyId, state.nowUser.objectId, start, end)
     commit('saveRecords', list)
   },
   async getActs({ commit, dispatch, state, }) {
     const val = state.selectDay;
-    const start = val + ` 08:00:00`;
-    const end = dayjs(val).add(1, 'day').add(8, 'hour').format(DATE_STR_DETAIL + ':ss');
+    const start = val + ` 00:00:00`;
+    const end = dayjs(val).add(1, 'day').format(DATE_STR_DETAIL + ':ss');
     const list = await api.act.getList(state.nowUser.companyId, state.nowUser.objectId, start, end)
     commit('saveActs', list)
   },
+
+  async restore({ commit, dispatch, state, }) {
+    commit('restoreUser');
+
+    // setTimeout(async () => {
+    //   let user = await api.user.login(state.form.userName, this.form.passWord);
+    // }, 50);
+  }
 }
 
 function validateDuplicate(isValid, text = `修改失败，姓名必须和已创建的房间名不同`) {

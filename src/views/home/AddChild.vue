@@ -1,6 +1,6 @@
 <template>
   <el-dialog 
-    :close-on-click-modal="false"
+    :close-on-click-modal="!isFirst"
     :close-on-press-escape="false"
     :show-close="false"
     center
@@ -66,7 +66,7 @@ export default {
       if (value != this.form.passWord) {
         cb(new Error('保存失败，2遍密码需一致'));
       } else if (!/^\w+$/g.test(value)) {
-        cb(new Error('密码只能由数字和英文组成'));
+        cb(new Error('密码只能由数字或英文组成'));
       } else {
         validateLen(value, `确认密码`, cb, 6, 12)
       }
@@ -110,7 +110,7 @@ export default {
           {
             validator(rule, value, cb) {
               if (!/^\w+$/g.test(value)) {
-                cb(new Error('密码只能由数字和英文组成'));
+                cb(new Error('密码只能由数字或英文组成'));
               } else {
                 validateLen(value, `密码`, cb, 6, 12)
               }

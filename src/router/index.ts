@@ -107,7 +107,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  store.commit('restoreUser');
+  store.dispatch('restore');
   if (!needNotLogin.includes(to.path)) {
     let user = store.state.user;
     if (user && user.objectId) {

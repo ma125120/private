@@ -60,7 +60,7 @@
 
 <script>
 // @ is an alias to /src
-import { mapActions, mapState, } from 'vuex'
+import { mapActions, mapState, mapGetters, } from 'vuex'
 import AddChild from './home/AddChild'
 
 export default {
@@ -74,7 +74,8 @@ export default {
       form: {
         userName: '18810013034',
         passWord: '123456',
-      }
+      },
+      show: false,
     };
   },
   created() {
@@ -83,7 +84,6 @@ export default {
   methods: {
     async login() {
       try {
-        console.log(this.$api)
         let user = await this.$api.user.login(this.form.userName, this.form.passWord);
         // this.$notify.success({ title: '消息', message: '登陆成功' });
         this.setUser(user)
@@ -96,15 +96,24 @@ export default {
     ...mapActions([
       'setUser',
     ]),
+    reload() {
+      this.isReload && (location.reload());
+    }
+  },
+  watch: {
+    invaildNames(val) {
+      this.show = !!val
+    }
   },
   computed: {
-    disabled() {
-      return !(this.form.userName && this.form.passWord)
-    },
     ...mapState([
       'isShowAddChild',
       'user',
     ]),
+    ...mapGetters([
+      'invaildNames',
+      'isReload'
+    ])
   }
 };
 </script>

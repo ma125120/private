@@ -3,7 +3,7 @@
     :style="`width: ${this.width}px`" 
     v-model="val" 
     @change="change" 
-    placeholder="" 
+    :placeholder="placeholder" 
     :disabled="disabled"
     :clearable="clearable">
     <el-option
@@ -27,6 +27,7 @@ export default Vue.extend({
   },
   props: {
     value: String,
+    placeholder: String,
     clearable: {
       type: Boolean,
       default: false,

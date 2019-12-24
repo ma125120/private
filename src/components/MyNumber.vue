@@ -1,9 +1,11 @@
 <template>
-  <el-input-number 
+  <el-input 
     v-model="val" 
+    type="text"
+    min="0"
     controls-position="right" 
     @change="change"
-    />
+  />
 </template>
 
 <script>
@@ -19,6 +21,10 @@ export default Vue.extend({
     value: {
       type: Number | String,
       default: 0,
+    },
+    text: {
+      type: String,
+      default: ''
     }
   },
   created() {
@@ -39,7 +45,13 @@ export default Vue.extend({
   },
   methods: {
     change(val) {
-      this.$emit("change", val || 0);
+      if (val >= 0) {
+        this.$emit("change", val || 0);
+      } else {
+        this.$nerror(`${this.text}只能输入数字`);
+        this.val = 0
+        this.$emit("change", this.val);
+      }
     }
   }
 });

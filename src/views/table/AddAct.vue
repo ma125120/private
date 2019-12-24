@@ -1,6 +1,6 @@
 <template>
   <el-dialog 
-    :close-on-click-modal="false"
+    :close-on-click-modal="true"
     :close-on-press-escape="false"
     :show-close="false"
     center
@@ -19,6 +19,7 @@
         <el-form-item label="房间" prop="roomId">
           <MySelect 
             v-model="form.roomId" 
+             placeholder="请选择房间"
             :options="roomList" 
             labelKey="roomName" />
         </el-form-item>
@@ -93,6 +94,7 @@
             controls-position="right"
             v-model="form.roomCharge"
             @blur="computePay"
+            text="房间费"
             placeholder="仅限阿拉伯数字输入"
           ></MyNumber><span class="ml">元</span>
         </el-form-item>
@@ -102,6 +104,7 @@
             v-model="form.snackFee"
             controls-position="right"
             @blur="computePay"
+            text="小吃费"
             placeholder="仅限阿拉伯数字输入"
           ></MyNumber><span class="ml">元</span>
         </el-form-item>
@@ -111,6 +114,7 @@
             v-model="form.shouldPay"
             controls-position="right"
             disabled
+            text="应收总金额"
             placeholder="仅限阿拉伯数字输入"
           ></MyNumber><span class="ml">元</span>
         </el-form-item>
@@ -119,6 +123,7 @@
             style="width: 290px"
             v-model="form.discount"
             controls-position="right"
+            text="优惠金额"
             placeholder="仅限阿拉伯数字输入"
           ></MyNumber><span class="ml">元</span>
         </el-form-item>
@@ -127,6 +132,7 @@
             style="width: 290px"
             v-model="form.actMoney"
             controls-position="right"
+            text="实收总金额"
             placeholder="仅限阿拉伯数字输入"
           ></MyNumber><span class="ml">元</span>
         </el-form-item>
@@ -145,6 +151,7 @@
             style="width: 290px"
             v-model="form.count"
             controls-position="right"
+            text="人数"
             placeholder="仅限阿拉伯数字输入"
           ></MyNumber><span class="ml">人</span>
         </el-form-item>
@@ -152,14 +159,14 @@
         <el-form-item label="房间以外收费明细" prop="note">
           <el-input
             type="textarea"
-            maxlength="40"
+            maxlength="100"
             style="width: 290px"
             v-model="form.note"
-            placeholder="多行输入，最多40字"
+            placeholder="多行输入，最多100字"
           ></el-input>
         </el-form-item>
         <el-form-item label="员工" prop="staffId">
-          <MySelect v-model="form.staffId" :options="staffOptions"></MySelect>
+          <MySelect v-model="form.staffId" :options="staffOptions" placeholder="请选择员工"></MySelect>
         </el-form-item>
 
         <div class="dialog-footer">
@@ -180,6 +187,7 @@ import { records, record2form, getActForm } from "@/util/index";
 import dayjs from "dayjs";
 import { actStatus, payTypes } from '@/types/sql'
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
+import { validateNum } from '@/util/rule'
 
 export default Vue.extend({
   name: "AddAct",
@@ -266,6 +274,7 @@ export default Vue.extend({
     },
     save() {
       const form = this.getRealForm();
+      validateNum(form)
       this.$refs.dForm.validate(async (vaild, params) => {
         if (vaild) {
           // const form = this.getRealForm();

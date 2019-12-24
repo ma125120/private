@@ -1,9 +1,10 @@
 
 import router from '@/router';
 import routeNames from '@/router/name'
-import {Notification} from 'element-ui'
+// import { Notification } from 'element-ui'
 import store from '@/store'
 import { Users, Reservation, Actual } from '@/types/sql'
+import { getVaildDate } from './common'
 // import User from '@/api/user';
 import { scroll5 } from '@/util'
 
@@ -27,9 +28,9 @@ export default {
     state.userChildren = children;
     if (children.length > 0) {
       state.isShowAddChild = false;
-      // state.nowUser = children[0];
-      if (!state.nowUser) {
-        store.commit('chooseUserMutation', children[0])
+      const vaildUser = children.find(getVaildDate)
+      if (!state.nowUser && vaildUser) {
+        store.commit('chooseUserMutation', vaildUser)
       }
       
       if (state.isHost && router.currentRoute.path === routeNames.home) {
@@ -135,10 +136,10 @@ export default {
   },
   saveRecords(state, list) {
     state.records = list;
-    scroll5(`record--table`, list.length);
+    scroll5(`record--table`, list.length, state.selectDay);
   },
   saveActs(state, list) {
     state.acts = list;
-    scroll5(`act--table`, list.length);
+    scroll5(`act--table`, list.length, state.selectDay);
   }
 };

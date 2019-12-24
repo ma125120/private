@@ -32,7 +32,7 @@ function getMinuteNum(num) {
   let str = (num + '').split('.')[1] || '0'
   str = '0.' + str;
 
-  return Math.round(+str * 60) + '';
+  return (Math.round(+str * 60) + '').padStart(2, '0');
 }
 
 function isTestUser(user: Users) {

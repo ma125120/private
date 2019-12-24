@@ -1,10 +1,10 @@
 <template>
-  <div class="my-table--header between-center">
+  <div class="my-table--header between-center box">
     <div class="align-center">
       <el-button type="primary" @click="$router.push('/reverse')"
         >添加预约</el-button
       >
-      <div class="bj-time">北京时间13:00</div>
+      <div class="bj-time">北京时间{{time}}</div>
     </div>
     <div class="align-center">
       <el-date-picker
@@ -32,7 +32,7 @@
 <script>
 import Vue from "vue";
 import { shortcuts } from "@/util/date";
-import { now, weeks } from "@/util/date";
+import { now, weeks, getToday } from "@/util/date";
 import dayjs from "dayjs";
 import { mapState, mapActions } from 'vuex';
 
@@ -49,7 +49,11 @@ export default Vue.extend({
     // }
   },
   created() {
-    this.date1 = this.selectDay
+    this.date1 = this.selectDay;
+    this.getTime();
+  },
+  destroyed() {
+    clearInterval(this.tid);
   },
   data() {
     let disFn = (time) => {
@@ -60,6 +64,7 @@ export default Vue.extend({
 
     return {
       date1: selectDay || now,
+      time: '',
       options: {
         disabledDate: disFn,
         shortcuts
@@ -73,7 +78,13 @@ export default Vue.extend({
     },
     ...mapActions([
       'changeDay'
-    ])
+    ]),
+    getTime() {
+      this.time = getToday().hm;
+      this.tid = setInterval(() => {
+        this.time = getToday().hm;
+      }, 1000 * 60)
+    },
   },
   computed: {
     day() {
@@ -95,7 +106,7 @@ export default Vue.extend({
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .my-table--header {
-  margin: 12px;
+  margin: 12px 12px 0;
   background: #807e7d;
   padding: 8px 32px 8px 60px;
   font-size: 20px;

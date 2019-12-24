@@ -7,6 +7,7 @@
     </header>
     <MyNav></MyNav>
   </div>
+  <div class="my-header--box"></div>
 </div>
   
 </template>

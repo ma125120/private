@@ -37,7 +37,7 @@ export default class Staff extends BaseApi {
     }
   }
 
-  async isDuplicate(name, branchStoreId, companyId) {
+  async isDuplicate(name, id, branchStoreId, companyId) {
     try {
       let res = await this._query({
         clerkName: name,
@@ -45,7 +45,7 @@ export default class Staff extends BaseApi {
         branchStoreId,
       });
 
-      return res && res.length > 0;
+      return res && res.length > 0 && res.some(v => v.objectId !== id);
     } catch (err) {
       console.log(err)
     }
