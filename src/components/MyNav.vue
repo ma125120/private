@@ -5,7 +5,7 @@
       <li :class="`nav-item ${isHome ? 'nav-item--active' : ''}`" @click="$pushNamed('home')">首页</li>
       <el-dropdown :show-timeout="50">
         <span class="nav-item hover" @click="$pushNamed('room')">
-          设置<i class="el-icon-arrow-down el-icon--right" v-if="role != 1"></i>
+          设置<i class="el-icon-arrow-down el-icon--right" v-if="role != 2"></i>
         </span>
         <el-dropdown-menu slot="dropdown" v-if="role != 2">
           <el-dropdown-item 
@@ -50,6 +50,7 @@ export default Vue.extend({
     ]),
     async choose(child) {
       await this.chooseUser(child)
+      netstat -anp
       // location.reload();
     }
   },
