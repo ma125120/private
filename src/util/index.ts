@@ -55,7 +55,7 @@ export const record2form = (record = getReverseForm()) => ({
   // room: record.room && record.room.id + ""
 });
 
-export const formatRecord = (arr: any[], now = "2019-12-06 08:00", roomlist) => {
+export const formatRecord = (arr: any[], now = "2019-12-06", roomlist) => {
   if (!roomlist) return [];
 
   const rooms = new Set(roomlist.map(v => v.roomName));
@@ -66,7 +66,7 @@ export const formatRecord = (arr: any[], now = "2019-12-06 08:00", roomlist) => 
       ...v,
       top: i + 1,
       visible: false,
-      left: getDiff(v.startTime, now, 'left').per,
+      left: getDiff(v.startTime, now + ' 08:00', 'left').per,
       width: getDiff(v.endTime, v.startTime).per
     }));
     if (children.length > 0) {

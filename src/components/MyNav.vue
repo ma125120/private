@@ -50,7 +50,6 @@ export default Vue.extend({
     ]),
     async choose(child) {
       await this.chooseUser(child)
-      netstat -anp
       // location.reload();
     }
   },

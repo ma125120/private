@@ -214,19 +214,19 @@ export default Vue.extend({
         startTime: [{ required: true, message: "请选择到店时间" }],
         status: [{ required: true, message: "请选择缴费状态" }],
         payType: [{ required: true, message: "请选择付款方式" }],
-        duration: [
-          {
-            validator(rule, value, cb) {
-              if (!value || value === "0:0") {
-                cb(new Error("请选择实际时长"));
-              } else {
-                cb();
-              }
-            },
-            require: true,
-            trigger: "change"
-          }
-        ]
+        // duration: [
+        //   {
+        //     validator(rule, value, cb) {
+        //       if (!value || value === "0:0") {
+        //         cb(new Error("请选择实际时长"));
+        //       } else {
+        //         cb();
+        //       }
+        //     },
+        //     require: true,
+        //     trigger: "change"
+        //   }
+        // ]
       },
       form: { ...getActForm(), durationHour: "2", }
     };
@@ -270,6 +270,7 @@ export default Vue.extend({
       return { ...this.form };
     },
     computePay() {
+      console.log(`计算`)
       this.form.shouldPay = parseInt(this.form.roomCharge || 0) + parseInt(this.form.snackFee || 0);
     },
     save() {

@@ -31,8 +31,8 @@ export default {
   },
   watch: {
     invaildNames(val) {
-      this.show = false;
-      // this.show = !!val
+      // this.show = false;
+      this.show = !!val
     }
   },
   computed: {

@@ -32,6 +32,9 @@ export default {
       if (!state.nowUser && vaildUser) {
         store.commit('chooseUserMutation', vaildUser)
       }
+      if (!vaildUser) {
+        store.commit('logout')
+      }
       
       if (state.isHost && router.currentRoute.path === routeNames.home) {
         router.push(routeNames.workplace)

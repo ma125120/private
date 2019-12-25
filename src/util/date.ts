@@ -74,7 +74,7 @@ export const shortcuts = [
 
 export const getRange = (date) => {
   const val = date;
-  const start = val + ` 08:00:00`;
+  const start = val + ` 00:00:00`;
   const end = dayjs(val).add(1, 'day').add(8, 'hour').format(DATE_STR_DETAIL + ':ss');
 
   return [start, end]

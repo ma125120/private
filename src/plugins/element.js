@@ -88,9 +88,10 @@ Vue.prototype.$filters = {
     return row.duration || 0;
   }
 };
-Vue.filter("expire", function(val) {
-  if (val < 365) return `${val}天`;
-    return `1年`
+Vue.filter("expire", function (val) {
+  return val;
+  // if (val < 365) return `${val}天`;
+  //   return `1年`
 });
 Vue.filter("clerkType", function(val) {
   const types = {

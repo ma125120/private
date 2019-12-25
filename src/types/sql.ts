@@ -14,10 +14,10 @@ const roles = {
 
 export const over2time = (str = '试用30天') => {
   const obj = {
-    '已付费(季度)': [3, 'month'],
-    '已付费(半年度)': [6, 'month'],
-    '已付费(年度)': [1, 'year'],
-    '试用30天': [30, 'day'],
+    '已付费(季度)': [3, 'month', '季度'],
+    '已付费(半年度)': [6, 'month', '半年度'],
+    '已付费(年度)': [1, 'year', '年度'],
+    '试用30天': [30, 'day', '30天'],
   }
 
   return obj[str] || [];
@@ -26,6 +26,11 @@ export const over2time = (str = '试用30天') => {
 export const getOvertime = (str) => {
   const times = over2time(str);
   return dayjs().add(times[0], times[1]).format(DATE_STR_DETAIL1);
+}
+
+export const getExpire = (str) => {
+  const times = over2time(str);
+  return times && times[2] || ''
 }
 
 function getMinuteNum(num) {
@@ -51,7 +56,9 @@ export class Users {
     }
 
     const isOver = dayjs(Date.now()).isAfter(overTime);
-    obj.version = isOver ? `已到期` : obj.version;
+    obj.version = (obj.version || '').replace(/（/g, '(').replace(/）/g, ')').trim()
+    obj.expireDuration = getExpire(obj.version);
+    obj.versionStr = isOver ? `已到期` : obj.version;
     obj.versionTable = isOver ? `已到期请续费\n到期时间：\n   ${overTime.format(`YYYYMMDD`)}` : `已付费生效`;
     return obj
   }
@@ -60,6 +67,7 @@ export class Users {
   overTimeStr?: string;
   accountType?: string;
   versionTable?: string;
+  versionStr: string;
   branchStoreNames?: string[];
   // 激活时间
   createTime: string;

@@ -4,11 +4,13 @@
       <div class="bold">实际到店表</div>
       <el-button type="primary" @click="isShow = true">新增项目</el-button>
     </div>
+    <div class="no-text add-mt" v-if="acts.length === 0">暂无数据</div>
     <el-table 
       :data="acts" 
       border 
       style="width: 100%"
       :row-class-name="getRowClass"
+      empty-text="."
       @click.native="showPop()"
       @row-contextmenu="showPop"
       height="340">
@@ -89,6 +91,18 @@
         align="center"
         width="118px"
         label="付款方式"
+      ></el-table-column>
+      <el-table-column
+        prop="count"
+        align="center"
+        width="68px"
+        label="人数"
+      ></el-table-column>
+      <el-table-column
+        prop="note"
+        align="center"
+        width="288px"
+        label="房费以外的收费项目明细"
       ></el-table-column>
       <el-table-column
         fixed="right"

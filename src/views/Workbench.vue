@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     changeDate(val) {
-      const start = val + ` 08:00:00`;
+      const start = val + ` 00:00:00`;
       const end = dayjs(val).add(1, 'day').add(7, 'hour').format(DATE_STR_DETAIL + ':ss')
       
     }

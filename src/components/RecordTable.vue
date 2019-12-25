@@ -1,8 +1,10 @@
 <template>
   <div class="record--table m-table" ref="root">
+    <div class="no-text add-mt" v-if="records.length === 0">暂无数据</div>
     <el-table 
       :data="records"
       border
+      empty-text="."
       @click.native="showPop()"
       @row-contextmenu="showPop"
       style="width: 100%" height="340">

@@ -272,14 +272,5 @@ td,
 .table-note {
   font-size: 18px;
 }
-.no-text {
-  position: absolute;
-  top: 64px;
-  left: 0;
-  right: 0;
-  font-size: 20px;
-  color: #999;
-  margin: 32px;
-  // text-align: left;
-}
+
 </style>

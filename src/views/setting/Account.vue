@@ -8,7 +8,7 @@
 
         <template v-if="role !== 2">
           <template v-if="role !== 0">
-            <AccountItem label="版本状态" :value="user.version" />
+            <AccountItem label="版本状态" :value="user.versionStr" />
             <AccountItem label="有效期" :value="user.expireDuration | expire" />
             <AccountItem label="到期时间" :value="user.overTimeStr" />
           </template>
@@ -17,7 +17,7 @@
             <div v-for="child in userChildren" :key="child.objectId" class="account-child">
               <div style="margin-bottom: 32px">
                 <span>{{child.branchStoreName}}</span>
-                <span style="margin-left: 32px;">{{child.version}}</span>
+                <span style="margin-left: 32px;">{{child.versionStr}}</span>
               </div>
               <AccountItem label="有效期" :value="child.expireDuration | expire" />
               <AccountItem label="到期时间" :value="child.overTimeStr" />

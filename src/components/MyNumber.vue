@@ -3,8 +3,10 @@
     v-model="val" 
     type="text"
     min="0"
+    :disabled="disabled"
     controls-position="right" 
     @change="change"
+    @blur="blur"
   />
 </template>
 
@@ -25,6 +27,10 @@ export default Vue.extend({
     text: {
       type: String,
       default: ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     }
   },
   created() {
@@ -52,6 +58,9 @@ export default Vue.extend({
         this.val = 0
         this.$emit("change", this.val);
       }
+    },
+    blur() {
+      this.$emit('blur', this.val)
     }
   }
 });

@@ -26,7 +26,9 @@ export default Vue.extend({
     event: "change"
   },
   props: {
-    value: String,
+    value: {
+      type: String || Number
+    },
     placeholder: String,
     clearable: {
       type: Boolean,

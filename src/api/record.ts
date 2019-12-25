@@ -108,10 +108,11 @@ export default class Reservation extends BaseApi {
   }
 }
 
+// true表示冲突
 export function checkTime(arr, obj) {
   let start = dayjs(obj.startTime);
   let end = dayjs(obj.endTime);
-  // console.log(obj.startTime, obj.endTime, arr)
+  
   /*
   * 开始时间 < endTime < 结束时间
   * 开始时间 < startTime < 结束时间
@@ -121,10 +122,11 @@ export function checkTime(arr, obj) {
   .some(v => {
     let startTime = dayjs(v.startTime)
     let endTime = dayjs(v.endTime)
-
+    console.log(obj.startTime, v.startTime, obj.endTime, v.endTime)
     return (isBefore(startTime, end) && isBefore(end, endTime))
       || (isBefore(startTime, start) && isBefore(start, endTime))
       || (isBefore(startTime, start) && isBefore(end, endTime))
+    || startTime.isSame(start, 'minute') || endTime.isSame(end, 'minute')
   })
 }
 
