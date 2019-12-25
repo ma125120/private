@@ -16,7 +16,7 @@ export default {
   },
   realRecords: (state, getters) => formatRecord(state.records, state.selectDay, state.roomList),
   staffOptions: (state, getters) => 
-    state.staffList.filter(v => v.clerkType === 1).map(v => ({ ...v, name: v.objectId + ' ' + v.clerkName})),
+    state.staffList.filter(v => v.clerkType === 1).map(v => ({ ...v, name: v.clerkName})),
   staffMap: (state, getters) => arr2map(state.staffList, 'clerkName'),
   roomMap: (state, getters) => arr2map(state.roomList, 'roomName'),
   role: (state: StateType, getters) => {

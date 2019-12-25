@@ -1,8 +1,10 @@
+import { DATE_STR } from './../util/date';
 
 import router from '@/router';
 import routeNames from '@/router/name'
 // import { Notification } from 'element-ui'
 import store from '@/store'
+import dayjs from 'dayjs'
 import { Users, Reservation, Actual } from '@/types/sql'
 import { getVaildDate, composeTable } from './common'
 // import User from '@/api/user';
@@ -11,7 +13,7 @@ import { scroll5 } from '@/util'
 export default {
   saveUser(state, user) {
     if (JSON.stringify(state.user) !== JSON.stringify(user)) {
-      state.user = user;
+      state.user = new Users(user);
       localStorage.user = JSON.stringify(user);
     }
   },
@@ -51,7 +53,7 @@ export default {
     state.childAccount = children;
   },
   chooseUserMutation(state, user) {
-    state.nowUser = user;
+    state.nowUser = new Users(user);
     localStorage.nowUser = JSON.stringify(user);
     store.dispatch('getStaffList');
     store.dispatch('getRoomList');
@@ -138,6 +140,16 @@ export default {
   },
   changeDayMutation(state, time) {
     state.selectDay = time;
+  },
+  addDate(state) {
+    let time = dayjs(state.selectDay).add(1, 'day').format(DATE_STR)
+    store.dispatch(`changeDay`, time);
+    // state.selectDay = time;
+  },
+  delDate(state) {
+    let time = dayjs(state.selectDay).subtract(1, 'day').format(DATE_STR)
+    store.dispatch(`changeDay`, time);
+    // state.selectDay = time;
   },
   saveRecords(state, list) {
     state.records = list;

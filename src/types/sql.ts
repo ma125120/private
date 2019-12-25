@@ -1,3 +1,4 @@
+import { DATE_STR } from './../util/date';
 import { assign } from "./base"
 import dayjs from 'dayjs';
 import { hours, minutes, toDayjs, DATE_STR_DETAIL1 } from "@/util/date";
@@ -50,6 +51,7 @@ export class Users {
     const overTime = toDayjs(obj.overTime)
     obj.overTimeStr = overTime.format(`YYYY年M月D日H:m`);
     obj.overTime = overTime.format(`YYYY-MM-DD HH:mm`);
+    obj.createTime = obj.createTime || dayjs(Date.now()).format(DATE_STR);
     obj.accountType = roles[obj.jurisdictionType]
     if (obj.jurisdictionType !== 0) {
       obj.accountType += `：${obj.branchStoreName || obj.companyName}`

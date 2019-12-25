@@ -7,6 +7,7 @@
       <div class="bj-time">北京时间{{time}}</div>
     </div>
     <div class="align-center">
+      <div :class="`el-icon-arrow-left date-icon ${canPrev ? '' : 'dis-btn'}`" @click="del"></div>
       <el-date-picker
         v-model="date1"
         @change="changeDate"
@@ -14,11 +15,13 @@
         value-format="yyyy-MM-dd"
         align="right"
         type="date"
+        ref="date"
         placeholder="选择日期"
         :picker-options="options"
       >
       </el-date-picker>
-      <div class="bold week-day">星期{{ day }}</div>
+      <div class="el-icon-arrow-right date-icon" @click="addDate"></div>
+      <div class="bold week-day hover" @click="pickerDate">星期{{ day }}</div>
     </div>
     <div class="align-center">
       <div class="blue-block"></div>
@@ -34,7 +37,7 @@ import Vue from "vue";
 import { shortcuts } from "@/util/date";
 import { now, weeks, getToday } from "@/util/date";
 import dayjs from "dayjs";
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 
 export default Vue.extend({
   name: "TableHeader",
@@ -57,7 +60,8 @@ export default Vue.extend({
   },
   data() {
     let disFn = (time) => {
-      let nowTime = this.user && dayjs(this.user.createdAt).subtract(1, 'day').valueOf() || Date.now();
+      // let nowTime = this.nowUser && dayjs(this.nowUser.createTime).subtract(1, 'day').valueOf() || Date.now();
+      let nowTime = this.nowUser && dayjs(this.nowUser.createTime).subtract(0, 'day').valueOf() || Date.now();
       return time.getTime() < nowTime;
     }
     let selectDay = this.selectDay;
@@ -79,12 +83,24 @@ export default Vue.extend({
     ...mapActions([
       'changeDay'
     ]),
+    ...mapMutations([
+      'addDate',
+      'delDate'
+    ]),
     getTime() {
       this.time = getToday().hm;
       this.tid = setInterval(() => {
         this.time = getToday().hm;
       }, 1000 * 60)
     },
+    del() {
+      if (this.canPrev) {
+        this.delDate();
+      }
+    },
+    pickerDate() {
+      this.$refs.date.focus()
+    }
   },
   computed: {
     day() {
@@ -92,8 +108,11 @@ export default Vue.extend({
     },
     ...mapState([
       'selectDay',
-      'user'
+      'nowUser'
     ]),
+    canPrev() {
+      return dayjs(this.date1).isAfter(dayjs(this.nowUser.createTime))
+    }
   },
   watch: {
     selectDay(val) {
@@ -128,6 +147,16 @@ export default Vue.extend({
   margin: 0 12px;
 }
 .week-day {
+  margin-left: 12px;
+}
+.date-icon {
+  font-size: 28px;
+  cursor: pointer;
+}
+.el-icon-arrow-left {
+  margin-right: 12px;
+}
+.el-icon-arrow-right {
   margin-left: 12px;
 }
 </style>
