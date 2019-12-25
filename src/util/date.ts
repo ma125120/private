@@ -75,11 +75,32 @@ export const shortcuts = [
 export const getRange = (date) => {
   const val = date;
   const start = val + ` 00:00:00`;
-  const end = dayjs(val).add(1, 'day').add(8, 'hour').format(DATE_STR_DETAIL + ':ss');
+  const end = dayjs(val).add(1, 'day').format(DATE_STR_DETAIL + ':ss');
 
   return [start, end]
 }
 
 export const toDayjs = (date) => {
   return dayjs(date && date.iso ? date.iso : date)
+}
+
+export const getLastWeekRange = () => {
+  let end = dayjs();
+  let start = end.subtract(7, 'day');
+  return [start, end].map(v => v.format(DATE_STR));
+}
+export const getLastMonthRange = () => {
+  let end = dayjs();
+  let start = end.subtract(1, 'month');
+  return [start, end].map(v => v.format(DATE_STR));
+}
+export const getTodayRange = () => {
+  let end = dayjs();
+  return [end, end].map(v => v.format(DATE_STR));
+}
+
+export const isSameRange = (arr1, arr2) => {
+  if (arr1.length === 0 || arr2.length === 0) return true;
+
+  return dayjs(arr1[0]).isSame(dayjs(arr2[0]), 'day') && dayjs(arr1[1]).isSame(dayjs(arr2[1]), 'day')
 }

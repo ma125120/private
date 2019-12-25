@@ -15,7 +15,7 @@
             type="password"
             placeholder="密码"
           ></el-input>
-          <el-button type="primary" @click="login" :disabled="disabled">登录</el-button>
+          <el-button type="primary" @click="login">登录</el-button>
         </el-form>
 
         <section class="self-intro">
@@ -62,6 +62,7 @@
 // @ is an alias to /src
 import { mapActions, mapState, mapGetters, } from 'vuex'
 import AddChild from './home/AddChild'
+import { showError } from '../util';
 
 export default {
   name: "home",
@@ -83,6 +84,14 @@ export default {
   },
   methods: {
     async login() {
+      let { userName, passWord, } = this.form;
+      if (!userName) {
+        showError(`账号还未输入`, true);
+      }
+      if (!passWord) {
+        showError(`密码还未输入`, true);
+      }
+      
       try {
         let user = await this.$api.user.login(this.form.userName, this.form.passWord);
         // this.$notify.success({ title: '消息', message: '登陆成功' });

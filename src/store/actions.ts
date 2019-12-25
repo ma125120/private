@@ -223,9 +223,11 @@ export default {
   async restore({ commit, dispatch, state, }) {
     commit('restoreUser');
 
-    // setTimeout(async () => {
-    //   let user = await api.user.login(state.form.userName, this.form.passWord);
-    // }, 50);
+    setTimeout(async () => {
+      let { user, } = state;
+      let newUser = await api.user.login(user.userName, user.passWord);
+      dispatch('setUser', newUser);
+    }, 50);
   }
 }
 

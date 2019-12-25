@@ -60,6 +60,9 @@ body {
     background: #efefef;
     border-color: #efefef;
   }
+  .el-popover[role] div.popper__arrow::after {
+    display: none;
+  }
   .table-icon {
     cursor: pointer;
     width: 28px;

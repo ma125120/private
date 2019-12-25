@@ -171,7 +171,7 @@ export default {
       let isShow = evt !== undefined;
       if (evt) {
         const { clientX, clientY } = evt;
-        this.x = clientX;
+        this.x = clientX + 32;
         this.y = clientY;
       }
 

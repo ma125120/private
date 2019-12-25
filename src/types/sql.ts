@@ -205,6 +205,7 @@ export const actStatusMap = arr2map(actStatus, 'name', 'id');
 export class Actual {
   constructor(data: any = {}) {
     const obj = assign(this, data) as Actual;
+    obj.statusStr = actStatusMap[obj.status] || '';
     obj.startTime = toDay(obj.startTime);
     obj.endTime = toDay(obj.endTime);
     let _start = dayjs(obj.startTime);
@@ -219,6 +220,7 @@ export class Actual {
     obj.payTypeStr = obj.payType.map(v => payMap[v]).join(' ')
     return obj
   }
+  
   id: string;
   startHour: string;
   startMinute: string;
@@ -226,6 +228,7 @@ export class Actual {
   durationMinute: string;
   endHour: string;
   endMinute: string;
+  statusStr: string;
   payTypeStr: string;
   // 房间id
   roomId: string;

@@ -30,7 +30,7 @@ const state: StateType = {
     },
     {
       text: '数据导出',
-      name: 'export',
+      name: 'excel',
     },
   ],
 

@@ -8,6 +8,7 @@ const routes = {
   account: '/setting/account',
   child: '/setting/child',
   shop: '/setting/shop',
+  excel: '/setting/excel',
   childEdit: '/setting/child/edit',
   childNew: '/setting/child/new',
   actAdd: "/workplace/act/add",

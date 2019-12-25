@@ -12,6 +12,6 @@ new Vue({
   store,
   render: h => h(App),
   created() {
-    // this.$store.commit('restoreUser')
+    this.$store.dispatch('restore')
   }
 }).$mount("#app");

@@ -1,5 +1,5 @@
 <template>
-  <div class="act--table m-table" ref="root" style="width: 100%; height: 100%">
+  <div class="act--table m-table" ref="root" style="width: 100%; height: 100%;min-height: 340px;">
     <div class="table-header align-center">
       <div class="bold">实际到店表</div>
       <el-button type="primary" @click="isShow = true">新增项目</el-button>
@@ -14,7 +14,7 @@
       @click.native="showPop()"
       @row-contextmenu="showPop"
       >
-      <el-table-column label="" align="center" width="118px" fixed="left">
+      <el-table-column label="" align="center" width="80px" fixed="left">
         <div slot-scope="{ row, $index }" class="align-center">
           <template v-if="$index !== acts.length - 1">
             {{ $index + 1 }}
@@ -57,7 +57,7 @@
         width="118px"
         label="缴费状态"
       >
-        <div slot-scope="{ row }">
+        <div slot-scope="{ row }" :class="`${row.status === 2 ? 'red-text' : ''}`">
           {{ row.status | payStatus }}
         </div>
       </el-table-column>
@@ -108,6 +108,12 @@
         align="center"
         width="288px"
         label="房费以外的收费项目明细"
+      ></el-table-column>
+      <el-table-column
+        prop="staffName"
+        align="center"
+        width="288px"
+        label="员工"
       ></el-table-column>
       <el-table-column
         fixed="right"
@@ -189,6 +195,7 @@ export default Vue.extend({
     edit(obj) {
       this.isShow = true;
       this.obj = obj;
+      this.visible = false;
     },
     getRowClass({row, rowIndex}) {
       if (row.objectId === this.activeId) {
@@ -197,7 +204,7 @@ export default Vue.extend({
       return ''
     },
     showPop(row, column, evt) {
-      if (!row) {
+      if (!row || !row.objectId) {
         this.obj = null;
         this.visible = false;
         return ;
@@ -209,7 +216,7 @@ export default Vue.extend({
       }
       if (evt) {
         const { clientX, clientY } = evt;
-        this.x = clientX;
+        this.x = clientX + 32;
         this.y = clientY;
       }
 
@@ -248,7 +255,7 @@ export default Vue.extend({
 .edit-icon {
   width: 24px;
   padding-left: 12px;
-  margin-top: -4px;
+  margin-top: 0px;
   cursor: pointer;
 }
 .act--table {

@@ -26,6 +26,8 @@ import {
   Dialog,
   Loading,
   Notification,
+  Radio,
+  RadioGroup,
   DatePicker
 } from "element-ui";
 import dayjs from "dayjs";
@@ -36,6 +38,8 @@ import camelCase from "lodash/camelCase";
 import "./http";
 import "../styles/var.scss";
 
+Vue.use(Radio);
+Vue.use(RadioGroup);
 Vue.use(InputNumber);
 Vue.use(CheckboxButton);
 Vue.use(Button);

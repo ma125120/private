@@ -4,14 +4,16 @@ import routeNames from '@/router/name'
 // import { Notification } from 'element-ui'
 import store from '@/store'
 import { Users, Reservation, Actual } from '@/types/sql'
-import { getVaildDate } from './common'
+import { getVaildDate, composeTable } from './common'
 // import User from '@/api/user';
 import { scroll5 } from '@/util'
 
 export default {
   saveUser(state, user) {
-    state.user = user;
-    localStorage.user = JSON.stringify(user);
+    if (JSON.stringify(state.user) !== JSON.stringify(user)) {
+      state.user = user;
+      localStorage.user = JSON.stringify(user);
+    }
   },
   restoreUser(state) {
     if (state.nowUser && state.user) return ;
@@ -142,15 +144,8 @@ export default {
     scroll5(`record--table`, list.length, state.selectDay);
   },
   saveActs(state, list) {
-    let obj = {
-      startTime: '',
-      endTime: '',
-    };
     let fields = ['roomCharge', 'snackFee', 'shouldPay', 'discount', 'actMoney']
-    fields.map(key => {
-      obj[key] = list.reduce((prev, next) => prev + (next[key] || 0), 0)
-    })
-    list.push(obj)
+    list = composeTable(list, fields)
 
     state.acts = list;
     scroll5(`act--table`, list.length, state.selectDay);

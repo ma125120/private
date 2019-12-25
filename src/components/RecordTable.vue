@@ -67,7 +67,7 @@
         prop="staffName"
         align="center"
         width="208px"
-        label="预定员工"
+        label="预订员工"
       ></el-table-column>
     </el-table>
 

@@ -37,6 +37,13 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/setting/Room.vue")
   },
   {
+    path: "/setting/excel",
+    name: "excel",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/setting/Excel.vue")
+  },
+  
+  {
     path: "/setting/account",
     name: "account",
     component: () =>
@@ -107,7 +114,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  store.dispatch('restore');
+  store.commit('restoreUser');
   if (!needNotLogin.includes(to.path)) {
     let user = store.state.user;
     if (user && user.objectId) {
