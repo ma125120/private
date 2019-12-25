@@ -142,6 +142,16 @@ export default {
     scroll5(`record--table`, list.length, state.selectDay);
   },
   saveActs(state, list) {
+    let obj = {
+      startTime: '',
+      endTime: '',
+    };
+    let fields = ['roomCharge', 'snackFee', 'shouldPay', 'discount', 'actMoney']
+    fields.map(key => {
+      obj[key] = list.reduce((prev, next) => prev + (next[key] || 0), 0)
+    })
+    list.push(obj)
+
     state.acts = list;
     scroll5(`act--table`, list.length, state.selectDay);
   }

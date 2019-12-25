@@ -80,6 +80,7 @@ Vue.use(Loading.directive);
 Vue.prototype.$loading = Loading.service;
 
 Vue.filter("time", date => {
+  if (!date) return ''
   return dayjs(date).format("H:mm");
 });
 

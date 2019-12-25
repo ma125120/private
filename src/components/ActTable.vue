@@ -1,5 +1,5 @@
 <template>
-  <div class="act--table m-table" ref="root">
+  <div class="act--table m-table" ref="root" style="width: 100%; height: 100%">
     <div class="table-header align-center">
       <div class="bold">实际到店表</div>
       <el-button type="primary" @click="isShow = true">新增项目</el-button>
@@ -8,16 +8,21 @@
     <el-table 
       :data="acts" 
       border 
-      style="width: 100%"
+      style="width: 100%;"
       :row-class-name="getRowClass"
       empty-text="."
       @click.native="showPop()"
       @row-contextmenu="showPop"
-      height="340">
+      >
       <el-table-column label="" align="center" width="118px" fixed="left">
         <div slot-scope="{ row, $index }" class="align-center">
-          {{ $index + 1 }}
-          <img src="img/edit.png" alt="" class="edit-icon" @click="edit(row)" />
+          <template v-if="$index !== acts.length - 1">
+            {{ $index + 1 }}
+            <img src="img/edit.png" alt="" class="edit-icon" @click="edit(row)" />
+          </template>
+          <template v-else>
+            金额总计
+          </template>
         </div>
       </el-table-column>
       <el-table-column
