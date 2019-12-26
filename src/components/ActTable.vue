@@ -13,7 +13,8 @@
       empty-text="."
       @click.native="showPop()"
       @row-contextmenu="showPop"
-      >
+      :height="340"
+    >
       <el-table-column label="" align="center" width="80px" fixed="left">
         <div slot-scope="{ row, $index }" class="align-center">
           <template v-if="$index !== acts.length - 1">

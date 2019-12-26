@@ -6,7 +6,7 @@
     :disabled="disabled"
     controls-position="right" 
     @change="change"
-    @blur="blur"
+    @input="input"
   />
 </template>
 
@@ -28,6 +28,10 @@ export default Vue.extend({
       type: String,
       default: ''
     },
+    name: {
+      type: String,
+      default: ''
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -41,6 +45,12 @@ export default Vue.extend({
       this.$emit("change", val || 0);
     },
     value(val) {
+      if (val < 0) {
+        this.$nerror(`${this.text}必须大于0`);
+        this.val = 0;
+        return ;
+      }
+      
       this.val = val || 0;
     }
   },
@@ -59,8 +69,9 @@ export default Vue.extend({
         this.$emit("change", this.val);
       }
     },
-    blur() {
-      this.$emit('blur', this.val)
+    input(val) {
+      let { name } = this;
+      this.$emit('input', val, name, name === 'roomCharge' ? 'snackFee' : 'roomCharge')
     }
   }
 });

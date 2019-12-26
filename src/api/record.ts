@@ -9,7 +9,7 @@ export default class Reservation extends BaseApi {
   sort = 'createdAt'
   tableName = 'FXZ_Reservation';
   timeFields = ['startTime', 'endTime'];
-  omitFields = ['startHour', 'startMinute', 'durationHour', 'durationMinute', 'passWord1', 'oldPassword', 'names']
+  omitFields = ['startHour', 'startMinute', 'start', 'end', 'durationHour', 'durationMinute', 'passWord1', 'oldPassword', 'names']
 
   async getList(superId, parentId, startTime, endTime) {
     try {
@@ -105,6 +105,7 @@ export default class Reservation extends BaseApi {
       Message({ message: `保存失败，此房间该时间段已有预约项目，请修改`, type: 'error' })
       throw new Error('保存失败，此房间该时间段已有预约项目，请修改');
     }
+    // throw new Error()
   }
 }
 
@@ -112,18 +113,24 @@ export default class Reservation extends BaseApi {
 export function checkTime(arr, obj) {
   let start = dayjs(obj.startTime);
   let end = dayjs(obj.endTime);
+  /**
+   * 结束在start之后
+   * 开始在end之前
+   * 开始在start之后 结束在start之前
+   */
   
   /*
   * 开始时间 < endTime < 结束时间
   * 开始时间 < startTime < 结束时间
   * 开始时间 < startTime && endTime < 结束时间
    */
+
   return arr.filter(v => v.objectId !== obj.objectId)
   .some(v => {
     let startTime = dayjs(v.startTime)
     let endTime = dayjs(v.endTime)
-    console.log(obj.startTime, v.startTime, obj.endTime, v.endTime)
-    return (isBefore(startTime, end) && isBefore(end, endTime))
+
+    return (isBefore(endTime, start) && isBefore(end, endTime))
       || (isBefore(startTime, start) && isBefore(start, endTime))
       || (isBefore(startTime, start) && isBefore(end, endTime))
     || startTime.isSame(start, 'minute') || endTime.isSame(end, 'minute')
@@ -133,3 +140,7 @@ export function checkTime(arr, obj) {
 function isBefore(date1, date2) {
   return date1.diff(date2) < 0;
 }
+function isAfter(date1, date2) {
+  return date1.diff(date2) > 0;
+}
+

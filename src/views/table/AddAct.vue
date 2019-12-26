@@ -93,7 +93,8 @@
             style="width: 290px"
             controls-position="right"
             v-model="form.roomCharge"
-            @blur="computePay"
+            name="roomCharge"
+            @input="computePay"
             text="房间费"
             placeholder="仅限阿拉伯数字输入"
           ></MyNumber><span class="ml">元</span>
@@ -103,7 +104,8 @@
             style="width: 290px"
             v-model="form.snackFee"
             controls-position="right"
-            @blur="computePay"
+            @input="computePay"
+            name="snackFee"
             text="小吃费"
             placeholder="仅限阿拉伯数字输入"
           ></MyNumber><span class="ml">元</span>
@@ -123,6 +125,7 @@
             style="width: 290px"
             v-model="form.discount"
             controls-position="right"
+            @input="computeAct"
             text="优惠金额"
             placeholder="仅限阿拉伯数字输入"
           ></MyNumber><span class="ml">元</span>
@@ -132,6 +135,7 @@
             style="width: 290px"
             v-model="form.actMoney"
             controls-position="right"
+            @input="computeDiscount"
             text="实收总金额"
             placeholder="仅限阿拉伯数字输入"
           ></MyNumber><span class="ml">元</span>
@@ -269,9 +273,15 @@ export default Vue.extend({
       
       return { ...this.form };
     },
-    computePay() {
-      console.log(`计算`)
-      this.form.shouldPay = parseInt(this.form.roomCharge || 0) + parseInt(this.form.snackFee || 0);
+    computePay(val, name, otherName) {
+      this.form.shouldPay = parseInt(val || 0) + parseInt(this.form[otherName] || 0);
+      this.computeAct(this.form.discount)
+    },
+    computeDiscount(val) {
+      this.form.discount = val - this.form.shouldPay;
+    },
+    computeAct(val) {
+      this.form.actMoney = this.form.shouldPay - val;
     },
     save() {
       const form = this.getRealForm();

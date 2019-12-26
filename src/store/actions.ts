@@ -4,7 +4,7 @@ import api from '@/api'
 // import router from '@/router';
 import { Message } from 'element-ui'
 import dayjs from 'dayjs';
-import { DATE_STR_DETAIL, getToday } from '../util/date';
+import { DATE_STR_DETAIL, getToday, getRange } from '../util/date';
 
 export default {
   async setUser({ commit, dispatch, }, user: Users) {
@@ -45,6 +45,8 @@ export default {
   },
   async chooseUser({ commit, dispatch, state, }, user) {
     commit(`chooseUserMutation`, user);
+
+    dispatch('getAllRecords')
   },
   async add_staff({ commit, dispatch, state, }, obj) {
     let name = obj.clerkName;
@@ -87,7 +89,7 @@ export default {
     validateDuplicate(isDuplicate, `修改失败，房间名必须和已创建的房间名不同`)
 
     let room = {
-      companyId: state.user.objectId,
+      companyId: state.nowUser.companyId,
       branchStoreId: state.nowUser.objectId,
       roomName: name,
     }
@@ -115,7 +117,10 @@ export default {
     commit('saveRoomList', list);
   },
   async getRoomList({ commit, state, }) {
-    let list = await api.room.getList(state.nowUser.objectId, state.nowUser.companyId);
+    let branchStoreId = state.nowUser.objectId;
+    if (!branchStoreId) return ;
+
+    let list = await api.room.getList(branchStoreId, state.nowUser.companyId);
     commit('saveRoomList', list);
   },
 
@@ -207,15 +212,17 @@ export default {
   },
   async getRecords({ commit, dispatch, state, }) {
     const val = state.selectDay;
-    const start = val + ` 00:00:00`;
-    const end = dayjs(val).add(1, 'day').format(DATE_STR_DETAIL + ':ss');
+    const [start, end] = getRange(val);
+    // const start = val + ` 00:00:00`;
+    // const end = dayjs(val).add(1, 'day').format(DATE_STR_DETAIL + ':ss');
     const list = await api.record.getList(state.nowUser.companyId, state.nowUser.objectId, start, end)
     commit('saveRecords', list)
   },
   async getActs({ commit, dispatch, state, }) {
     const val = state.selectDay;
-    const start = val + ` 00:00:00`;
-    const end = dayjs(val).add(1, 'day').format(DATE_STR_DETAIL + ':ss');
+    const [start, end] = getRange(val);
+    // const start = val + ` 00:00:00`;
+    // const end = dayjs(val).add(1, 'day').format(DATE_STR_DETAIL + ':ss');
     const list = await api.act.getList(state.nowUser.companyId, state.nowUser.objectId, start, end)
     commit('saveActs', list)
   },
@@ -225,8 +232,13 @@ export default {
 
     setTimeout(async () => {
       let { user, } = state;
+      if (!user) return;
       let newUser = await api.user.login(user.userName, user.passWord);
       dispatch('setUser', newUser);
+
+      // let { nowUser, } = state;
+      // let nowNewUser = await api.user.login(nowUser.nowUserName, user.passWord);
+      // commit('chooseUser_', nowNewUser)
     }, 50);
   }
 }

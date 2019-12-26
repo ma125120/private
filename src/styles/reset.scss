@@ -93,9 +93,11 @@ body {
     }
   }
   .btn-groups .el-button--primary.is-plain {
+    color: $color !important;
     background: #fff;
     border: 1px solid $color;
-    &:hover {
+    &:hover,
+    &:active {
       color: $color;
     }
   }

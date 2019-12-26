@@ -51,7 +51,7 @@ export class Users {
     const overTime = toDayjs(obj.overTime)
     obj.overTimeStr = overTime.format(`YYYY年M月D日H:m`);
     obj.overTime = overTime.format(`YYYY-MM-DD HH:mm`);
-    obj.createTime = obj.createTime || dayjs(Date.now()).format(DATE_STR);
+    obj.createTime = toDayjs(obj.createTime || Date.now()).format(DATE_STR);
     obj.accountType = roles[obj.jurisdictionType]
     if (obj.jurisdictionType !== 0) {
       obj.accountType += `：${obj.branchStoreName || obj.companyName}`
@@ -147,8 +147,8 @@ const toDay = (str) => {
 export class Reservation {
   constructor(data: any = {}) {
     const obj = assign(this, data) as Reservation;
-    obj.startTime = toDay(obj.startTime)
-    obj.endTime = toDay(obj.endTime)
+    obj.startTime = toDay(obj.startTime);
+    obj.endTime = toDay(obj.endTime);
     let _start = dayjs(obj.startTime)
     let _end = dayjs(obj.endTime)
     obj.startDate = _start.format(`YYYY-MM-DD`);
@@ -166,6 +166,8 @@ export class Reservation {
   durationMinute = minutes[0].id;
 
   id: string;
+  // start: string;
+  // end: string;
   // 房间id
   roomId: string;
   // 到店时间

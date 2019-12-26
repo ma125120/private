@@ -60,8 +60,8 @@ export default Vue.extend({
   },
   data() {
     let disFn = (time) => {
-      // let nowTime = this.nowUser && dayjs(this.nowUser.createTime).subtract(1, 'day').valueOf() || Date.now();
-      let nowTime = this.nowUser && dayjs(this.nowUser.createTime).subtract(0, 'day').valueOf() || Date.now();
+      let nowTime = this.nowUser && dayjs(this.nowUser.createTime).subtract(1, 'day').valueOf() || Date.now();
+      // let nowTime = this.nowUser && dayjs(this.nowUser.createTime).subtract(0, 'day').valueOf() || Date.now();
       return time.getTime() < nowTime;
     }
     let selectDay = this.selectDay;
@@ -111,7 +111,7 @@ export default Vue.extend({
       'nowUser'
     ]),
     canPrev() {
-      return dayjs(this.date1).isAfter(dayjs(this.nowUser.createTime))
+      return dayjs(this.date1).isAfter(dayjs(this.nowUser.createTime).subtract(1, 'day'))
     }
   },
   watch: {

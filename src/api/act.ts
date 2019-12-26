@@ -9,7 +9,7 @@ export default class Act extends BaseApi {
   sort = 'createdAt'
   tableName = 'FXZ_Actual';
   timeFields = ['startTime', 'endTime', '', ''];
-  omitFields = ['startHour', 'payTypeStr', 'statusStr', 'startMinute', 'durationHour', 'durationMinute', 'endHour', 'endMinute', 'passWord1', 'oldPassword', 'names']
+  omitFields = ['startHour', 'start', 'end', 'payTypeStr', 'statusStr', 'startMinute', 'durationHour', 'durationMinute', 'endHour', 'endMinute', 'passWord1', 'oldPassword', 'names']
 
   async getList(superId, parentId, startTime, endTime) {
     try {

@@ -3,6 +3,7 @@ import { formatRecord } from "@/util/index";
 export const arr2map = (arr, label, id = 'objectId') => arr.reduce((prev, next) => (prev[next[id]] = next[label], prev), {})
 import { getVaildDate, getInvaildDate, } from './common'
 
+
 export default {
   showChildren: (state, getters) => state.userChildren.filter(getVaildDate),
   invaildUsers: (state, getters) => state.userChildren.filter(getInvaildDate),
@@ -14,6 +15,7 @@ export default {
       return prev;
     }, {})
   },
+  // realActs: (state) => state.acts.filter(filterToday),
   realRecords: (state, getters) => formatRecord(state.records, state.selectDay, state.roomList),
   staffOptions: (state, getters) => 
     state.staffList.filter(v => v.clerkType === 1).map(v => ({ ...v, name: v.clerkName})),

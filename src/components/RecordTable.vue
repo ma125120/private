@@ -130,7 +130,10 @@ export default Vue.extend({
     ]),
     ...mapState([
       'records'
-    ])
+    ]),
+    activeId() {
+      return this.obj && this.obj.objectId;
+    }
   },
   methods: {
     ...mapActions([

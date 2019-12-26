@@ -3,30 +3,35 @@
     <MyHeader></MyHeader>
     <div class="add-reverse">
       <div class="fix-place"></div>
-      <div class="add-fix align-center">
-        <h3 class="add-title">预约信息</h3>
-        <div class="btn-groups">
-          <el-button type="primary" @click="save">保存</el-button>
-          <el-popconfirm
-            class="pd-btn"
-            title="退出后，已编辑的信息将被删除"
-            @onConfirm="$pushNamed('workplace')"
-          >
-            <el-button type="primary" plain slot="reference"
-              >返回到工作台</el-button
+      
+      <div class="add-fix">
+        <div style="width: 100%;height: 10px; background: #f0efef"></div>
+        <div class="align-center">
+          <h3 class="add-title">预约信息</h3>
+          <div class="btn-groups">
+            <el-button type="primary" @click="save">保存</el-button>
+            <el-popconfirm
+              class="pd-btn"
+              title="退出后，已编辑的信息将被删除"
+              @onConfirm="$pushNamed('workplace')"
             >
-          </el-popconfirm>
+              <el-button type="primary" plain slot="reference"
+                >返回到工作台</el-button
+              >
+            </el-popconfirm>
 
-          <el-button
-            type="primary"
-            plain
-            icon="el-icon-delete"
-            v-if="$route.query.id"
-            @click="dialogVisible = true"
-            >删除本条预约记录</el-button
-          >
+            <el-button
+              type="primary"
+              plain
+              icon="el-icon-delete"
+              v-if="$route.query.id"
+              @click="dialogVisible = true"
+              >删除本条预约记录</el-button
+            >
+          </div>
         </div>
       </div>
+      
       <el-form
         ref="form"
         class="my-form"
@@ -120,7 +125,7 @@
     <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
       <span>退出后，已编辑的信息将被删除</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="$router.push('/')">取 消</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="del">确 定</el-button>
       </span>
     </el-dialog>
@@ -189,6 +194,7 @@ export default Vue.extend({
   methods: {
     ...mapActions([
       'addRecord',
+      'delRecord',
     ]),
     async fetchData() {
       const { id } = this.$route.query;
@@ -241,7 +247,7 @@ export default Vue.extend({
       this.dialogVisible = true;
     },
     async del() {
-      await this.delRecord(this.obj);
+      await this.delRecord(this.form);
       this.$pushNamed('workplace')
     }
   },
@@ -283,7 +289,7 @@ export default Vue.extend({
   padding: 20px 0;
   border-bottom: 5px solid #bbb;
   position: fixed;
-  top: 95px;
+  top: 70px;
   left: 70px;
   right: 70px;
   background: #f0efef;

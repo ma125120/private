@@ -1,9 +1,10 @@
 import { isSameDate } from './date';
 // import { Room, Staff, Record } from "@/types/index";
-import { getDiff, now, hours, minutes } from "./date";
+import { getDiff, now, hours, minutes, toDayDiff, filterToday } from "./date";
 import { Message } from 'element-ui'
 // import { rooms, staffes } from "./mock";
 import router from '@/router'
+import dayjs from 'dayjs';
 export const arr2map = (arr, label, id = 'objectId') => arr.reduce((prev, next) => (prev[next[id]] = next[label], prev), {})
 
 export const records = [];
@@ -57,6 +58,11 @@ export const record2form = (record = getReverseForm()) => ({
 
 export const formatRecord = (arr: any[], now = "2019-12-06", roomlist) => {
   if (!roomlist) return [];
+  const nextDay = dayjs(now).add(1, 'day')
+  if (arr && arr.length > 0) {
+    arr.filter(v => filterToday(v, now)).forEach(v => toDayDiff(v, now));
+  }
+  
 
   const rooms = new Set(roomlist.map(v => v.roomName));
   let results = [];
@@ -66,8 +72,8 @@ export const formatRecord = (arr: any[], now = "2019-12-06", roomlist) => {
       ...v,
       top: i + 1,
       visible: false,
-      left: getDiff(v.startTime, now + ' 08:00', 'left').per,
-      width: getDiff(v.endTime, v.startTime).per
+      left: getDiff(v.start, now + ' 08:00', 'left').per,
+      width: getDiff(v.end, v.start).per
     }));
     if (children.length > 0) {
       results.push({ roomName: room, roomId: children[0].roomId, children });

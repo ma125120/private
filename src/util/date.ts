@@ -74,8 +74,9 @@ export const shortcuts = [
 
 export const getRange = (date) => {
   const val = date;
-  const start = val + ` 00:00:00`;
-  const end = dayjs(val).add(1, 'day').format(DATE_STR_DETAIL + ':ss');
+  const start = toDayjs(val + ` 00:00:00`).subtract(1, 'day').format(DATE_STR_DETAIL + ':ss');
+  // console.log(start)
+  const end = toDayjs(val).add(1, 'day').add(23, 'hour').add(59, 'minute').format(DATE_STR_DETAIL + ':ss');
 
   return [start, end]
 }
@@ -103,4 +104,28 @@ export const isSameRange = (arr1, arr2) => {
   if (arr1.length === 0 || arr2.length === 0) return true;
 
   return dayjs(arr1[0]).isSame(dayjs(arr2[0]), 'day') && dayjs(arr1[1]).isSame(dayjs(arr2[1]), 'day')
+}
+
+export const toDayDiff = (item, now) =>  {
+  now = dayjs(now);
+
+  if (dayjs(item.startTime).isBefore(now)) {
+    item.start = now.format(DATE_STR) + ` 00:00`;
+  } else {
+    item.start = item.startTime;
+  }
+
+  if (dayjs(item.endTime).isAfter(now.add(1, 'day'))) {
+    item.end = now.format(DATE_STR) + ` 23:59`;
+  } else {
+    item.end = item.endTime;
+  }
+}
+
+export const filterToday = (item, now) => {
+  now = dayjs(now)
+  const tomorrow = now.add(1, 'day');
+  const yestorday = now.subtract(1, 'day')
+  
+  return !(item.objectId && dayjs(item.endTime).isBefore(now) || dayjs(item.startTime).isAfter(tomorrow))
 }
