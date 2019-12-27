@@ -2,14 +2,14 @@ import Bmob from "@/plugins/bmob/Bmob-2.2.1.min.js";
 import { Reservation as ReservationClass } from '@/types/sql'
 import BaseApi from './base'
 import { Message } from 'element-ui';
-import { getRange } from '@/util/date'
+import { getRange, toDayjs, DATE_STR } from '@/util/date'
 import dayjs from 'dayjs';
 
 export default class Reservation extends BaseApi {
   sort = 'createdAt'
   tableName = 'FXZ_Reservation';
   timeFields = ['startTime', 'endTime'];
-  omitFields = ['startHour', 'startMinute', 'start', 'end', 'durationHour', 'durationMinute', 'passWord1', 'oldPassword', 'names']
+  omitFields = ['startHour', 'startMinute', 'durationStr', 'start', 'end', 'durationHour', 'durationMinute', 'passWord1', 'oldPassword', 'names']
 
   async getList(superId, parentId, startTime, endTime) {
     try {
@@ -99,7 +99,7 @@ export default class Reservation extends BaseApi {
       [`startTime`, '>=', start,],
       [`endTime`, '<=', end,]
     ]);
-    res = res.map(v => new ReservationClass(v))
+    res = res.map(v => new ReservationClass(v)).filter(v => v.objectId !== obj.objectId)
 
     if (res && res.length > 0 && checkTime(res, obj)) {
       Message({ message: `保存失败，此房间该时间段已有预约项目，请修改`, type: 'error' })
@@ -109,38 +109,54 @@ export default class Reservation extends BaseApi {
   }
 }
 
-// true表示冲突
 export function checkTime(arr, obj) {
-  let start = dayjs(obj.startTime);
-  let end = dayjs(obj.endTime);
-  /**
-   * 结束在start之后
-   * 开始在end之前
-   * 开始在start之后 结束在start之前
-   */
+  let start = toDayjs(obj.startTime);
+  let end = toDayjs(obj.endTime);
+
+  return arr.some(v => {
+      let startTime = toDayjs(v.startTime)
+      let endTime = toDayjs(v.endTime)
+
+      return !(endTime.isBefore(start)
+      || startTime.isAfter(end)
+      || (startTime.isSame(end, 'hour') && startTime.isSame(end, 'minute'))
+      || (endTime.isSame(start, 'hour') && endTime.isSame(start, 'minute'))
+      )
+    })
+}
+
+// // true表示冲突
+// export function checkTime(arr, obj) {
+//   let start = dayjs(obj.startTime);
+//   let end = dayjs(obj.endTime);
+//   /**
+//    * 结束在start之后
+//    * 开始在end之前
+//    * 开始在start之后 结束在start之前
+//    */
   
-  /*
-  * 开始时间 < endTime < 结束时间
-  * 开始时间 < startTime < 结束时间
-  * 开始时间 < startTime && endTime < 结束时间
-   */
+//   /*
+//   * 开始时间 < endTime < 结束时间
+//   * 开始时间 < startTime < 结束时间
+//   * 开始时间 < startTime && endTime < 结束时间
+//    */
 
-  return arr.filter(v => v.objectId !== obj.objectId)
-  .some(v => {
-    let startTime = dayjs(v.startTime)
-    let endTime = dayjs(v.endTime)
+//   return arr.filter(v => v.objectId !== obj.objectId)
+//   .some(v => {
+//     let startTime = dayjs(v.startTime)
+//     let endTime = dayjs(v.endTime)
 
-    return (isBefore(endTime, start) && isBefore(end, endTime))
-      || (isBefore(startTime, start) && isBefore(start, endTime))
-      || (isBefore(startTime, start) && isBefore(end, endTime))
-    || startTime.isSame(start, 'minute') || endTime.isSame(end, 'minute')
-  })
-}
+//     return (isBefore(endTime, start) && isBefore(end, endTime))
+//       || (isBefore(startTime, start) && isBefore(start, endTime))
+//       || (isBefore(startTime, start) && isBefore(end, endTime))
+//     || startTime.isSame(start, 'minute') || endTime.isSame(end, 'minute')
+//   })
+// }
 
-function isBefore(date1, date2) {
-  return date1.diff(date2) < 0;
-}
-function isAfter(date1, date2) {
-  return date1.diff(date2) > 0;
-}
+// function isBefore(date1, date2) {
+//   return date1.diff(date2) < 0;
+// }
+// function isAfter(date1, date2) {
+//   return date1.diff(date2) > 0;
+// }
 

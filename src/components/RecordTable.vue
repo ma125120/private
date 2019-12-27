@@ -6,8 +6,11 @@
       border
       empty-text="."
       @click.native="showPop()"
+      :row-class-name="getRowClass"
       @row-contextmenu="showPop"
-      style="width: 100%" height="340">
+      style="width: 100%" 
+      :height="this.$route.path === '/work/record' ? height1 : height"
+    >
       <el-table-column label="预约 记录表" width="60px" align="center" fixed="left">
         <div slot-scope="{ row, $index }" class="all-center">
           {{ $index + 1 }}
@@ -41,7 +44,7 @@
         align="center"
         :formatter="$filters.duration"
         width="118px"
-        label="预计时长/h"
+        label="预计时长"
       ></el-table-column>
       <el-table-column
         prop="endTime"
@@ -60,7 +63,6 @@
       <el-table-column
         prop="note"
         align="center"
-        width="208px"
         label="备注"
       ></el-table-column>
       <el-table-column
@@ -103,6 +105,7 @@ import { records, formatRecord } from "@/util/index";
 import dayjs from "dayjs";
 import { mapGetters, mapState, mapActions } from 'vuex';
 let nowDate = dayjs(Date.now());
+const height1 = (window.innerHeight - 74 - 72 - 76)
 
 export default Vue.extend({
   name: "RecordTable",
@@ -122,6 +125,8 @@ export default Vue.extend({
       obj: null,
       x: 0,
       y: 0,
+      height: 340, 
+      height1,
     };
   },
   computed: {
@@ -139,6 +144,12 @@ export default Vue.extend({
     ...mapActions([
       'delRecord',
     ]),
+    getRowClass({row, rowIndex}) {
+      if (row.objectId === this.activeId) {
+        return 'green-border'
+      }
+      return ''
+    },
     showPop(row, column, evt) {
       if (!row) {
         this.obj = null;

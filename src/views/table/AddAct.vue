@@ -94,6 +94,7 @@
             controls-position="right"
             v-model="form.roomCharge"
             name="roomCharge"
+            isFee
             @input="computePay"
             text="房间费"
             placeholder="仅限阿拉伯数字输入"
@@ -107,6 +108,7 @@
             @input="computePay"
             name="snackFee"
             text="小吃费"
+            isFee
             placeholder="仅限阿拉伯数字输入"
           ></MyNumber><span class="ml">元</span>
         </el-form-item>
@@ -117,6 +119,7 @@
             controls-position="right"
             disabled
             text="应收总金额"
+            isFee
             placeholder="仅限阿拉伯数字输入"
           ></MyNumber><span class="ml">元</span>
         </el-form-item>
@@ -127,6 +130,7 @@
             controls-position="right"
             @input="computeAct"
             text="优惠金额"
+            isFee
             placeholder="仅限阿拉伯数字输入"
           ></MyNumber><span class="ml">元</span>
         </el-form-item>
@@ -137,10 +141,11 @@
             controls-position="right"
             @input="computeDiscount"
             text="实收总金额"
+            isFee
             placeholder="仅限阿拉伯数字输入"
           ></MyNumber><span class="ml">元</span>
         </el-form-item>
-        <el-form-item label="付款方式">
+        <el-form-item label="付款方式(可多选)">
           <MyCheckbox
             v-model="form.payType"
             type="button" 

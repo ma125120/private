@@ -13,7 +13,7 @@
       empty-text="."
       @click.native="showPop()"
       @row-contextmenu="showPop"
-      :height="340"
+      :height="this.$route.path === '/work/act' ? height1 : height"
     >
       <el-table-column label="" align="center" width="80px" fixed="left">
         <div slot-scope="{ row, $index }" class="align-center">
@@ -42,6 +42,12 @@
           {{ row.startTime | time }}
         </div>
       </el-table-column>
+      <el-table-column
+        prop="duration"
+        align="center"
+        width="118px"
+        label="实际时长"
+      ></el-table-column>
       <el-table-column
         prop="startTime"
         align="center"
@@ -116,13 +122,7 @@
         width="288px"
         label="员工"
       ></el-table-column>
-      <el-table-column
-        fixed="right"
-        prop="duration"
-        align="center"
-        width="118px"
-        label="实际时长/h"
-      ></el-table-column>
+      
       <!-- <el-table-column prop="" align="center" label="其他">
         <div slot-scope="{ row }">{{ row.endTime | time }}</div>
       </el-table-column> -->
@@ -162,6 +162,8 @@ import AddAct from '@/views/table/AddAct';
 import { mapState, mapActions } from 'vuex';
 
 let nowDate = dayjs(Date.now());
+const height1 = (window.innerHeight - 74 - 72 - 76)
+const height = (window.innerHeight - 74 - 72 - 422)
 
 export default Vue.extend({
   name: "ActTable",
@@ -169,10 +171,8 @@ export default Vue.extend({
   props: {
     now: String
   },
-  mounted() {
-    // setTimeout(() => {
-    //   this.$refs.root.querySelector(".el-table__body-wrapper").scrollLeft = 120
-    // }, 100)
+  created() {
+    this.getHeight();
   },
   data() {
     return {
@@ -181,6 +181,8 @@ export default Vue.extend({
       obj: null,
       x: 0,
       y: 0,
+      height,
+      height1,
       tableData: [],
     };
   },
@@ -193,6 +195,9 @@ export default Vue.extend({
     }
   },
   methods: {
+    getHeight() {
+
+    },
     edit(obj) {
       this.isShow = true;
       this.obj = obj;

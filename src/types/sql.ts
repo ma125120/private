@@ -156,6 +156,7 @@ export class Reservation {
     obj.startMinute = _start.format(`mm`);
     obj.durationHour = Math.floor(obj.duration) + '';
     obj.durationMinute = getMinuteNum(obj.duration);
+    obj.durationStr = obj.durationHour + 'h' + +obj.durationMinute + 'min'
     return obj
   }
   
@@ -164,6 +165,7 @@ export class Reservation {
   startMinute = "00";
   durationHour = hours[0].id;
   durationMinute = minutes[0].id;
+  durationStr: string;
 
   id: string;
   // start: string;
@@ -222,6 +224,7 @@ export class Actual {
     obj.durationHour = Math.floor(obj.duration) + '';
     obj.durationMinute = getMinuteNum(obj.duration);
     obj.payTypeStr = obj.payType.map(v => payMap[v]).join(' ')
+    obj.durationStr = obj.durationHour + 'h' + +obj.durationMinute + 'min'
     return obj
   }
   
@@ -234,6 +237,7 @@ export class Actual {
   endMinute: string;
   statusStr: string;
   payTypeStr: string;
+  durationStr: string;
   // 房间id
   roomId: string;
   // 到店时间

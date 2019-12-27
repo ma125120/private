@@ -60,6 +60,11 @@ body {
     background: #efefef;
     border-color: #efefef;
   }
+  // .el-popper[x-placement^=bottom],
+  // .el-popover[role] .el-popconfirm div.popper__arrow::after {
+  //   background: #fff;
+  //   border-color: #fff;
+  // }
   .el-popover[role] div.popper__arrow::after {
     display: none;
   }
@@ -167,9 +172,11 @@ body {
 /* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background: $--color-primary;
+  background: #bbb;
+  // background: $--color-primary;
 }
 
 ::-webkit-scrollbar-thumb:window-inactive {
-  background: $--color-primary;
+  background: #bbb;
+  // background: $--color-primary;
 }

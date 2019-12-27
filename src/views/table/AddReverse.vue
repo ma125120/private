@@ -13,11 +13,10 @@
             <el-popconfirm
               class="pd-btn"
               title="退出后，已编辑的信息将被删除"
+              style="background: red"
               @onConfirm="$pushNamed('workplace')"
             >
-              <el-button type="primary" plain slot="reference"
-                >返回到工作台</el-button
-              >
+              <el-button type="primary" plain slot="reference" @click="setWhite">返回到工作台</el-button>
             </el-popconfirm>
 
             <el-button
@@ -109,12 +108,13 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="顾客手机号" prop="mobile">
-          <el-input
+          <MyNumber
             style="width: 290px"
             v-model="form.mobile"
-            maxlength="11"
+            :maxlength="11"
+            text="手机号"
             placeholder="点击输入阿拉伯数字"
-          ></el-input>
+          ></MyNumber>
         </el-form-item>
         <el-form-item label="员工" prop="staff">
           <MySelect v-model="form.staffId" :options="staffOptions" placeholder="请选择员工"></MySelect>
@@ -132,7 +132,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue";
 import { now, hoursWith0, hours, minutesWith0, minutes, DATE_STR_DETAIL } from "@/util/date";
 import { rooms, staffes } from "@/util/mock";
@@ -191,11 +191,18 @@ export default Vue.extend({
   created() {
     this.fetchData();
   },
+  mounted() {
+
+  },
   methods: {
     ...mapActions([
       'addRecord',
       'delRecord',
     ]),
+    setWhite() {
+      const el = document.querySelector("body div.el-popover")
+      el.style.background = "#fff"
+    },
     async fetchData() {
       const { id } = this.$route.query;
       if (id) {
@@ -219,7 +226,7 @@ export default Vue.extend({
           const form = this.getRealForm();
           await this.addRecord(form);
 
-          this.$pushNamed('workplace');
+          this.$router.back();
         } else {
           this.$errorForm(params);
         }
@@ -328,5 +335,12 @@ export default Vue.extend({
 }
 .select-label {
   padding: 0 12px 0 6px;
+}
+</style>
+
+<style lang="scss">
+body div.el-popover {
+  background: #fff;
+  border-color: #fff;
 }
 </style>

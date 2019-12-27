@@ -27,7 +27,7 @@
               <div class="table-note">
                 <div>顾客电话：{{ child.mobile }}</div>
                 <div>到店时间：{{ child.startTime | time }}</div>
-                <div>时长：{{ child.duration }}h</div>
+                <div>时长：{{ child.durationStr }}</div>
                 <div>离店时间：{{ child.endTime | time }}</div>
                 <div v-if="child.note">备注：{{ child.note }}</div>
               </div>

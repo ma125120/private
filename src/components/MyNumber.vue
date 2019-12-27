@@ -3,6 +3,7 @@
     v-model="val" 
     type="text"
     min="0"
+    :maxlength="maxlength"
     :disabled="disabled"
     controls-position="right" 
     @change="change"
@@ -22,7 +23,7 @@ export default Vue.extend({
   props: {
     value: {
       type: Number | String,
-      default: 0,
+      default: '',
     },
     text: {
       type: String,
@@ -35,14 +36,22 @@ export default Vue.extend({
     disabled: {
       type: Boolean,
       default: false,
-    }
+    },
+    isFee: {
+      type: Boolean,
+      default: false,
+    },
+    maxlength: {
+      type: Number,
+      default: -1,
+    },
   },
   created() {
-    this.val = +(this.value) || 0;
+    this.val = +(this.value) || '';
   },
   watch: {
     val(val) {
-      this.$emit("change", val || 0);
+      this.$emit("change", val || '');
     },
     value(val) {
       if (val < 0) {
@@ -51,7 +60,7 @@ export default Vue.extend({
         return ;
       }
       
-      this.val = val || 0;
+      this.val = val || '';
     }
   },
   data() {
@@ -61,18 +70,33 @@ export default Vue.extend({
   },
   methods: {
     change(val) {
-      if (val >= 0) {
+      let reg = /^\d+$/g;
+      if (this.isFee) {
+        reg = /^[\d\.]+$/g;
+      }
+      if (reg.test(val)) {
         this.$emit("change", val || 0);
       } else {
-        this.$nerror(`${this.text}只能输入数字`);
-        this.val = 0
+        this.$nerror(`输入失败, ${this.text}只能输入数字${this.isFee ? '和点号' : ''}`);
+        this.val = ''
         this.$emit("change", this.val);
       }
     },
     input(val) {
+      let reg = /^\d+$/g;
+      if (this.isFee) {
+        reg = /^[\d\.]+$/g;
+      }
+      if (reg.test(val)) {
+
+      } else {
+        this.$nerror(`输入失败, ${this.text}只能输入数字${this.isFee ? '和点号' : ''}`);
+        this.val = val.slice(0, -1)
+      }
+
       let { name } = this;
       this.$emit('input', val, name, name === 'roomCharge' ? 'snackFee' : 'roomCharge')
-    }
+    },
   }
 });
 </script>

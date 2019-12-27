@@ -67,7 +67,7 @@ export default Vue.extend({
     let selectDay = this.selectDay;
 
     return {
-      date1: selectDay || now,
+      date1: selectDay,
       time: '',
       options: {
         disabledDate: disFn,

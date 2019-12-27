@@ -37,13 +37,14 @@
           </header>
           <main class="intro-main">
             <ul class="intro-ul left-pad">
-              <li class="intro-item">1、美团点评店铺整店装修（文案卖点提炼+图片设计）</li>
-              <li class="intro-item">2、推广通日常维护、开关、出价，评论回复（此服务包月托管）​</li>
+              <li class="intro-item">1、美团点评店铺整店装修（文案卖点提炼+图片设计，增加销售转化率）</li>
+              <li class="intro-item">2、推广通托管，降低推广通日均花费，降不下来全额退款。（尤其适合一二线城市竞价激烈、日均推广通花费较大的店，尤其餐饮、私人影院， 我们曾做过一个日均花费1100的饭店托管后日均花费降到了800元，每月推广通成本节省了9000元左右， 本服务包季）</li>
               <li class="intro-item">
                 <div>3、竞品调研+定位策划</div>
                 <div>附近3公里竞品做详细调研，包括竞品的产品价格体系、定位卖点等，然后映如给予店铺差异化定位方案、产品体系建议。美团点评做差异化定位包装（在激烈竞争的环境下，准确的好定位是制胜秘诀，它意味着精准抓目标用户、高转化竞争力，开业前必做，能指导准确的房间主题装修定位。）</div>
               </li>
-              <li class="intro-item">4、映如 美团点评运营顾问（包季）</li>
+              <li class="intro-item">4、映如美团点评运营企业培训（一次性）、运营顾问（包月）</li>
+              <li class="intro-item">5、以上服务不局限于私人影院，适用美团点评所有行业</li>
             </ul>
             <div class="flex-end">
               <div class="intro-chat">详询服务 请加右侧映如微信 909903974 <i class="el-icon-d-arrow-right"></i></div>

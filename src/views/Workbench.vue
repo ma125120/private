@@ -79,3 +79,9 @@ export default {
   margin-bottom: 6px;
 }
 </style>
+<style lang="scss">
+body div.el-popover {
+  background: #ddd;
+  border-color: #ddd;
+}
+</style>

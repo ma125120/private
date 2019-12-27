@@ -105,8 +105,12 @@ export async function scroll5(name, len, date) {
   }
 }
 
+let ins;
 export const showError = (text, needThrow = false) => {
-  Message({
+  if (ins) {
+    ins.close();
+  }
+  ins = Message({
     type: "error",
     message: text
   });
