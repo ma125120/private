@@ -42,7 +42,7 @@ function getMinuteNum(num) {
 }
 
 function isTestUser(user: Users) {
-  return user.expireDuration === 30;
+  return over2time(user.version)[0] === 30;
 }
 export class Users {
   constructor(data: any = {}) {
@@ -61,11 +61,13 @@ export class Users {
     obj.version = (obj.version || '').replace(/（/g, '(').replace(/）/g, ')').trim()
     obj.expireDuration = getExpire(obj.version);
     obj.versionStr = isOver ? `已到期` : obj.version;
+    obj.isTest = isTestUser(obj);
     obj.versionTable = isOver ? `已到期请续费\n到期时间：\n   ${overTime.format(`YYYYMMDD`)}` : `已付费生效`;
     return obj
   }
 
   objectId: string;
+  isTest: boolean = false;
   overTimeStr?: string;
   accountType?: string;
   versionTable?: string;

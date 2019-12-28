@@ -14,9 +14,11 @@ export default {
   async selectChildren({ commit, dispatch, }, user: Users) {
     if (user.jurisdictionType === 0) {
       let children = await api.user.findChildren(user.objectId);
+      commit('getSysMsgs', children)
       commit('saveChildren', children);
     } else {
       commit('chooseUserMutation', user);
+      commit('getSysMsgs', [user])
     }
   },
   async addEndUser({ commit, dispatch, state, }, { form, isFirst }) {

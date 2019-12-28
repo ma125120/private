@@ -1,5 +1,6 @@
 const routes = {
   home: '/',
+  msg: '/msg',
   addReverse: '/reverse',
   workplace: '/workplace',
   work: '/workplace',

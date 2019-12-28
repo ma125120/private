@@ -14,6 +14,13 @@ const routes = [
     component: Home
   },
   {
+    path: "/msg",
+    name: "msg",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/home/SysMsgPage.vue")
+  },
+  
+  {
     path: "/workplace",
     name: "workplace",
     component: () =>

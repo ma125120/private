@@ -19,3 +19,15 @@
     padding-top: 48px;
   }
 }
+
+@media (max-width: 1550px) {
+  body {
+    .self-img {
+      margin-bottom: 16px;;
+    }
+    .intro-top {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}
