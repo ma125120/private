@@ -17,25 +17,22 @@
         </div>
       </div>
     </div>
+
+    <NewUser></NewUser>
   </div>
 </template>
 
 <script>
 
-import ReserveTable from "@/components/ReserveTable";
-import ActTable from "@/components/ActTable";
-import RecordTable from "@/components/RecordTable";
-import TableHeader from "@/components/TableHeader";
+import NewUser from "@/views/work/NewUser";
+
 import dayjs from 'dayjs';
 import { DATE_STR_DETAIL } from '../util/date';
 
 export default {
   name: "home",
   components: {
-    ReserveTable,
-    ActTable,
-    RecordTable,
-    TableHeader
+    NewUser,
   },
   data() {
     return {

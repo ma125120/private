@@ -11,13 +11,25 @@ export default {
     commit('saveUser', user);
     dispatch('selectChildren', user);
   },
+  async skipTeach({ commit, dispatch, state, }) {
+    const user = state.user;
+    if (!user) return ;
+
+    user.isFirst = false;
+    await api.user.edit(user);
+  },
   async selectChildren({ commit, dispatch, }, user: Users) {
     if (user.jurisdictionType === 0) {
       let children = await api.user.findChildren(user.objectId);
       commit('getSysMsgs', children)
       commit('saveChildren', children);
     } else {
-      commit('chooseUserMutation', user);
+      commit('saveChildren', [user])
+      // commit('chooseUserMutation', user);
+      if (dayjs(user.overTime).isBefore(dayjs())) {
+        // 已经过期
+        commit('logout')
+      }
       commit('getSysMsgs', [user])
     }
   },

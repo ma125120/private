@@ -3,12 +3,13 @@ import { formatRecord } from "@/util/index";
 export const arr2map = (arr, label, id = 'objectId') => arr.reduce((prev, next) => (prev[next[id]] = next[label], prev), {})
 import { getVaildDate, getInvaildDate, } from './common'
 
-
 export default {
+  isFirst: (state) => state.user && state.user.isFirst,
   showChildren: (state, getters) => state.userChildren.filter(getVaildDate),
   invaildUsers: (state, getters) => state.userChildren.filter(getInvaildDate),
   invaildNames: (state, getters) => getters.invaildUsers.map(v => v.branchStoreName).join('、'),
-  isReload: (state, getters) => getters.invaildUsers.length > 0 && getters.invaildUsers.length === state.userChildren.length,
+  isReload: (state, getters) => 
+    getters.invaildUsers.length > 0 && getters.invaildUsers.length === state.userChildren.length,
   childNames: (state) => {
     return state.userChildren.reduce((prev, next) => {
       prev[next.objectId] = next.branchStoreName;

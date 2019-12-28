@@ -57,7 +57,6 @@ export default {
     state.childAccount = children;
   },
   chooseUserMutation(state, user) {
-    console.log(`存储的user`, user)
     state.nowUser = new Users(user);
     localStorage.nowUser = JSON.stringify(new Users(user));
     store.dispatch('getStaffList');
@@ -100,6 +99,7 @@ export default {
     state.nowUser = null;
     localStorage.removeItem('user')
     localStorage.removeItem('nowUser')
+    state.sysMsgs = [];
     if (router.currentRoute.path !== routeNames.home) {
       router.replace(routeNames.home)
     }

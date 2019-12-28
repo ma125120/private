@@ -83,8 +83,10 @@ export default {
     return {
       date: this.$now,
       form: {
-        userName: '18810013034',
-        passWord: '123456',
+        userName: '',
+        passWord: '',
+        // userName: '18810013034',
+        // passWord: '123456',
       },
       show: false,
     };
@@ -107,6 +109,10 @@ export default {
         // this.$notify.success({ title: '消息', message: '登陆成功' });
         this.setUser(user)
         this.$store.commit('setLogin', true);
+        this.form = {
+          userName: '',
+          passWord: ''
+        }
       } catch(err) {
         console.log(err)
         this.$alertCb(err.msg)

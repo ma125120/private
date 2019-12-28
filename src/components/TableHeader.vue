@@ -1,6 +1,6 @@
 <template>
   <div class="my-table--header between-center box">
-    <div class="align-center">
+    <div class="align-center add-reverse-wrap">
       <el-button type="primary" @click="$router.push('/reverse')"
         >添加预约</el-button
       >
