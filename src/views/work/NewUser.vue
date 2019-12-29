@@ -181,6 +181,7 @@ export default Vue.extend({
       this.active = this.active + 1;
       if (this.active > 3) {
         this.skipTeach();
+        this.$pushNamed('room')
       }
     },
     ...mapActions([

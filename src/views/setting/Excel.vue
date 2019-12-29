@@ -76,9 +76,14 @@ export default Vue.extend({
         this.$nerror('请选择分店名称');
         return ;
       }
+      if (!range[0] || !range[1]) {
+        this.$nerror('请选择日期范围');
+        return ;
+      }
 
+      // const name = this.userChildren.find(v => v.objectId === branchStoreId).branchStoreName;
       let res = await this.$api.act.getList(this.nowUser.companyId, branchStoreId, range[0], range[1])
-      exportExcel(res, actHeader, '实际到店表', true);
+      exportExcel(res, actHeader, '实际到店表', range[0], range[1], `实际到店表`);
     },
     async exportRecord() {
       const { branchStoreId, range, } = this.form;
@@ -87,8 +92,9 @@ export default Vue.extend({
         return ;
       }
 
+      const name = this.userChildren.find(v => v.objectId === branchStoreId).branchStoreName;
       let res = await this.$api.record.getList(this.nowUser.companyId, branchStoreId, range[0], range[1])
-      exportExcel(res, recordHeader, '预约记录表', true);
+      exportExcel(res, recordHeader, '预约记录表', range[0], range[1], `预约记录表${name}`);
     },
   },
   watch: {

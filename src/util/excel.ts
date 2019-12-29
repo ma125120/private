@@ -1,14 +1,25 @@
 import XLSX from 'xlsx'
 import { showError } from './index'
+import { filterToday, } from './date'
+import dayjs from 'dayjs';
 
-export const exportExcel = (arr, headers, filename, hasIndex = true) => {
+export const exportExcel = (arr, headers, filename, startDate, endDate, text, ) => {
   if (arr.length === 0) {
     showError('数据为空，无需下载', true);
   }
 
+  const header1 = text + ' ' + dayjs(startDate).format(`YYYYMMDD`) + '-' + dayjs(endDate).format(`YYYYMMDD`)
+
   let book = XLSX.utils.book_new();
-  let sheet = XLSX.utils.aoa_to_sheet(json2arr(arr, headers, hasIndex))
-  XLSX.utils.book_append_sheet(book, sheet, '表格')
+  let date = dayjs(startDate)
+  endDate = dayjs(endDate).add(1, 'day')
+  do {
+    let sheet = XLSX.utils.aoa_to_sheet(json2arr(arr, headers, date, header1))
+    XLSX.utils.book_append_sheet(book, sheet, date.format(`YYYYMMDD`))
+
+    date = date.add(1, 'day')
+  } while (date.isBefore(endDate));
+  
   let wbout = XLSX.write(book, { bookType: 'xlsx', bookSST: true, type: 'array' });
   let blob = new Blob([wbout], { type: 'application/octet-stream' });
   download(URL.createObjectURL(blob), filename + '.xlsx')
@@ -21,24 +32,27 @@ export const download = (url, name = '1.xlsx') => {
   a.click();
 }
 
-function json2arr(arr, headers = [], hasIndex = true){
+function json2arr(arr = [], headers = [], date = dayjs(), header1){
+  const dateStr = dayjs(date).format(`YYYYMMDD`)
+  arr = arr.filter(v => filterToday(v, date)).map(v => ({ ...v, date: dateStr }));
   let res = [];
   let header = [];
-  if (hasIndex) {
-    header.push(``)
-  }
+  // if (hasIndex) {
+  //   header.push(``)
+  // }
   header = [...header, ...headers.map(v => v.name)];
 
   let nest = arr.map((v, i) => {
     let item = [];
-    if (hasIndex) {
-      item.push(i + 1)
-    }
+    // if (hasIndex) {
+    //   item.push(i + 1)
+    // }
     item = [...item, ...headers.map(({ key }) => v[key])];
     return item;
   })
 
   return [
+    [header1],
     header,
     ...nest,
   ]
@@ -69,6 +83,7 @@ export const json2table = (arr, headers = [], hasIndex = true) => {
 }
 
 export const actHeader = [
+  { name: '日期', key: 'date' },
   { name: '房间', key: 'roomName', },
   { name: '到店时间', key: 'startTime', },
   { name: '实际时长/h', key: 'duration', },
@@ -82,11 +97,12 @@ export const actHeader = [
   { name: '付款方式', key: 'payTypeStr', },
   { name: '人数', key: 'count', },
   { name: '房费以外的收费项目明细', key: 'note', },
-  { name: '员工', key: 'staffName', },
+  // { name: '员工', key: 'staffName', },
 ]
 
 export const recordHeader = [
-  { name: '房间', key: 'roomName', },
+  { name: '日期', key: 'date' },
+  { name: '房间名', key: 'roomName', },
   { name: '电话', key: 'mobile', },
   { name: '到店时间', key: 'startTime', },
   { name: '预计时长/h', key: 'duration', },
