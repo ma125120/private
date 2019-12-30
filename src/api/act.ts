@@ -12,6 +12,7 @@ export default class Act extends BaseApi {
   omitFields = ['startHour', 'start', 'end', 'durationStr', 'payTypeStr', 'statusStr', 'startMinute', 'durationHour', 'durationMinute', 'endHour', 'endMinute', 'passWord1', 'oldPassword', 'names']
 
   async getList(superId, parentId, startTime, endTime) {
+    console.log(startTime, 'start')
     try {
       let res = await this._query({
         parentId,

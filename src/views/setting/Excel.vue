@@ -37,6 +37,7 @@ import Vue from "vue";
 import { getLastWeekRange, getLastMonthRange, getTodayRange, isSameRange } from '@/util/date'
 import { mapGetters, mapState } from 'vuex';
 import { actHeader, exportExcel, recordHeader } from '../../util/excel';
+import dayjs from 'dayjs'
 
 const options = [
   { id: 1, name: '上周', range: getLastWeekRange(), },
@@ -82,7 +83,9 @@ export default Vue.extend({
       }
 
       // const name = this.userChildren.find(v => v.objectId === branchStoreId).branchStoreName;
-      let res = await this.$api.act.getList(this.nowUser.companyId, branchStoreId, range[0], range[1])
+      let res = await this.$api.act.getList(this.nowUser.companyId, branchStoreId, 
+      dayjs(range[0]).subtract(1, 'day').format(`YYYY-MM-DD`), 
+      dayjs(range[1]).add(1, 'day').format(`YYYY-MM-DD`))
       exportExcel(res, actHeader, '实际到店表', range[0], range[1], `实际到店表`);
     },
     async exportRecord() {
@@ -93,7 +96,9 @@ export default Vue.extend({
       }
 
       const name = this.userChildren.find(v => v.objectId === branchStoreId).branchStoreName;
-      let res = await this.$api.record.getList(this.nowUser.companyId, branchStoreId, range[0], range[1])
+      let res = await this.$api.record.getList(this.nowUser.companyId, branchStoreId, 
+      dayjs(range[0]).subtract(1, 'day').format(`YYYY-MM-DD`), 
+      dayjs(range[1]).add(1, 'day').format(`YYYY-MM-DD`))
       exportExcel(res, recordHeader, '预约记录表', range[0], range[1], `预约记录表${name}`);
     },
   },

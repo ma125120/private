@@ -9,8 +9,9 @@ export const toDayjs = (date) => {
 
 export const getSysMsgs = (arr = []) => {
   let res = [];
+  console.log(arr)
   arr.map(v => {
-    const end = toDayjs(v.endTime)
+    const end = toDayjs(v.overTime)
     let diff = end.diff(now, 'day');
     let expires = [30, ..._expires];
     if (v.isTest) {
@@ -27,7 +28,7 @@ export const getSysMsgs = (arr = []) => {
       }
     });
 
-    if (end.isSame(now, 'day')) {
+    if (end.diff(now, 'day') === 0) {
       res.push({
         text: getText(v.branchStoreName, 0, v.isTest),
         date: now,
