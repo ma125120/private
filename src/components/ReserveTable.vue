@@ -114,10 +114,10 @@
 import { formatRecord } from "@/util/index";
 import { mapState, mapGetters, mapActions } from 'vuex';
 
-const headers = new Array(17)
+const headers = new Array(16)
   .fill(0)
   .map((v, i) => i + 8 + ":00")
-  .concat(new Array(7).fill(0).map((v, i) => i + 1 + ":00"));
+  .concat(new Array(8).fill(0).map((v, i) => i + ":00"));
 
 export default {
   name: "ReserveTable",

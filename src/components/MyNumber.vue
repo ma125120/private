@@ -74,7 +74,7 @@ export default Vue.extend({
       if (this.isFee) {
         reg = /^[\d\.]+$/g;
       }
-      if (reg.test(val)) {
+      if (val && reg.test(val)) {
         this.$emit("change", val || 0);
       } else {
         this.$nerror(`输入失败, ${this.text}只能输入数字${this.isFee ? '和点号' : ''}`);
@@ -83,11 +83,12 @@ export default Vue.extend({
       }
     },
     input(val) {
+      val = val || '0';
       let reg = /^\d+$/g;
       if (this.isFee) {
         reg = /^[\d\.]+$/g;
       }
-      if (reg.test(val)) {
+      if (val && reg.test(val)) {
 
       } else {
         this.$nerror(`输入失败, ${this.text}只能输入数字${this.isFee ? '和点号' : ''}`);
@@ -95,7 +96,7 @@ export default Vue.extend({
       }
 
       let { name } = this;
-      this.$emit('input', val, name, name === 'roomCharge' ? 'snackFee' : 'roomCharge')
+      this.$emit('input', val || 0, name, name === 'roomCharge' ? 'snackFee' : 'roomCharge')
     },
   }
 });

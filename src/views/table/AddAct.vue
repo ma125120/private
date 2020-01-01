@@ -283,9 +283,11 @@ export default Vue.extend({
       this.computeAct(this.form.discount)
     },
     computeDiscount(val) {
+      if (!this.form.shouldPay) return ;
       this.form.discount = val - this.form.shouldPay;
     },
     computeAct(val) {
+      if (!this.form.shouldPay) return ;
       this.form.actMoney = this.form.shouldPay - val;
     },
     save() {
@@ -328,7 +330,6 @@ export default Vue.extend({
     close() {
       this.$emit('update:isShow', false);
       this.form = { ...getActForm(), durationHour: "2", };
-      console.log(this.form)
     }
   },
   watch: {

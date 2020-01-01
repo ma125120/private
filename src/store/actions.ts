@@ -72,7 +72,7 @@ export default {
 
     let staff = {
       clerkType: 1,
-      companyId: state.user.objectId,
+      companyId: state.nowUser.companyId,
       branchStoreId: state.nowUser.objectId,
       clerkName: name,
     }

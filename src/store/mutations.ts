@@ -43,7 +43,7 @@ export default {
       if (!vaildUser) {
         store.commit('logout')
       }
-      
+
       if (state.isHost && router.currentRoute.path === routeNames.home) {
         router.push(routeNames.workplace)
         store.commit('setLogin')

@@ -12,7 +12,6 @@ export default class Act extends BaseApi {
   omitFields = ['startHour', 'start', 'end', 'durationStr', 'payTypeStr', 'statusStr', 'startMinute', 'durationHour', 'durationMinute', 'endHour', 'endMinute', 'passWord1', 'oldPassword', 'names']
 
   async getList(superId, parentId, startTime, endTime) {
-    console.log(startTime, 'start')
     try {
       let res = await this._query({
         parentId,
@@ -99,7 +98,7 @@ export default class Act extends BaseApi {
       [`startTime`, '>=', start,],
       [`endTime`, '<=', end,]
     ]);
-    res = res.map(v => new ActClass(v))
+    res = res.map(v => new ActClass(v)).filter(v => v.objectId !== obj.objectId)
 
     if (res && res.length > 0 && checkTime(res, obj)) {
       Message({ message: `保存失败，此房间该时间段已有项目，请修改`, type: 'error' })

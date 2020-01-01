@@ -9,7 +9,6 @@ export const toDayjs = (date) => {
 
 export const getSysMsgs = (arr = []) => {
   let res = [];
-  console.log(arr)
   arr.map(v => {
     const end = toDayjs(v.overTime)
     let diff = end.diff(now, 'day');

@@ -24,9 +24,10 @@ export const over2time = (str = '试用30天') => {
   return obj[str] || [];
 }
 
-export const getOvertime = (str) => {
+export const getOvertime = (str, time = '') => {
   const times = over2time(str);
-  return dayjs().add(times[0], times[1]).format(DATE_STR_DETAIL1);
+  const date = time ? toDayjs(time) : dayjs()
+  return date.add(times[0], times[1]).format(DATE_STR_DETAIL1);
 }
 
 export const getExpire = (str) => {
@@ -47,7 +48,7 @@ function isTestUser(user: Users) {
 export class Users {
   constructor(data: any = {}) {
     const obj = assign(this, data) as Users;
-    // const overTime = dayjs(obj.createdAt).add(obj.expireDuration, 'day');
+    // const overTime = dayjs(getOvertime(obj.version, obj.createTime)) ;
     const overTime = toDayjs(obj.overTime)
     obj.overTimeStr = overTime.format(`YYYY年M月D日H:m`);
     obj.overTime = overTime.format(`YYYY-MM-DD HH:mm`);
