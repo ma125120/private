@@ -92,7 +92,11 @@ export default {
     };
   },
   created() {
-
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === `Enter`) {
+        this.login();
+      }
+    })
   },
   methods: {
     async login() {

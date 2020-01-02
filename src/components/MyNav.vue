@@ -4,7 +4,7 @@
       <li :class="`nav-item ${isWork ? 'nav-item--active' : ''}`" @click="$pushNamed('workplace')">工作台</li>
       <li :class="`nav-item ${isHome ? 'nav-item--active' : ''}`" @click="$pushNamed('home')">首页</li>
       <el-dropdown :show-timeout="50">
-        <span class="nav-item hover" @click="$pushNamed('room')">
+        <span class="nav-item hover" @click="$pushNamed(role === 2 ? 'account' : 'room')">
           设置<i class="el-icon-arrow-down el-icon--right" v-if="role != 2"></i>
         </span>
         <el-dropdown-menu slot="dropdown" v-if="role != 2">
@@ -26,8 +26,8 @@
             :key="child.objectId">{{child.branchStoreName}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <li :class="`nav-item hover`" @click="logout">帮助<i class="el-icon-arrow-down el-icon--right"></i></li>
-      <li :class="`nav-item`" @click="logout">退出登录</li>
+      <li :class="`nav-item hover`">帮助<i class="el-icon-arrow-down el-icon--right"></i></li>
+      <li :class="`nav-item`" @click="logout1">退出登录</li>
     </ul>
   </div>
 </template>
@@ -42,6 +42,10 @@ export default Vue.extend({
     msg: String
   },
   methods: {
+    logout1() {
+      this.logout();
+      location.reload();
+    },
     ...mapMutations([
       'logout'
     ]),

@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 
 export function getDiff(date1, date2, type = 'width') {
-  if (type === 'left' && dayjs(date1).isBefore(dayjs(date2))) {
-    date1 = dayjs(date1).add(1, 'day')
-  }
+  // if (type === 'left' && dayjs(date1).isBefore(dayjs(date2))) {
+  //   date1 = dayjs(date1).add(1, 'day')
+  // }
   let diff = dayjs(date1).diff(dayjs(date2)) / 1000;
   let hour = Math.abs(Math.floor((diff / 3600) % 24));
   let minute = Math.abs(Math.floor((diff % 3600) / 60));

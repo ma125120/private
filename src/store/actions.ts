@@ -153,7 +153,11 @@ export default {
       ...obj,
       jurisdictionType: 2,
       expireDuration: 365,
+      overTime: state.nowUser.overTime,
+      version: state.nowUser.version,
+      createTime: state.nowUser.createTime,
       companyId: state.nowUser.companyId,
+      branchStoreName: state.nowUser.branchStoreName || '',
       companyName: state.nowUser.companyName || '',
     }
 

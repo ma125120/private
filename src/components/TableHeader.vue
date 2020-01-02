@@ -1,12 +1,12 @@
 <template>
-  <div class="my-table--header between-center box">
+  <div class="my-table--header my-table--header1 between-center box">
     <div class="align-center add-reverse-wrap">
       <el-button type="primary" @click="$router.push('/reverse')"
         >添加预约</el-button
       >
       <div class="bj-time">北京时间{{time}}</div>
     </div>
-    <div class="align-center">
+    <div class="align-center md">
       <div :class="`el-icon-arrow-left date-icon ${canPrev ? '' : 'dis-btn'}`" @click="del"></div>
       <el-date-picker
         v-model="date1"

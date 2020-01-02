@@ -11,6 +11,8 @@
     </div>
     <el-input
       v-model="name"
+      :autofocus="true"
+      ref="input"
       placeholder=""
     ></el-input>
     <div class="between-center" style="margin-top: 24px;">
@@ -47,6 +49,15 @@ export default {
   watch: {
     isShow(val) {
       this.show = val;
+      
+    },
+    show(val) {
+      if (!val) return ;
+      
+      setTimeout(() => {
+        const el = document.querySelector('.my-dialog input')
+        el && el.focus();
+      }, 100)
     },
     obj(val) {
       this.name = this.obj && this.obj[this.nameField];

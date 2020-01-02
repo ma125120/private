@@ -1,3 +1,73 @@
+@media (max-width: 750px) {
+  body {
+    .home .login-form {
+      flex-direction: column;
+      & .el-input.my-input {
+        width: 80%;
+        margin-right: 0;
+        margin-bottom: 24px;;
+      }
+      & .el-input.my-input input {
+        width: 100%;
+      }
+    }
+    .home-header {
+      font-size: 18px;
+    }
+    .logo {
+      width: 92px;
+    }
+    .intro-top img.self-img {
+      width: 90%;
+      height: auto;
+      margin-right: 0;;
+    }
+    .home .self-title {
+      width: 90%;
+    }
+    .el-dialog__wrapper {
+      width: 100vw;
+    }
+    .add-dialog.el-dialog {
+      width: 90vw;
+    }
+    .all-table {
+      flex-wrap: wrap;
+    }
+    .my-header {
+      flex-wrap: wrap;
+      & .nav-item {
+        font-size: 16px;
+        margin-right: 12px;
+      }
+      & .nav-ul {
+        margin-left: 12px;
+        margin-bottom: 12px;
+      }
+    }
+    .week-day.bold {
+      font-size: 16px;
+    }
+    .reverse-table.rev-table {
+      width: 100%;
+      margin-bottom: 12px;;
+    }
+    .right-table.box {
+      width: 100%;
+      margin-left: 0;
+    }
+    div.my-table--header1.my-table--header {
+      display: block;
+      margin-top: 36px;
+      padding: 12px;
+      
+    }
+    .align-center.md {
+      margin: 12px 0;
+    }
+  }
+}
+
 @media (max-width: 1928px) {
   .home-header {
     font-size: 24px;
@@ -23,11 +93,13 @@
 @media (max-width: 1550px) {
   body {
     .self-img {
+      margin-right: 0;
       margin-bottom: 16px;;
     }
     .intro-top {
       flex-direction: column;
       align-items: center;
+      justify-content: center;
     }
   }
 }

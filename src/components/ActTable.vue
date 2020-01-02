@@ -43,7 +43,7 @@
         </div>
       </el-table-column>
       <el-table-column
-        prop="duration"
+        prop="durationStr"
         align="center"
         width="118px"
         label="实际时长"

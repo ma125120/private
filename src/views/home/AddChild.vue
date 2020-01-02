@@ -58,7 +58,10 @@ export default {
   name: "AddChild",
   props: {
     isShow: Boolean,
-    isFirst: Boolean,
+    isFirst: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     const validatePwd1 = (rule, value, cb) => {

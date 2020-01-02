@@ -39,10 +39,8 @@
         </div>
       </el-table-column>
       <el-table-column
-        
-        prop="duration"
+        prop="durationStr"
         align="center"
-        :formatter="$filters.duration"
         width="118px"
         label="预计时长"
       ></el-table-column>

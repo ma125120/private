@@ -62,7 +62,6 @@ export const formatRecord = (arr: any[], now = "2019-12-06", roomlist) => {
   if (arr && arr.length > 0) {
     arr.filter(v => filterToday(v, now)).forEach(v => toDayDiff(v, now));
   }
-  
 
   const rooms = new Set(roomlist.map(v => v.roomName));
   let results = [];
@@ -72,8 +71,8 @@ export const formatRecord = (arr: any[], now = "2019-12-06", roomlist) => {
       ...v,
       top: i + 1,
       visible: false,
-      left: getDiff(v.start, now + ' 08:00', 'left').per,
-      width: getDiff(v.end, v.start).per
+      left: getDiff(v.start, now, 'left').per,
+      width: getDiff(v.end, v.start).per,
     }));
     if (children.length > 0) {
       results.push({ roomName: room, roomId: children[0].roomId, children });

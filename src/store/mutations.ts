@@ -45,7 +45,7 @@ export default {
       }
 
       if (state.isHost && router.currentRoute.path === routeNames.home) {
-        router.push(routeNames.workplace)
+        // router.push(routeNames.workplace)
         store.commit('setLogin')
       }
     } else {
