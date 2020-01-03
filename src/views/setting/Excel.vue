@@ -38,6 +38,7 @@ import { getLastWeekRange, getLastMonthRange, getTodayRange, isSameRange } from 
 import { mapGetters, mapState } from 'vuex';
 import { actHeader, exportExcel, recordHeader } from '../../util/excel';
 import dayjs from 'dayjs'
+import { filterRecord } from '../../util';
 
 const options = [
   { id: 1, name: '上周', range: getLastWeekRange(), },
@@ -99,6 +100,7 @@ export default Vue.extend({
       let res = await this.$api.record.getList(this.nowUser.companyId, branchStoreId, 
       dayjs(range[0]).subtract(1, 'day').format(`YYYY-MM-DD`), 
       dayjs(range[1]).add(2, 'day').format(`YYYY-MM-DD`))
+      res = res.filter(v => dayjs(v.startTime).isAfter(dayjs(range[0])) && dayjs(v.startTime).isBefore(dayjs(range[1]).add(1, 'day')))
       exportExcel(res, recordHeader, '预约记录表', range[0], range[1], `预约记录表${name}`);
     },
   },

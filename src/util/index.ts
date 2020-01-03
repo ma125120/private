@@ -1,11 +1,13 @@
 import { isSameDate } from './date';
 // import { Room, Staff, Record } from "@/types/index";
-import { getDiff, now, hours, minutes, toDayDiff, filterToday } from "./date";
+import { getDiff, now, hours, minutes, toDayDiff, filterToday, toDayjs } from "./date";
 import { Message } from 'element-ui'
 // import { rooms, staffes } from "./mock";
 import router from '@/router'
 import dayjs from 'dayjs';
 export const arr2map = (arr, label, id = 'objectId') => arr.reduce((prev, next) => (prev[next[id]] = next[label], prev), {})
+
+export const filterRecord = (time) => v => toDayjs(v.startTime).isSame(dayjs(time), 'day')
 
 export const records = [];
 

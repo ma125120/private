@@ -74,6 +74,7 @@ export class Users {
   versionTable?: string;
   versionStr: string;
   branchStoreNames?: string[];
+  branchStoreIds: string[];
   // 激活时间
   createTime: string;
   // 	是否激活 （ 0未激活 1已激活 ）

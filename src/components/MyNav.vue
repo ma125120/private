@@ -7,14 +7,16 @@
         <span class="nav-item hover" @click="$pushNamed(role === 2 ? 'account' : 'room')">
           设置<i class="el-icon-arrow-down el-icon--right" v-if="role != 2"></i>
         </span>
-        <el-dropdown-menu slot="dropdown" v-if="role != 2">
-          <el-dropdown-item 
+        <el-dropdown-menu slot="dropdown">
+          <template  v-if="role != 2">
+            <el-dropdown-item 
             v-for="menu in menus"
             @click.native="$pushNamed(menu.name)" 
             :key="menu.text">{{menu.text}}</el-dropdown-item>
+          </template>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-dropdown v-if="role === 0" :show-timeout="50">
+      <el-dropdown v-if="role !== 1" :show-timeout="50">
         <span class="nav-item hover">
           账号<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
@@ -22,7 +24,7 @@
           <el-dropdown-item class="active-drop" v-if="nowUser">当前登录：{{nowUser.branchStoreName}}</el-dropdown-item>
           <el-dropdown-item 
             v-for="child in showChildren"
-            @click.native="choose(child)" 
+            @click.native="choose(child)"
             :key="child.objectId">{{child.branchStoreName}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

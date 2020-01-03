@@ -1,9 +1,13 @@
 import { StateType } from './state'
-import { formatRecord } from "@/util/index";
+import { formatRecord, filterRecord } from "@/util/index";
 export const arr2map = (arr, label, id = 'objectId') => arr.reduce((prev, next) => (prev[next[id]] = next[label], prev), {})
 import { getVaildDate, getInvaildDate, } from './common'
 
 export default {
+  parentId: (state, getters) => {
+    if (getters.role === 2) return state.nowUser.branchStoreId;
+  },
+  todayRecods: (state) => state.records.filter(filterRecord(state.selectDay)),
   isFirst: (state) => state.user && state.user.isFirst,
   showChildren: (state, getters) => state.userChildren.filter(getVaildDate),
   invaildUsers: (state, getters) => state.userChildren.filter(getInvaildDate),

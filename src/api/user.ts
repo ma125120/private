@@ -140,4 +140,11 @@ export default class User extends BaseApi {
       });
     }
   }
+
+  async findParents(ids) {
+    const query = Bmob.Query(this.tableName);
+    query.containedIn("objectId", ids);
+    const res = await query.find();
+    return res
+  }
 }

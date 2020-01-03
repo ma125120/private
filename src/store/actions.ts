@@ -23,14 +23,18 @@ export default {
       let children = await api.user.findChildren(user.objectId);
       commit('getSysMsgs', children)
       commit('saveChildren', children);
-    } else {
+    } else if (user.jurisdictionType === 1) {
       commit('saveChildren', [user])
+      
       // commit('chooseUserMutation', user);
       if (dayjs(user.overTime).isBefore(dayjs())) {
         // 已经过期
         commit('logout')
       }
       commit('getSysMsgs', [user])
+    } else {
+      let children = await api.user.findParents(user.branchStoreIds);
+      commit('saveChildren', children);
     }
   },
   async addEndUser({ commit, dispatch, state, }, { form, isFirst }) {

@@ -84,7 +84,7 @@ export default {
     state.roomList = list;
   },
   addRoomList(state, item) {
-    const list = [item, ...state.roomList,]
+    const list = [...state.roomList, item, ]
     state.roomList = list;
   },
   editRoom(state, item) {

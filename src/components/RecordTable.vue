@@ -2,7 +2,7 @@
   <div class="record--table m-table" ref="root">
     <div class="no-text add-mt" v-if="records.length === 0">暂无数据</div>
     <el-table 
-      :data="records"
+      :data="todayRecods"
       border
       empty-text="."
       @click.native="showPop()"
@@ -129,7 +129,7 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters([
-      'realRecords'
+      'todayRecods'
     ]),
     ...mapState([
       'records'
