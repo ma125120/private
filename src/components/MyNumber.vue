@@ -78,7 +78,7 @@ export default Vue.extend({
         this.$emit("change", val || 0);
       } else {
         this.$nerror(`输入失败, ${this.text}只能输入数字${this.isFee ? '和点号' : ''}`);
-        this.val = ''
+        this.val = '';
         this.$emit("change", this.val);
       }
     },
@@ -92,7 +92,9 @@ export default Vue.extend({
 
       } else {
         this.$nerror(`输入失败, ${this.text}只能输入数字${this.isFee ? '和点号' : ''}`);
-        this.val = val.slice(0, -1)
+        let  _val = val.slice(0, -1)
+        _val = _val.replace(/[^\x00-\xff]+/g, '');
+        this.val = _val;
       }
 
       let { name } = this;
