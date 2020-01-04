@@ -91,8 +91,9 @@ export const getLastWeekRange = () => {
   return [start, end].map(v => v.format(DATE_STR));
 }
 export const getLastMonthRange = () => {
-  let end = dayjs();
-  let start = end.subtract(1, 'month');
+  const month = dayjs().subtract(1, 'month');
+  let start = month.day(0);
+  let end = month.day(month.daysInMonth() - 2);
   return [start, end].map(v => v.format(DATE_STR));
 }
 export const getTodayRange = () => {

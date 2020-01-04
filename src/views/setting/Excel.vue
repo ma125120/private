@@ -20,6 +20,7 @@
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
+          :picker-options="pickerOptions"
         />
       </div>
       <div class="all-center" style="margin-top: 60px;">
@@ -45,7 +46,7 @@ const options = [
   { id: 2, name: '上个月', range: getLastMonthRange(), },
   { id: 3, name: '今天', range: getTodayRange(), },
   { id: 4, name: '自定义', range: [], },
-]
+];
 let isHost = false;
 
 export default Vue.extend({
@@ -53,14 +54,28 @@ export default Vue.extend({
   props: {
     msg: String
   },
+  created() {
+    console.log(this.form, this.userChildren[0].objectId)
+    if (!this.form.branchStoreId && this.userChildren && this.userChildren.length > 0) {
+      this.form.branchStoreId = this.userChildren[0].objectId;
+      console.log(this.form.branchStoreId, this.userChildren[0].objectId)
+    }
+  },
   data() {
+    let _this = this;
+
     return {
+      pickerOptions: {
+        disabledDate(time) {
+          return _this.startTime ? dayjs(time.getTime()).isBefore(dayjs(_this.startTime)) : false;
+        },
+      },
       options,
       rangeId: 1,
       form: {
         range: options[0].range,
         branchStoreId: '',
-      }
+      },
     }
   },
   methods: {
@@ -70,6 +85,24 @@ export default Vue.extend({
         this.rangeId = obj.id;
         isHost = true;
         setTimeout(() => isHost = false, 30)
+      }
+    },
+    changeAccount(val) {
+      const user = this.userChildren.find(v => v.objectId === val);
+      const time = dayjs(user.createTime);
+      let _options = options;
+      // 不在上个月，取0，2，3
+      if (time.isAfter(dayjs(options[1].range[1]).subtract(1, 'day'))) {
+        _options = [ options[0], ...options.slice(2) ]
+      } else if (time.isAfter(dayjs(options[0].range[1]).subtract(1, 'day'))) {
+        // 不在上周，只取2，3
+        _options = options.slice(2);
+      }
+
+      this.options = _options;
+      if (!_options.every(v => isSameRange(v.range, this.form.range))) {
+        this.form.range = _options[0].range;
+        this.rangeId = _options[0].id;
       }
     },
     async exportAct() {
@@ -111,12 +144,34 @@ export default Vue.extend({
         this.form.range = obj.range;
       }
     },
+    userChildren(children) {
+      const { branchStoreId, } = this.form;
+      if (!branchStoreId) {
+        this.form.branchStoreId = children[0].objectId;
+      }
+    },
+    'form.branchStoreId'(val, old) {
+      if (val != old) {
+        this.changeAccount(val)
+      }
+    }
   },
   computed: {
     ...mapState([
       'userChildren',
       'nowUser',
-    ])
+    ]),
+    currentUser() {
+      return this.userChildren.find(v => v.objectId === this.form.branchStoreId)
+    },
+    startTime() {
+      const user = this.currentUser;
+      if (user) {
+        return user.createTime
+      }
+
+      return undefined;
+    }
   }
 });
 </script>
