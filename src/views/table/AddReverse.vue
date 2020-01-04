@@ -140,6 +140,7 @@ import { records, record2form, getReverseForm } from "@/util/index";
 import dayjs from "dayjs";
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import { validateNum } from '@/util/rule'
+import validateRoom from './rule'
 
 export default Vue.extend({
   name: "HelloWorld",
@@ -219,6 +220,7 @@ export default Vue.extend({
       this.duration = this.durationHour + ":" + this.durationMinute;
     },
     save() {
+      validateRoom(this.form, this.roomList);
       validateNum(this.form);
 
       this.$refs.form.validate(async (vaild, params) => {

@@ -59,6 +59,9 @@ export default {
     let user = await api.user.saveChild(data);
     Message({ message: `${form.objectId ? '编辑' : '激活'}成功`, type: 'success' })
     dispatch('selectChildren', state.user)
+    if (isFirst) {
+      api.user.increment(state.user);
+    }
     // api.user.increment(state.user);
   },
   async chooseUser({ commit, dispatch, state, }, user) {

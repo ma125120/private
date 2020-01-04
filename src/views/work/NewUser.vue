@@ -92,12 +92,16 @@
           <li class="new-li">指引完毕，请先去“设置”里完成“房间管理”，这样才能添加预约信息</li>
         </ul>
         <div class="flex-end">
-          <div class="new-btn" @click="next">去“房间管理”</div>
+          <div class="align-center">
+            <div class="text-btn" @click="close">知道了</div>
+            <div class="new-btn" @click="next" v-if="role !== 2">去“房间管理”</div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="new-dialog" v-if="active <= 3"></div>
+    <!-- <div class="new-dialog can" v-else @click="close"></div> -->
   </div>
 </template>
 
@@ -145,9 +149,14 @@ export default Vue.extend({
   computed: {
     ...mapGetters([
       'isFirst',
+      'role'
     ]),
   },
   methods: {
+    close() {
+      this.skipTeach();
+      this.active = this.active + 1;
+    },
     getPos() {
       setTimeout(() => {
         this.getPos0();
@@ -231,5 +240,18 @@ export default Vue.extend({
   bottom: 0;
   z-index: 9;
   pointer-events: all;
+  &.can {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+}
+.text-btn {
+  line-height: 50px;
+  margin-top: 12px;
+  margin-right: 12px;
+  border: 1px solid #fff;
+  padding: 0 24px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 </style>

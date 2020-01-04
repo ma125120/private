@@ -197,6 +197,7 @@ import dayjs from "dayjs";
 import { actStatus, payTypes } from '@/types/sql'
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import { validateNum } from '@/util/rule'
+import validateRoom from './rule'
 
 export default Vue.extend({
   name: "AddAct",
@@ -223,19 +224,6 @@ export default Vue.extend({
         startTime: [{ required: true, message: "请选择到店时间" }],
         status: [{ required: true, message: "请选择缴费状态" }],
         payType: [{ required: true, message: "请选择付款方式" }],
-        // duration: [
-        //   {
-        //     validator(rule, value, cb) {
-        //       if (!value || value === "0:0") {
-        //         cb(new Error("请选择实际时长"));
-        //       } else {
-        //         cb();
-        //       }
-        //     },
-        //     require: true,
-        //     trigger: "change"
-        //   }
-        // ]
       },
       form: { ...getActForm(), durationHour: "2", }
     };
@@ -292,7 +280,8 @@ export default Vue.extend({
     },
     save() {
       const form = this.getRealForm();
-      validateNum(form)
+      validateRoom(form, this.roomList);
+      validateNum(form);
       this.$refs.dForm.validate(async (vaild, params) => {
         if (vaild) {
           // const form = this.getRealForm();
