@@ -3,7 +3,6 @@ import { DATE_STR } from './../util/date';
 import router from '@/router';
 import routeNames from '@/router/name'
 import { getSysMsgs } from './sys'
-// import { Notification } from 'element-ui'
 import store from '@/store'
 import dayjs from 'dayjs'
 import { Users, Reservation, Actual } from '@/types/sql'

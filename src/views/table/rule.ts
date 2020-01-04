@@ -1,4 +1,4 @@
-import { Notification } from 'element-ui'
+
 import { showError } from '@/util';
 
 export default function validateRoom(form, arr = []) {

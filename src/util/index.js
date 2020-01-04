@@ -1,8 +1,8 @@
 import { isSameDate } from './date';
 // import { Room, Staff, Record } from "@/types/index";
 import { getDiff, now, hours, minutes, toDayDiff, filterToday, toDayjs } from "./date";
-import { Message } from 'element-ui'
-// import { rooms, staffes } from "./mock";
+
+const { Message } = ELEMENT
 import router from '@/router'
 import dayjs from 'dayjs';
 export const arr2map = (arr, label, id = 'objectId') => arr.reduce((prev, next) => (prev[next[id]] = next[label], prev), {})
@@ -58,7 +58,7 @@ export const record2form = (record = getReverseForm()) => ({
   // room: record.room && record.room.id + ""
 });
 
-export const formatRecord = (arr: any[], now = "2019-12-06", roomlist) => {
+export const formatRecord = (arr, now = "2019-12-06", roomlist) => {
   if (!roomlist) return [];
   const nextDay = dayjs(now).add(1, 'day')
   if (arr && arr.length > 0) {

@@ -1,3 +1,4 @@
+
 module.exports = {
   productionSourceMap: false,
   publicPath: "./",
@@ -8,5 +9,24 @@ module.exports = {
         prependData: `@import "@/styles/global.scss";`
       }
     }
-  }
+  },
+  configureWebpack: () => {
+    const plugins = [];
+    
+    return {
+      externals: {
+        "vue": "Vue",
+        "element-ui": "ELEMENT"
+      },
+    };
+  },
+  chainWebpack: config => {
+		//*//
+    if (process.env.NODE_DEV === 'production') {
+      config
+        .plugin("webpack-bundle-analyzer")
+        .use(require("webpack-bundle-analyzer").BundleAnalyzerPlugin);
+    }
+		
+	},
 };

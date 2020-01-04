@@ -86,8 +86,8 @@ export const toDayjs = (date) => {
 }
 
 export const getLastWeekRange = () => {
-  let end = dayjs();
-  let start = end.subtract(7, 'day');
+  let end = dayjs().subtract(7, 'day');
+  let start = dayjs().subtract(14, 'day');
   return [start, end].map(v => v.format(DATE_STR));
 }
 export const getLastMonthRange = () => {

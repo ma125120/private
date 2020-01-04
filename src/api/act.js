@@ -1,7 +1,7 @@
 import Bmob from "@/plugins/bmob/Bmob-2.2.1.min.js";
 import { Actual as ActClass } from '@/types/sql'
 import BaseApi from './base'
-import { Message } from 'element-ui';
+const { Message } = ELEMENT
 import { checkTime } from './record'
 import { getRange } from '@/util/date'
 

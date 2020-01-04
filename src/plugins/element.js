@@ -3,33 +3,6 @@ import routeNames from "@/router/name";
 import { actStatusMap } from "@/types/sql";
 import { showError } from '@/util'
 
-import {
-  Button,
-  Popover,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  Popconfirm,
-  Table,
-  TableColumn,
-  MessageBox,
-  Message,
-  Checkbox,
-  CheckboxGroup,
-  CheckboxButton,
-  Form,
-  InputNumber,
-  FormItem,
-  Select,
-  Option,
-  Input,
-  Dialog,
-  Loading,
-  Notification,
-  Radio,
-  RadioGroup,
-  DatePicker
-} from "element-ui";
 import dayjs from "dayjs";
 import { now } from "@/util/date";
 import upperFirst from "lodash/upperFirst";
@@ -38,35 +11,12 @@ import camelCase from "lodash/camelCase";
 import "./http";
 import "../styles/var.scss";
 
-Vue.use(Radio);
-Vue.use(RadioGroup);
-Vue.use(InputNumber);
-Vue.use(CheckboxButton);
-Vue.use(Button);
-Vue.use(Popover);
-Vue.use(CheckboxGroup);
-Vue.use(Checkbox);
-Vue.use(Popconfirm);
-Vue.use(Table);
-Vue.use(TableColumn);
-Vue.use(DatePicker);
-Vue.use(Form);
-Vue.use(FormItem);
-Vue.use(Select);
-Vue.use(Input);
-Vue.use(Option);
-Vue.use(Dialog);
-Vue.use(Dropdown);
-Vue.use(DropdownItem);
-Vue.use(DropdownMenu);
-
-Vue.prototype.$message = Message;
-(Vue.prototype.$notify = Notification);
+Vue.use(ELEMENT);
+console.log(ELEMENT);
 
 Vue.prototype.$nerror = showError;
 
-Vue.prototype.$msgbox = MessageBox;
-Vue.prototype.$alert = MessageBox.alert;
+const { Message, MessageBox } = ELEMENT;
 Vue.prototype.$alertCb = function(text, callback) {
   return MessageBox.alert(text, "", {
     confirmButtonText: "知道了",
@@ -77,11 +27,6 @@ Vue.prototype.$errorForm = function(params) {
   const msg = params[Object.keys(params)[0]][0].message;
   Message.error(msg);
 };
-
-Vue.prototype.$confirm = MessageBox.confirm;
-Vue.use(Loading.directive);
-
-Vue.prototype.$loading = Loading.service;
 
 Vue.filter("time", date => {
   if (!date) return ''

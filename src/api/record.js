@@ -1,7 +1,7 @@
 import Bmob from "@/plugins/bmob/Bmob-2.2.1.min.js";
 import { Reservation as ReservationClass } from '@/types/sql'
 import BaseApi from './base'
-import { Message } from 'element-ui';
+const { Message } = ELEMENT
 import { getRange, toDayjs, DATE_STR } from '@/util/date'
 import dayjs from 'dayjs';
 

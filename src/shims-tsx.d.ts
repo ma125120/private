@@ -1,5 +1,6 @@
 import Vue, { VNode } from "vue";
 
+declare var ELEMENT
 declare global {
   namespace Bomb {
     

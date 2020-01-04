@@ -2,12 +2,12 @@ import { Users, getOvertime } from '@/types/sql'
 import api from '@/api'
 
 // import router from '@/router';
-import { Message } from 'element-ui'
+const { Message } = ELEMENT
 import dayjs from 'dayjs';
 import { DATE_STR_DETAIL, getToday, getRange } from '../util/date';
 
 export default {
-  async setUser({ commit, dispatch, }, user: Users) {
+  async setUser({ commit, dispatch, }, user) {
     commit('saveUser', user);
     dispatch('selectChildren', user);
   },
@@ -18,7 +18,7 @@ export default {
     user.isFirst = false;
     await api.user.edit(user);
   },
-  async selectChildren({ commit, dispatch, }, user: Users) {
+  async selectChildren({ commit, dispatch, }, user) {
     if (user.jurisdictionType === 0) {
       let children = await api.user.findChildren(user.objectId);
       commit('getSysMsgs', children)
