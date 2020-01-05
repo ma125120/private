@@ -22,7 +22,7 @@ export const getSysMsgs = (arr = []) => {
         res.push({
           text: getText(v.branchStoreName, count, v.isTest),
           date: end.subtract(count, "day"),
-          time: end.subtract(count, "day").format(`YYYYMMDD`)
+          time: end.subtract(count, "day").format(`YYYY年MM月DD日`)
         });
       }
     });
@@ -31,7 +31,7 @@ export const getSysMsgs = (arr = []) => {
       res.push({
         text: getText(v.branchStoreName, 0, v.isTest),
         date: end,
-        time: end.format(`YYYYMMDD`)
+        time: end.format(`YYYY年MM月DD日`)
       });
     }
   });
