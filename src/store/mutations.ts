@@ -30,8 +30,8 @@ export default {
     }
   },
   saveChildren(state, _children) {
-    let children = _children.map(v => new Users(v));
-    state.userChildren = children.filter(v => v.isActivation === 1);
+    let children = _children.map(v => new Users(v)).filter(v => v.isActivation === 1);
+    state.userChildren = children;
     if (children.length > 0) {
       state.isShowAddChild = false;
       const vaildUser = children.find(getVaildDate)
@@ -49,6 +49,7 @@ export default {
       }
     } else {
       state.isShowAddChild = true;
+      router.push('/')
     }
   },
   saveChildAccount(state, _children) {

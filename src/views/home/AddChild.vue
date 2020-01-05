@@ -26,16 +26,16 @@
       <el-form-item label="账号" prop="userName">
         <el-input
           v-model="form.userName"
-          placeholder="请输入4-12个英文字母（数字或英文字母）"
+          :placeholder="`${isFirst ? '请输入4-12个英文字母（数字或英文字母）' : '请输入客服给你创建的账号名'}`"
         ></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="passWord">
         <el-input
           v-model="form.passWord"
-          placeholder="请输入6-12个字符（数字或英文字母）"
+          :placeholder="`${isFirst ? '请输入6-12个字符（数字或英文字母）' : '请输入客服给你创建的密码'}`"
         ></el-input>
       </el-form-item>
-      <el-form-item label="确认密码" prop="passWord1">
+      <el-form-item label="确认密码" prop="passWord1" v-if="isFirst">
         <el-input
           v-model="form.passWord1"
           placeholder="请输入6-12个字符（数字或英文字母）"
@@ -64,6 +64,9 @@ export default {
     },
   },
   data() {
+    const _this = this;
+    let rules;
+    
     const validatePwd1 = (rule, value, cb) => {
       // eslint-disabled
       if (value != this.form.passWord) {
@@ -74,6 +77,68 @@ export default {
         validateLen(value, `确认密码`, cb, 6, 12)
       }
     }
+
+    const branchStoreName = [
+      { required: true, message: "分店店名还没有填写" },
+      {
+        validator(rule, value, cb) {
+          if (!/^[\w\u4e00-\u9fa5]+$/g.test(value)) {
+            cb(new Error('保存失败，账号只能由中英文、数字、字母构成'));
+          } else {
+            validateLen(value, `分店店名`, cb, 2, 12)
+          }
+        },
+      },
+    ]
+    const userName = [
+      { required: true, message: "账号还没有填写" },
+    ]
+    const passWord = [
+      { required: true, message: "密码还没有填写" },
+    ]
+    const passWord1 = [
+      { required: true, message: "确认密码还没有填写" },
+      {
+        validator: validatePwd1,
+        trigger: 'change',
+      },
+    ]
+    if (_this.isFirst) {
+      userName.push({
+        validator(rule, value, cb) {
+          if (!/^\w+$/g.test(value)) {
+            cb(new Error('保存失败，账号只能由数字或英文字母构成'));
+          } else {
+            validateLen(value, `账号`, cb, 4, 12)
+          }
+        },
+        trigger: 'change',
+      });
+
+      passWord.push({
+        validator(rule, value, cb) {
+          if (!/^\w+$/g.test(value)) {
+            cb(new Error('密码只能由数字或英文组成'));
+          } else {
+            validateLen(value, `密码`, cb, 6, 12)
+          }
+        },
+        trigger: 'change',
+      });
+
+      rules = {
+        branchStoreName,
+        userName,
+        passWord,
+        passWord1
+      }
+    } else {
+      rules = {
+        branchStoreName,
+        userName,
+        passWord,
+      }
+    }
     return {
       show: false,
       form: {
@@ -82,53 +147,7 @@ export default {
         passWord: '',
         passWord1: '',
       },
-      rules: {
-        branchStoreName: [
-          { required: true, message: "分店店名还没有填写" },
-          {
-            validator(rule, value, cb) {
-              if (!/^[\w\u4e00-\u9fa5]+$/g.test(value)) {
-                cb(new Error('保存失败，账号只能由中英文、数字、字母构成'));
-              } else {
-                validateLen(value, `分店店名`, cb, 2, 12)
-              }
-            },
-          },
-        ],
-        userName: [
-          { required: true, message: "账号还没有填写" },
-          {
-            validator(rule, value, cb) {
-              if (!/^\w+$/g.test(value)) {
-                cb(new Error('保存失败，账号只能由数字或英文字母构成'));
-              } else {
-                validateLen(value, `账号`, cb, 4, 12)
-              }
-            },
-            trigger: 'change',
-          },
-        ],
-        passWord: [
-          { required: true, message: "密码还没有填写" },
-          {
-            validator(rule, value, cb) {
-              if (!/^\w+$/g.test(value)) {
-                cb(new Error('密码只能由数字或英文组成'));
-              } else {
-                validateLen(value, `密码`, cb, 6, 12)
-              }
-            },
-            trigger: 'change',
-          },
-        ],
-        passWord1: [
-          { required: true, message: "确认密码还没有填写" },
-          {
-            validator: validatePwd1,
-            trigger: 'change',
-          },
-        ],
-      },
+      rules,
     }
   },
   created() {

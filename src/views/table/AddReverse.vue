@@ -123,7 +123,7 @@
     </div>
 
     <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-      <span>退出后，已编辑的信息将被删除</span>
+      <span style="font-size: 20px">退出后，已编辑的信息将被删除</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="del">确 定</el-button>

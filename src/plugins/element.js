@@ -12,7 +12,6 @@ import "./http";
 import "../styles/var.scss";
 
 Vue.use(ELEMENT);
-console.log(ELEMENT);
 
 Vue.prototype.$nerror = showError;
 

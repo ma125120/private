@@ -39,12 +39,12 @@ export default class User extends BaseApi {
       passWord: data.passWord,
     });
     if (!res || res.length === 0) {
-      showError('账号名或密码错误');
+      showError('登录账号或密码错误，请核查或找客服核对');
       throw new Error('');
     }
 
     const user = res && res[0] || {} as Users;
-    if (user.isActivation) {
+    if (user.isActivation === 1) {
       showError('账号已激活，请更换账号');
       throw new Error('');
     }
