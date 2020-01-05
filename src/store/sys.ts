@@ -21,8 +21,8 @@ export const getSysMsgs = (arr = []) => {
       if (diff <= count) {
         res.push({
           text: getText(v.branchStoreName, count, v.isTest),
-          date: now.subtract(count, "day"),
-          time: now.subtract(count, "day").format(`YYYYMMDD`)
+          date: end.subtract(count, "day"),
+          time: end.subtract(count, "day").format(`YYYYMMDD`)
         });
       }
     });
@@ -30,8 +30,8 @@ export const getSysMsgs = (arr = []) => {
     if (end.diff(now, 'day') === 0) {
       res.push({
         text: getText(v.branchStoreName, 0, v.isTest),
-        date: now,
-        time: now.format(`YYYYMMDD`)
+        date: end,
+        time: end.format(`YYYYMMDD`)
       });
     }
   });

@@ -31,7 +31,7 @@ export default {
   },
   saveChildren(state, _children) {
     let children = _children.map(v => new Users(v));
-    state.userChildren = children;
+    state.userChildren = children.filter(v => v.isActivation === 1);
     if (children.length > 0) {
       state.isShowAddChild = false;
       const vaildUser = children.find(getVaildDate)

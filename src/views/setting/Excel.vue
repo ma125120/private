@@ -55,10 +55,8 @@ export default Vue.extend({
     msg: String
   },
   created() {
-    console.log(this.form, this.userChildren[0].objectId)
     if (!this.form.branchStoreId && this.userChildren && this.userChildren.length > 0) {
       this.form.branchStoreId = this.userChildren[0].objectId;
-      console.log(this.form.branchStoreId, this.userChildren[0].objectId)
     }
   },
   data() {
@@ -150,11 +148,11 @@ export default Vue.extend({
         this.form.branchStoreId = children[0].objectId;
       }
     },
-    'form.branchStoreId'(val, old) {
-      if (val != old) {
-        this.changeAccount(val)
-      }
-    }
+    // 'form.branchStoreId'(val, old) {
+    //   if (val != old) {
+    //     this.changeAccount(val)
+    //   }
+    // }
   },
   computed: {
     ...mapState([
