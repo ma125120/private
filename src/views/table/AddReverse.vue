@@ -129,6 +129,8 @@
         <el-button type="primary" @click="del">确 定</el-button>
       </span>
     </el-dialog>
+
+    <RoomDialog :isShow.sync="isShowRoom" :two="role !== 2"></RoomDialog>
   </div>
 </template>
 
@@ -138,17 +140,20 @@ import { now, hoursWith0, hours, minutesWith0, minutes, DATE_STR_DETAIL } from "
 import { rooms, staffes } from "@/util/mock";
 import { records, record2form, getReverseForm } from "@/util/index";
 import dayjs from "dayjs";
+import RoomDialog from './RoomDialog'
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import { validateNum } from '@/util/rule'
 import validateRoom from './rule'
 
 export default Vue.extend({
-  name: "HelloWorld",
+  name: "AddReverse",
+  components: { RoomDialog },
   props: {
     msg: String
   },
   data() {
     return {
+      isShowRoom: false,
       dialogVisible: false,
       now,
       hoursWith0,
@@ -220,7 +225,10 @@ export default Vue.extend({
       this.duration = this.durationHour + ":" + this.durationMinute;
     },
     save() {
-      validateRoom(this.form, this.roomList);
+      if (validateRoom(this.form, this.roomList)) {
+        this.isShowRoom = true;
+        return ;
+      };
       validateNum(this.form);
 
       this.$refs.form.validate(async (vaild, params) => {
@@ -283,7 +291,8 @@ export default Vue.extend({
     ...mapGetters([
       'staffOptions',
       'staffMap',
-      'roomMap'
+      'roomMap',
+      'role'
     ])
   }
 });

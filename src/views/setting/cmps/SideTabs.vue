@@ -34,7 +34,7 @@ import routeNames from '@/router/name'
 import { mapGetters } from 'vuex'
 
 export default Vue.extend({
-  name: "HelloWorld",
+  name: "SideTabs",
   props: {
     msg: String
   },

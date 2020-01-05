@@ -3,7 +3,6 @@
     v-model="val" 
     type="text"
     min="0"
-    :maxlength="maxlength"
     :disabled="disabled"
     controls-position="right" 
     @change="change"
@@ -70,17 +69,7 @@ export default Vue.extend({
   },
   methods: {
     change(val) {
-      let reg = /^\d+$/g;
-      if (this.isFee) {
-        reg = /^[\d\.]+$/g;
-      }
-      if (val && reg.test(val)) {
-        this.$emit("change", val || 0);
-      } else {
-        this.$nerror(`输入失败, ${this.text}只能输入数字${this.isFee ? '和点号' : ''}`);
-        this.val = '';
-        this.$emit("change", this.val);
-      }
+      this.$emit("change", this.val);
     },
     input(val) {
       val = val || '0';
@@ -88,13 +77,25 @@ export default Vue.extend({
       if (this.isFee) {
         reg = /^[\d\.]+$/g;
       }
-      if (val && reg.test(val)) {
+      if (val && this.maxlength > 0 && val.length > this.maxlength) {
+        val = val.slice(0, this.maxlength);
+        this.val = val;
+        this.$nerror(`输入失败, 只能输入${this.maxlength}位${this.text}`);
+      }
 
-      } else {
+      if (val && reg.test(val)) {
+        if (this.isFee && /\.(\d){3,}/g.test(val)) {
+          this.$nerror(`输入失败, ${this.text}小数点后只能输入2位`);
+          val = val.replace(/\.(\d+)/g, (str, $1) => {
+            return '.' + $1.slice(0, 2)
+          });
+          this.val = val;
+        }
+      } else if (val) {
         this.$nerror(`输入失败, ${this.text}只能输入数字${this.isFee ? '和点号' : ''}`);
-        let  _val = val.slice(0, -1)
-        _val = _val.replace(/[^\x00-\xff]+/g, '');
-        this.val = _val;
+        
+        val = val.replace(/[^\d]+/g, '');
+        this.val = val;
       }
 
       let { name } = this;

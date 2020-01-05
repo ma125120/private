@@ -184,11 +184,11 @@
         </div>
       </el-form>
     </div>
-    
+    <RoomDialog :isShow.sync="isShowRoom" :two="role !== 2"></RoomDialog>
   </el-dialog>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue";
 import { now, hoursWith0, hours, minutesWith0, minutes, DATE_STR_DETAIL } from "@/util/date";
 import { rooms, staffes } from "@/util/mock";
@@ -198,9 +198,13 @@ import { actStatus, payTypes } from '@/types/sql'
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import { validateNum } from '@/util/rule'
 import validateRoom from './rule'
+import RoomDialog from './RoomDialog'
+
+const getNum = (num) => `${(+num).toFixed(2)}`//.replace(/\.00$/g, '').replace(/(\.\d)0$/g, (str, $1) => $1)
 
 export default Vue.extend({
   name: "AddAct",
+  components: { RoomDialog },
   props: {
     isShow: Boolean,
     obj: {
@@ -210,6 +214,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      isShowRoom: false,
       dialogVisible: false,
       now,
       show: true,
@@ -267,20 +272,27 @@ export default Vue.extend({
       return { ...this.form };
     },
     computePay(val, name, otherName) {
-      this.form.shouldPay = parseInt(val || 0) + parseInt(this.form[otherName] || 0);
+      const num = +(val === '.' ? 0 : val) + +(this.form[otherName] === '.' ? 0 : this.form[otherName])
+      this.form.shouldPay = getNum(num);
       this.computeAct(this.form.discount)
     },
     computeDiscount(val) {
       if (!this.form.shouldPay) return ;
-      this.form.discount = val - this.form.shouldPay;
+      this.form.discount = this.sub(val, this.form.shouldPay);
     },
     computeAct(val) {
       if (!this.form.shouldPay) return ;
-      this.form.actMoney = this.form.shouldPay - val;
+      this.form.actMoney = this.sub(this.form.shouldPay, val);
+    },
+    sub(a, b) {
+      return getNum((a === '.' ? 0 : a) - (b === '.' ? 0 : b));
     },
     save() {
       const form = this.getRealForm();
-      validateRoom(form, this.roomList);
+      if (validateRoom(form, this.roomList)) {
+        this.isShowRoom = true;
+        return ;
+      }
       validateNum(form);
       this.$refs.dForm.validate(async (vaild, params) => {
         if (vaild) {
@@ -338,7 +350,8 @@ export default Vue.extend({
     ...mapGetters([
       'staffOptions',
       'staffMap',
-      'roomMap'
+      'roomMap',
+      'role'
     ])
   }
 });
