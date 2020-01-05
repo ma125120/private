@@ -50,6 +50,10 @@ ul, ol {
 .text-center {
   text-align: center;
 }
+.fail-dialog.el-dialog {
+  width: 60%;
+  max-width: 600px;
+}
 
 .no-text {
   position: absolute;

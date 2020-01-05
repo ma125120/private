@@ -48,8 +48,12 @@ export default {
         store.commit('setLogin')
       }
     } else {
-      state.isShowAddChild = true;
-      router.push('/')
+      if (store.getters.role === 0) {
+        state.isShowAddChild = true;
+      }
+      if (router.currentRoute.path !== '/') {
+        router.push('/')
+      }
     }
   },
   saveChildAccount(state, _children) {

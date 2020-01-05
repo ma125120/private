@@ -61,7 +61,30 @@
       </div>
     </div>
 
-    <AddChild :isShow="isShowAddChild"></AddChild>
+    <AddChild :isShow="isShowAddChild" v-if="role === 0" />
+    <el-dialog
+      v-else
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+      center
+      custom-class="fail-dialog"
+      @close="close"
+      :visible.sync="visible"
+    >
+      <div class="my-dialog--title" slot="title">
+        <div style="font-size: 28px">登陆失败</div>
+      </div>
+      <div style="font-size: 24px;line-height: 2; color: #000">
+        <div style="margin-top: -24px; margin-bottom: 24px;">请先用公司总管理员账号将本账号创建激活</div>
+        <div>激活步骤：</div>
+        <div>1、登录公司总管理员账号</div>
+        <div>2、进入 设置-账号管理-管理分店账号</div>
+        <div>3、点击“创建分店管理员账号”按钮</div>
+        <div>输入分店管理员账号信息，即可激活成功。</div>
+      </div>
+      <div class="all-center color-btn" @click="close">知道了</div>
+    </el-dialog>
   </div>
 </template>
 
@@ -89,6 +112,7 @@ export default {
         // passWord: '123456',
       },
       show: false,
+      visible: false,
     };
   },
   created() {
@@ -110,6 +134,10 @@ export default {
       
       try {
         let user = await this.$api.user.login(this.form.userName, this.form.passWord);
+        if (user.isActivation === 0 && user.jurisdictionType === 1) {
+          this.visible = true;
+          return ;
+        }
         // this.$notify.success({ title: '消息', message: '登陆成功' });
         this.$store.commit('setLogin', true);
         this.setUser(user)
@@ -127,12 +155,18 @@ export default {
     ]),
     reload() {
       this.isReload && (location.reload());
+    },
+    close() {
+      this.visible = false;
     }
   },
   watch: {
     invaildNames(val) {
       this.show = !!val
-    }
+    },
+    // isShowAddChild(val) {
+    //   this.visible = val;
+    // },
   },
   computed: {
     ...mapState([
@@ -142,7 +176,8 @@ export default {
     ]),
     ...mapGetters([
       'invaildNames',
-      'isReload'
+      'isReload',
+      'role'
     ])
   }
 };
@@ -256,4 +291,11 @@ export default {
   box-sizing: border-box;
   // height: 884px;
 }
+.color-btn {
+  font-size: 20px;
+  color: $color;
+  margin: 24px 0;
+  cursor: pointer;
+}
+
 </style>

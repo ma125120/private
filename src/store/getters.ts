@@ -4,9 +4,6 @@ export const arr2map = (arr, label, id = 'objectId') => arr.reduce((prev, next) 
 import { getVaildDate, getInvaildDate, } from './common'
 
 export default {
-  parentId: (state, getters) => {
-    if (getters.role === 2) return state.nowUser.branchStoreId;
-  },
   todayRecods: (state) => state.records.filter(filterRecord(state.selectDay)),
   isFirst: (state) => state.user && state.user.isFirst,
   showChildren: (state, getters) => state.userChildren.filter(getVaildDate),
@@ -30,19 +27,4 @@ export default {
     return state.user && state.user.jurisdictionType
   },
   isAdmin: (state: StateType, getters) => getters.role === 0,
-  settingMenu: (state: StateType, getters) => {
-    const menus = {
-      0: [
-        {
-          text: '房间管理',
-          path: '/setting/other',
-        },
-        {
-          text: '房间管理',
-          path: '/setting/other',
-        },
-      ]
-    }
-    return menus[getters.role] || [];
-  }
 };
