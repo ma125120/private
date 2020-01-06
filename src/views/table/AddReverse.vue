@@ -44,13 +44,23 @@
             v-model="form.roomId" 
             :options="roomList" 
             placeholder="请选择房间"
+            empty="无数据，请先在 设置-房间管理 里添加"
             labelKey="roomName" />
         </el-form-item>
         <el-form-item label="到店日期" prop="startDate">
-          <span 
-            :class="`my-radio--label hover ${form.startDate === now ? 'active' : ''}`"
-            @click="form.startDate = now">今天</span>
-          <MyDatePicker v-model="form.startDate"></MyDatePicker>
+          <div class="align-center">
+            <span 
+              :class="`my-radio--label hover ${form.startDate === now ? 'active' : ''}`"
+              @click="form.startDate = now">今天</span>
+            <span style="position: relative">
+              <div 
+                class="abs abs-date hover" 
+                style="z-index: 1;"
+                @click="$refs.date.focus()" 
+                v-if="form.startDate === now">选择其他日期</div>
+              <MyDatePicker ref="date" v-model="form.startDate" :class="`abs ${form.startDate !== now ? 'color-date' : ''}`" />
+            </span>
+          </div>
         </el-form-item>
         <el-form-item label="到店时间" required>
           <div class="align-center">
@@ -353,5 +363,17 @@ export default Vue.extend({
 body div.el-popover {
   background: #fff;
   border-color: #fff;
+}
+.abs {
+  position: absolute;
+}
+.abs-date {
+  width: 220px;
+  box-sizing: border-box;
+  line-height: 40px;
+  background: #fff;
+  border: 1px solid #bbb;
+  padding-left: 12px;
+  font-size: 18px;
 }
 </style>

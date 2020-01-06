@@ -9,6 +9,7 @@
       :row-class-name="getRowClass"
       @row-contextmenu="showPop"
       style="width: 100%" 
+      :max-height="this.$route.path === '/work/record' ? height1 - 8 : height - 8"
       :height="this.$route.path === '/work/record' ? height1 : height"
     >
       <el-table-column label="预约 记录表" width="60px" align="center" fixed="left">
@@ -103,7 +104,7 @@ import { records, formatRecord } from "@/util/index";
 import dayjs from "dayjs";
 import { mapGetters, mapState, mapActions } from 'vuex';
 let nowDate = dayjs(Date.now());
-const height1 = (window.innerHeight - 74 - 72 - 76)
+const height1 = (window.innerHeight - 84 - 100)
 
 export default Vue.extend({
   name: "RecordTable",
@@ -123,7 +124,7 @@ export default Vue.extend({
       obj: null,
       x: 0,
       y: 0,
-      height: 340, 
+      height: 340,
       height1,
     };
   },
@@ -138,7 +139,16 @@ export default Vue.extend({
       return this.obj && this.obj.objectId;
     }
   },
+  created() {
+    document.addEventListener('click', this.closePop)
+  },
+  destroyed() {
+    document.removeEventListener('click', this.closePop)
+  },
   methods: {
+    closePop() {
+      this.showPop()
+    },
     ...mapActions([
       'delRecord',
     ]),

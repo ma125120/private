@@ -90,11 +90,17 @@ export default Vue.extend({
             return '.' + $1.slice(0, 2)
           });
           this.val = val;
+        } else {
+          const arr = val.split('.')
+          if (arr.length >= 3) {
+            this.$nerror(`输入失败, ${this.text}含有多余的小数点`);
+            val = arr.slice(0, 2).join('.')
+            this.val = val;
+          }
         }
       } else if (val) {
         this.$nerror(`输入失败, ${this.text}只能输入数字${this.isFee ? '和点号' : ''}`);
-        
-        val = val.replace(/[^\d]+/g, '');
+        val = this.isFee ? val.replace(/[^\d\.]/g, '') : val.replace(/[^\d]+/g, '');
         this.val = val;
       }
 

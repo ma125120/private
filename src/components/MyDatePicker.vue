@@ -5,6 +5,7 @@
     value-format="yyyy-MM-dd"
     align="right"
     type="date"
+    ref="date"
     placeholder="选择日期"
     :picker-options="options"
   >
@@ -49,6 +50,9 @@ export default Vue.extend({
   methods: {
     changeDate(val) {
       this.$emit("change", val);
+    },
+    focus() {
+      this.$refs.date.focus();
     }
   },
   watch: {

@@ -11,5 +11,9 @@ $padding: 20px;
   justify-content: center;
   align-items: center;
 }
+.color-date .el-input__inner {
+  color: $color;
+  border: 1px solid $color;
+}
 // $--dialog-content-font-size: 20px !default;
 // $--font-size-large: 28px;

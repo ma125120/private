@@ -3,7 +3,8 @@
     :style="`width: ${this.width}px`" 
     v-model="val" 
     @change="change" 
-    :placeholder="placeholder" 
+    :placeholder="placeholder"
+    :no-data-text="empty" 
     :disabled="disabled"
     :clearable="clearable">
     <el-option
@@ -52,6 +53,10 @@ export default Vue.extend({
       type: String,
       default: 'objectId'
     },
+    empty: {
+      type: String,
+      default: '无数据'
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -76,6 +81,12 @@ export default Vue.extend({
   methods: {
     change(val) {
       this.$emit("change", val + '');
+    }
+  },
+  computed: {
+    empty() {
+      return this.labelKey === 'roomName' ? '无数据，请先在 设置-房间管理 里添加'
+        : this.labelKey === 'name' ? '无数据，可在 设置-员工管理 里添加' : '无数据'
     }
   }
 });

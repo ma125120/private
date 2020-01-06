@@ -6,7 +6,6 @@
       <div class="setting-right--body" style="flex: 1;">
         <slot></slot>
       </div>
-      
     </div>
   </div>
 </template>
@@ -16,7 +15,7 @@ import Vue from "vue";
 import SideTabs from '@/views/setting/cmps/SideTabs';
 
 export default Vue.extend({
-  name: "HelloWorld",
+  name: "SettingLayout",
   components: { SideTabs, },
   props: {
     msg: String

@@ -1,5 +1,5 @@
 <template>
-  <div class="act--table m-table" ref="root" style="width: 100%; height: 100%;min-height: 340px;">
+  <div class="act--table m-table" ref="root" style="width: 100%;">
     <div class="table-header align-center">
       <div class="bold">实际到店表</div>
       <el-button type="primary" @click="isShow = true">新增项目</el-button>
@@ -13,6 +13,7 @@
       empty-text="."
       @click.native="showPop()"
       @row-contextmenu="showPop"
+      :max-height="this.$route.path === '/work/act' ? height1 - 8 : height - 8"
       :height="this.$route.path === '/work/act' ? height1 : height"
     >
       <el-table-column label="" align="center" width="80px" fixed="left">
@@ -194,9 +195,18 @@ export default Vue.extend({
       return this.obj && this.obj.objectId
     }
   },
+  created() {
+    document.addEventListener('click', this.closePop)
+  },
+  destroyed() {
+    document.removeEventListener('click', this.closePop)
+  },
   methods: {
     getHeight() {
 
+    },
+    closePop() {
+      this.showPop()
     },
     edit(obj) {
       this.isShow = true;

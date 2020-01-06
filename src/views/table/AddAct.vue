@@ -19,7 +19,7 @@
         <el-form-item label="房间" prop="roomId">
           <MySelect 
             v-model="form.roomId" 
-             placeholder="请选择房间"
+            placeholder="请选择房间"
             :options="roomList" 
             labelKey="roomName" />
         </el-form-item>

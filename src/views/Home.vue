@@ -116,13 +116,17 @@ export default {
     };
   },
   created() {
-    document.addEventListener('keydown', (evt) => {
+    document.addEventListener('keydown', this.enterLogin)
+  },
+  destroyed() {
+    document.removeEventListener('keydown', this.enterLogin)
+  },
+  methods: {
+    enterLogin(evt) {
       if (evt.key === `Enter`) {
         this.login();
       }
-    })
-  },
-  methods: {
+    },
     async login() {
       let { userName, passWord, } = this.form;
       if (!userName) {

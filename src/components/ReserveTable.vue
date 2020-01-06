@@ -2,13 +2,15 @@
   <div class="reverse-table m-table" @click="showPop(undefined)">
     <div class="table-outer">
       <div class="no-text" v-if="records.length === 0">暂无数据</div>
+      <div class="extra-bold">预约分布表</div>
       <div class="table-inner" ref="table" @scroll="scrollWatch">
         <div
           class="table"
           cellspacing="0"
           cellpadding="0"
-          :style="`width: ${(headers.length) * 114}px`"
+          :style="`width: ${(headers.length) * 114}px; height: ${height1}px`"
         >
+          
           <div class="bold-tr tr">
             <div class="td" v-for="text in headers" :key="text">{{ text }}</div>
           </div>
@@ -53,33 +55,29 @@
         </div>
 
         <div
-          v-show="direction === 'left' && this.left > 114"
+          v-show="this.left > 114"
           class="left-fixed--table"
-          cellspacing="0"
-          cellpadding="0"
-          :style="`top: -${this.top}px;`"
+          :style="`top: ${this.top * -1 + 50}px; z-index: 6;`"
         >
-          <div class="tr">
+          <!-- <div class="tr">
             <div class="bold td">预约分布表</div>
-          </div>
+          </div> -->
           <div class="tr" v-for="record in records" :key="record.recordId">
             <div class="ellipsis hover td" :title="record.roomName">
               <div class="td-div ellipsis">{{ record.roomName }}</div>
             </div>
           </div>
         </div>
-
+<!-- 顶部table -->
         <table
           class="top-fixed--table"
-          cellspacing="0"
-          cellpadding="0"
-          v-show="direction === 'top' && this.top > 50"
-          :style="`left: -${this.left}px`"
-          :width="`${headers.length * 114}px`"
+          v-show="this.top > 50"
+          :style="`left: ${this.left * -1 + 114}px; top: 0; z-index: 5;`"
+          :width="`${(headers.length - 1) * 114}px`"
         >
-          <tr>
-            <td v-for="text in headers" :key="text">{{ text }}</td>
-          </tr>
+          <div class="tr">
+            <div class="td" v-for="text in headers.slice(1)" :key="text">{{ text }}</div>
+          </div>
         </table>
       </div>
     </div>
@@ -113,7 +111,7 @@
 // @ is an alias to /src
 import { formatRecord } from "@/util/index";
 import { mapState, mapGetters, mapActions } from 'vuex';
-
+const height1 = (window.innerHeight - 84 - 100)
 const headers = new Array(24)
   .fill(0)
   .map((v, i) => i + ":00")
@@ -148,11 +146,21 @@ export default {
       x: 0,
       y: 0,
       records: [],
+      height1,
       // records: formatRecord(records),
       headers: ["预约分布表", ...headers]
     };
   },
+  created() {
+    document.addEventListener('click', this.closePop)
+  },
+  destroyed() {
+    document.removeEventListener('click', this.closePop)
+  },
   methods: {
+    closePop(evt) {
+      this.showPop();
+    },
     ...mapActions([
       'delRecord',
     ]),
@@ -240,11 +248,13 @@ tr {
   position: absolute;
   top: 0;
   left: 0;
+}
+.left-fixed--table {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.12);
-  z-index: 1;
+  z-index: 2;
 }
 .top-fixed--table {
-  z-index: 2;
+  z-index: 1;
 }
 
 td,
@@ -272,5 +282,18 @@ td,
 .table-note {
   font-size: 18px;
 }
-
+.extra-bold {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 8;
+  width: 114px;
+  height: 50px;
+  line-height: 50px;
+  background: #fff;
+  border-right: 1px solid $gray;
+  border-bottom: 1px solid $gray;
+  text-align: center;
+  font-weight: bold;
+}
 </style>
