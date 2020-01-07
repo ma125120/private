@@ -93,7 +93,7 @@ export default class Act extends BaseApi {
     let res = await this._query({
       superId: obj.superId,
       parentId: obj.parentId,
-      roomId: obj.roomId,
+      roomName: obj.roomName,
     }, [
       [`startTime`, '>=', start,],
       [`endTime`, '<=', end,]

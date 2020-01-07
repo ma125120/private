@@ -54,8 +54,8 @@ export class Users {
     obj.overTime = overTime.format(`YYYY-MM-DD HH:mm`);
     obj.createTime = toDayjs(obj.createTime || Date.now()).format(DATE_STR);
     obj.accountType = roles[obj.jurisdictionType]
-    if (obj.jurisdictionType !== 0) {
-      obj.accountType += `：${obj.branchStoreName || obj.companyName}`
+    if (obj.jurisdictionType === 1) {
+      obj.accountType += `：${obj.branchStoreName}`;
     }
 
     const isOver = dayjs(Date.now()).isAfter(overTime);

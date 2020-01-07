@@ -119,3 +119,6 @@ export const showError = (text, needThrow = false) => {
     throw new Error(text)
   }
 };
+
+export const barHeight = window.innerWidth >= 1280 ? 0 : 0;
+// console.log(barHeight, window.innerWidth);

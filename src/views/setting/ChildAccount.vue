@@ -28,7 +28,7 @@
           align="center"
           label="所属分店"
         >
-          <div slot-scope="{ row }" class="all-center">
+          <div slot-scope="{ row }" class="all-center column">
             <div v-for="item in row.branchStoreNames" :key="item">{{item}}</div>
           </div>
         </el-table-column>

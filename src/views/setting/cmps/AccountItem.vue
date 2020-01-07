@@ -3,7 +3,7 @@
     <div class="account-item--label">{{label}}</div>
     <div class="account-item--value" style="flex: 1">
       <template v-if="value">{{value}}</template>
-      <template v-else><slot></slot></template>
+      <div v-else style="line-height: 40px;"><slot></slot></div>
     </div>
   </div>
 </template>

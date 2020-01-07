@@ -13,7 +13,7 @@
       empty-text="."
       @click.native="showPop()"
       @row-contextmenu="showPop"
-      :max-height="this.$route.path === '/work/act' ? height1 - 8 : height - 8"
+      :max-height="this.$route.path === '/work/act' ? height1 - barHeight : height - barHeight"
       :height="this.$route.path === '/work/act' ? height1 : height"
     >
       <el-table-column label="" align="center" width="80px" fixed="left">
@@ -160,6 +160,7 @@
 import Vue from "vue";
 import dayjs from "dayjs";
 import AddAct from '@/views/table/AddAct';
+import { barHeight } from '@/util'
 import { mapState, mapActions } from 'vuex';
 
 let nowDate = dayjs(Date.now());
@@ -177,6 +178,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      barHeight,
       isShow: false,
       visible: false,
       obj: null,

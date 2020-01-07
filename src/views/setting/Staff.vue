@@ -31,7 +31,7 @@
         >
           <div slot-scope="{ row }" :style="`padding: ${row.clerkType !== 1 ? '20px 0' : ''}`">
             <el-popconfirm
-              title="确认移停用此店员账号吗？"
+              title="确认停用此店员账号吗？"
               @onConfirm="stopStaff(row)"
               v-if="row.clerkType === 1"
             >

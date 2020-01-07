@@ -9,7 +9,7 @@
       :row-class-name="getRowClass"
       @row-contextmenu="showPop"
       style="width: 100%" 
-      :max-height="this.$route.path === '/work/record' ? height1 - 8 : height - 8"
+      :max-height="this.$route.path === '/work/record' ? height1 - barHeight : height - barHeight"
       :height="this.$route.path === '/work/record' ? height1 : height"
     >
       <el-table-column label="预约 记录表" width="60px" align="center" fixed="left">
@@ -100,7 +100,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { records, formatRecord } from "@/util/index";
+import { records, formatRecord, barHeight } from "@/util/index";
 import dayjs from "dayjs";
 import { mapGetters, mapState, mapActions } from 'vuex';
 let nowDate = dayjs(Date.now());
@@ -126,6 +126,7 @@ export default Vue.extend({
       y: 0,
       height: 340,
       height1,
+      barHeight
     };
   },
   computed: {

@@ -23,5 +23,5 @@ const routes = {
 
 export default routes
 
-export const needNotLogin = [routes.home, ]
+export const needNotLogin = [routes.home, routes.intro]
 export const needLogin = [routes.workplace, routes.addReverse]

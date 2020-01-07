@@ -91,14 +91,17 @@ export default class Reservation extends BaseApi {
     // console.log(obj)
     let [start, end] = getRange(obj.startDate);
 
-    let res = await this._query({
-      superId: obj.superId,
-      parentId: obj.parentId,
-      roomId: obj.roomId,
-    }, [
-      [`startTime`, '>=', start,],
-      [`endTime`, '<=', end,]
-    ]);
+    let res = await this._query(
+      {
+        superId: obj.superId,
+        parentId: obj.parentId,
+        roomName: obj.roomName
+      },
+      [
+        [`startTime`, ">=", start],
+        [`endTime`, "<=", end]
+      ]
+    );
     res = res.map(v => new ReservationClass(v)).filter(v => v.objectId !== obj.objectId)
 
     if (res && res.length > 0 && checkTime(res, obj)) {

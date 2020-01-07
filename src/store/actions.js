@@ -45,6 +45,7 @@ export default {
       jurisdictionType: 1,
       expireDuration: 365,
       createTime: getToday().str,
+      isOne: isFirst ? 1 : 0,
       overTime: getOvertime(form.version),
     }
     if (!isFirst) {

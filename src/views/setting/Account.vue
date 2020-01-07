@@ -4,7 +4,10 @@
       <header class="account-header">账号管理</header>
       <div class="account-body">
         <AccountItem label="当前登录账号" :value="user.userName" />
-        <AccountItem label="账号类型" :value="user.accountType" />
+        <AccountItem label="账号类型" :value="user.accountType" v-if="role !==2" />
+        <AccountItem label="账号类型" v-else>
+          <div v-for="item in user.branchStoreNames" :key="item">子账号：{{item}}</div>
+        </AccountItem>
 
         <template v-if="role !== 2">
           <template v-if="role !== 0">

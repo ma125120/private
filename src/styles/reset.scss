@@ -3,6 +3,11 @@
 }
 body {
   font-family: "Microsoft Yahei";
+  .el-table--fluid-height .el-table__fixed,
+  .el-table--fluid-height .el-table__fixed-right {
+    background: #fff;
+    bottom: 10px;
+  }
   .my-dialog {
     .el-form-item__label {
       font-size: 20px;
