@@ -85,6 +85,7 @@ export default class User extends BaseApi {
       return res
     } catch (err) {
       console.log(err)
+      err.error && showError(err.error)
       return Promise.reject({
         code: 100,
         msg: '错误，保存分店账号失败',
@@ -94,7 +95,7 @@ export default class User extends BaseApi {
 
   async increment(user) {
     try {
-      await this._edit({ ...user, branchStoreNum: 1, isActivation: 1, })
+      await this._edit({ objectId: user.objectId, branchStoreNum: 1, isActivation: 1, })
     } catch (err) {
       console.log(err)
       return Promise.reject({

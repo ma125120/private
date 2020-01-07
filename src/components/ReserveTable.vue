@@ -252,6 +252,10 @@ tr {
 .left-fixed--table {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.12);
   z-index: 2;
+  bottom: 10px;
+  & .td {
+    border-right: 0;
+  }
 }
 .top-fixed--table {
   z-index: 1;

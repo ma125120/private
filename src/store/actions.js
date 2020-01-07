@@ -15,8 +15,12 @@ export default {
     const user = state.user;
     if (!user) return ;
 
-    user.isFirst = false;
-    await api.user.edit(user);
+    const obj = {
+      objectId: user.objectId,
+      isFirst: false,
+    }
+
+    await api.user.edit(obj);
   },
   async selectChildren({ commit, dispatch, }, user) {
     if (user.jurisdictionType === 0) {
