@@ -213,6 +213,8 @@ export default Vue.extend({
     },
   },
   data() {
+    const self = this;
+
     return {
       isShowRoom: false,
       dialogVisible: false,
@@ -230,7 +232,7 @@ export default Vue.extend({
         status: [{ required: true, message: "请选择缴费状态" }],
         payType: [{ required: true, message: "请选择付款方式" }],
       },
-      form: { ...getActForm(), durationHour: "2", }
+      form: { ...getActForm(), durationHour: "2", startDate: self.selectDay }
     };
   },
   created() {
@@ -254,9 +256,14 @@ export default Vue.extend({
       }
     },
     computeTime() {
-      let form = { ...this.form };
+      let form = { ...this.form, };
+      if (!form.startDate) {
+        form.startDate = this.selectDay;
+        this.form.startDate = this.selectDay;
+      }
+
       form.startTime = dayjs(form.startDate)
-        .add( parseInt(form.startHour) , "hour")
+        .add(parseInt(form.startHour) , "hour")
         .add(parseInt(form.startMinute), "minute").format(DATE_STR_DETAIL);
 
       let endTime = dayjs(form.startTime)
@@ -339,12 +346,16 @@ export default Vue.extend({
     },
     obj(val) {
       this.watchProps(val)
+    },
+    selectDay(date) {
+      this.form.startDate = date;
     }
   },
   computed: {
     ...mapState([
       'roomList',
       'nowUser',
+      'selectDay'
       // 'staffOptions',
     ]),
     ...mapGetters([
