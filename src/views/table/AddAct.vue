@@ -246,6 +246,8 @@ export default Vue.extend({
     watchProps(obj) {
       if (obj && obj.objectId) {
         this.form = { ...obj }
+      } else {
+        this.form = { ...getActForm(), durationHour: "2", startDate: this.selectDay }
       }
     },
     async fetchData() {

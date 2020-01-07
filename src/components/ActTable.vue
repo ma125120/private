@@ -249,6 +249,7 @@ export default Vue.extend({
 
       this.activeId = null;
       this.visible = false;
+      this.obj = null;
     },
     ...mapActions([
       'delAct'
