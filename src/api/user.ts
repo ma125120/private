@@ -94,15 +94,15 @@ export default class User extends BaseApi {
   }
 
   async increment(user) {
-    try {
-      await this._edit({ objectId: user.objectId, branchStoreNum: 1, isActivation: 1, })
-    } catch (err) {
-      console.log(err)
-      return Promise.reject({
-        code: 100,
-        msg: '分店账号+1失败',
-      });
-    }
+    // try {
+    //   await this._edit({ objectId: user.objectId, branchStoreNum: 1, isActivation: 1, })
+    // } catch (err) {
+    //   console.log(err)
+    //   return Promise.reject({
+    //     code: 100,
+    //     msg: '分店账号+1失败',
+    //   });
+    // }
   }
 
   async getChildAccounts(companyId, branchStoreId, ) {
