@@ -165,7 +165,7 @@ import { mapState, mapActions } from 'vuex';
 
 let nowDate = dayjs(Date.now());
 const height1 = (window.innerHeight - 74 - 72 - 76)
-const height = (window.innerHeight - 74 - 72 - 422)
+const height = Math.max(200, (window.innerHeight - 74 - 72 - 422))
 
 export default Vue.extend({
   name: "ActTable",

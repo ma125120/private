@@ -4,18 +4,27 @@
       flex-direction: column;
       & .el-input.my-input {
         width: 80%;
+        font-size: 20px;
+        height: 48px;
         margin-right: 0;
         margin-bottom: 24px;;
       }
-      & .el-input.my-input input {
+      & .el-input.my-input input,
+      & .el-input.my-input input::placeholder {
         width: 100%;
+        height: 48px;
+        font-size: 20px;
       }
     }
+    .login-form .el-button--primary {
+      height: 48px;
+      font-size: 20px;
+    }
     .home-header {
-      font-size: 18px;
+      font-size: 16px;
     }
     .logo {
-      width: 92px;
+      width: 88px;
     }
     .intro-top img.self-img {
       width: 90%;
@@ -37,7 +46,7 @@
     .my-header {
       flex-wrap: wrap;
       & .nav-item {
-        font-size: 16px;
+        font-size: 14px;
         margin-right: 12px;
       }
       & .nav-ul {
@@ -90,6 +99,23 @@
   }
 }
 
+@media (max-width: 1200px) {
+  body {
+    .home .login-form {
+      flex-direction: column;
+      & .el-input.my-input {
+        width: 80%;
+        margin-right: 0;
+        margin-bottom: 24px;
+      }
+
+      & .el-input.my-input input,
+      & .el-input.my-input input::placeholder {
+        width: 100%;
+      }
+    }
+  }
+}
 @media (max-width: 1550px) {
   body {
     .self-img {
