@@ -155,6 +155,8 @@ export class Reservation {
     obj.endTime = toDay(obj.endTime);
     let _start = dayjs(obj.startTime)
     let _end = dayjs(obj.endTime)
+    obj.startTimeStr = toDayjs(obj.startTime).format(`YYYY年M月D日 H:mm`)
+    obj.endTimeStr = toDayjs(obj.endTime).format(`YYYY年M月D日 H:mm`)
     obj.startDate = _start.format(`YYYY-MM-DD`);
     obj.startHour = _start.format(`HH`);
     obj.startMinute = _start.format(`mm`);
@@ -165,6 +167,8 @@ export class Reservation {
   }
   
   startDate: String;
+  startTimeStr: string;
+  endTimeStr: string;
   startHour = "00";
   startMinute = "00";
   durationHour = hours[0].id;
@@ -218,6 +222,8 @@ export class Actual {
     obj.statusStr = actStatusMap[obj.status] || '';
     obj.startTime = toDay(obj.startTime);
     obj.endTime = toDay(obj.endTime);
+    obj.startTimeStr = toDayjs(obj.startTime).format(`YYYY年M月D日 H:mm`)
+    obj.endTimeStr = toDayjs(obj.endTime).format(`YYYY年M月D日 H:mm`)
     let _start = dayjs(obj.startTime);
     let _end = dayjs(obj.endTime);
     obj.startDate = _start.format(`YYYY-MM-DD`);
@@ -234,6 +240,8 @@ export class Actual {
   
   id: string;
   startHour: string;
+  startTimeStr: string;
+  endTimeStr: string;
   startMinute: string;
   durationHour: string;
   durationMinute: string;

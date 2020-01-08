@@ -1,7 +1,7 @@
 <template>
   <div class="reverse-table m-table" @click="showPop(undefined)">
     <div class="table-outer">
-      <div class="no-text" v-if="records.length === 0">暂无数据</div>
+      <div class="no-text" v-if="realRecords.length === 0">暂无数据</div>
       <div class="extra-bold">预约分布表</div>
       <div class="table-inner" ref="table" @scroll="scrollWatch">
         <div
@@ -14,7 +14,7 @@
           <div class="bold-tr tr">
             <div class="td" v-for="text in headers" :key="text">{{ text }}</div>
           </div>
-          <div class="tr" v-for="record in records" :key="record.roomId">
+          <div class="tr" v-for="record in realRecords" :key="record.roomId">
             <div class="td hover" :title="record.roomName">
               <div class="td-div ellipsis">{{ record.roomName }}</div>
             </div>
@@ -28,9 +28,9 @@
             >
               <div class="table-note">
                 <div>顾客电话：{{ child.mobile }}</div>
-                <div>到店时间：{{ child.startTime | time }}</div>
+                <div>到店时间：{{ child.startTimeStr }}</div>
                 <div>时长：{{ child.durationStr }}</div>
-                <div>离店时间：{{ child.endTime | time }}</div>
+                <div>离店时间：{{ child.endTimeStr }}</div>
                 <div v-if="child.note">备注：{{ child.note }}</div>
               </div>
               <div
@@ -62,7 +62,7 @@
           <!-- <div class="tr">
             <div class="bold td">预约分布表</div>
           </div> -->
-          <div class="tr" v-for="record in records" :key="record.recordId">
+          <div class="tr" v-for="record in realRecords" :key="record.recordId">
             <div class="ellipsis hover td" :title="record.roomName">
               <div class="td-div ellipsis">{{ record.roomName }}</div>
             </div>

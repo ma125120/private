@@ -258,18 +258,22 @@ export default {
   },
 
   async restore({ commit, dispatch, state, }) {
+    commit("changeAttr", { name: "isRestore", value: true });
     commit('restoreUser');
 
     setTimeout(async () => {
       let { user, } = state;
       if (!user) return;
-      let newUser = await api.user.login(user.userName, user.passWord);
-      dispatch('setUser', newUser);
 
-      // let { nowUser, } = state;
-      // let nowNewUser = await api.user.login(nowUser.nowUserName, user.passWord);
-      // commit('chooseUser_', nowNewUser)
-    }, 50);
+      try {
+        let newUser = await api.user.login(user.userName, user.passWord);
+        dispatch("setUser", newUser);
+        commit("changeAttr", { name: "isRestore", value: false });
+      } catch(err) {
+        console.log(err)
+        commit('logout')
+      }
+    }, 0);
   }
 }
 

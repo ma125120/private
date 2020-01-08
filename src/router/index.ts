@@ -18,6 +18,11 @@ const routes = [
     name: "msg",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/home/SysMsgPage.vue")
+  }, {
+    path: "/help",
+    name: "help",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/help/index.vue")
   },
   
   {

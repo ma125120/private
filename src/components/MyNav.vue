@@ -28,7 +28,18 @@
             :key="child.objectId">{{child.branchStoreName}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <li :class="`nav-item hover`">帮助<i class="el-icon-arrow-down el-icon--right"></i></li>
+      <el-dropdown :show-timeout="50" @click.native="$pushNamed('help')">
+        <span class="nav-item hover">
+          帮助<i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="$pushNamed('help')">常见问题</el-dropdown-item>
+          <el-dropdown-item class="extra">
+            <div>客服微信：</div>
+            <div>2829672684</div>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
       <li :class="`nav-item`" @click="logout1">退出登录</li>
     </ul>
   </div>

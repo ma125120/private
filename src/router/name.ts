@@ -19,6 +19,7 @@ const routes = {
   record: '/work/record',
 
   intro: '/intro',
+  help: '/help',
 }
 
 export default routes

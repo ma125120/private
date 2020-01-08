@@ -43,5 +43,7 @@ const state: StateType = {
   acts: [],
   selectDay: now,
   sysMsgs: [],
+
+  isRestore: false,
 }
 export default state

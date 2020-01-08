@@ -65,9 +65,13 @@ export const formatRecord = (arr, now = "2019-12-06", roomlist) => {
     arr.filter(v => filterToday(v, now)).forEach(v => toDayDiff(v, now));
   }
 
-  const rooms = new Set(roomlist.map(v => v.roomName));
+  // const rooms = new Set([...roomlist.map(v => v.roomName), ...arr.map(v => v.roomName)]);
+  const rooms = new Set([
+    ...roomlist.map(v => v.roomName),
+    ...arr.map(v => v.roomName)
+  ]);
   let results = [];
-  [...rooms].map((room, i) => {
+  [...rooms].map((room, i) => {  
     let children = arr.filter(v => v.roomName === room);
     children = children.map(v => ({
       ...v,

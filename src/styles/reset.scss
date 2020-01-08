@@ -26,8 +26,12 @@ body {
 
   ul .el-dropdown-menu__item {
     font-size: 18px;
-    height: 2em;
+    min-height: 2em;
     line-height: 2em;
+    &.extra {
+      line-height: 1.5em;
+      margin-top: .2em;
+    }
   }
 
   .my-table .el-table__header {

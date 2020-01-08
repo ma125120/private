@@ -32,7 +32,10 @@ export default {
   watch: {
     invaildNames(val) {
       // this.show = false;
-      this.show = !!val
+      this.show = this.isRestore ? false : !!val
+    },
+    isRestore(val) {
+      this.show = val ? false : !!this.invaildNames
     }
   },
   computed: {
@@ -42,6 +45,7 @@ export default {
     ...mapState([
       'isShowAddChild',
       'user',
+      'isRestore',
     ]),
     ...mapGetters([
       'invaildNames',

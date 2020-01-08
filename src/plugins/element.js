@@ -2,6 +2,8 @@ import Vue from "vue";
 import routeNames from "@/router/name";
 import { actStatusMap } from "@/types/sql";
 import { showError } from '@/util'
+import { exportExcel } from '@/util/excel'
+Vue.prototype.$exportExcel = exportExcel;
 
 import dayjs from "dayjs";
 import { now } from "@/util/date";

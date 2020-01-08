@@ -180,5 +180,8 @@ export default {
     const msgs = getSysMsgs(list);
 
     state.sysMsgs = msgs;
+  },
+  changeAttr(state, { name, value }) {
+    state[name] = value;
   }
 };
