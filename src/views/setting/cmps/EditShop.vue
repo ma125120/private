@@ -18,7 +18,7 @@
       <el-form-item label="账号" prop="userName">
         <el-input
           v-model="form.userName"
-          placeholder="请输入4-12个英文字母"
+          placeholder="请输入4-12个字符（数字或字母）"
         ></el-input>
       </el-form-item>
       <el-form-item label="原密码">

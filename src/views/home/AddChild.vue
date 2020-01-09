@@ -26,7 +26,7 @@
       <el-form-item label="账号" prop="userName">
         <el-input
           v-model="form.userName"
-          :placeholder="`${isFirst ? '请输入4-12个英文字母（数字或英文字母）' : '请输入客服给你创建的账号名'}`"
+          :placeholder="`${isFirst ? '请输入4-12个字符（数字或英文字母）' : '请输入客服给你创建的账号名'}`"
         ></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="passWord">
