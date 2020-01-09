@@ -65,8 +65,6 @@ export default Vue.extend({
       const res = await this.$api.help.getList();
       this.bodys = res;
       const { id, sort } = this.$route.query;
-      // this.activeId = id || '1';
-      console.log(this.bodys[id])
       this.obj = this.bodys[id] && this.bodys[id].find(v => +v.sort === +sort);
     },
     isImg(str) {
