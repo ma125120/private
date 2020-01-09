@@ -2,6 +2,7 @@ import Bmob from "@/plugins/bmob/Bmob-2.2.1.min.js";
 // import { Room as RoomClass } from "@/types/sql";
 import BaseApi from "./base";
 
+// const sb = v => ({ ...v, answer: v.answer. });
 export default class Room extends BaseApi {
   tableName = "help";
   timeFields = [];

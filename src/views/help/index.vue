@@ -5,7 +5,7 @@
       <SideTabs :activeId.sync="activeId" @change="change" class="help-tabs"></SideTabs>
       <div class="help-right--body" style="flex: 1;">
         <div v-if="obj">
-          <div class="help-problem" @click="obj = ''">{{obj.problem}}</div>
+          <div class="help-problem" @click="$router.push(`/help?id=${activeId}`)">{{obj.problem}}</div>
           <p v-for="(item, i) in obj.answer" :key="i" class="help-answer">
             <template v-if="isImg(item)">
               <el-image 
@@ -15,7 +15,10 @@
                 <div slot="error" class="load-error">图片加载失败，请检查链接</div>
               </el-image>
             </template>
-            <template v-else>{{item}}</template>
+            <template v-else>
+              <div v-html="item"></div>
+              <!-- {{item}} -->
+            </template>
           </p>
         </div>
         <ul v-else>
@@ -23,7 +26,7 @@
             v-for="item in bodys[activeId]"
             :key="item.objectId"
             class="help-problem"
-            @click="obj = item"
+            @click="toOther(item.sort)"
           >
             {{ item.problem }}
           </li>
@@ -53,6 +56,7 @@ export default Vue.extend({
     }
   },
   created() {
+    this.activeId = this.$route.query.id || '1';
     this.getList();
   },
   methods: {
@@ -60,17 +64,27 @@ export default Vue.extend({
     async getList() {
       const res = await this.$api.help.getList();
       this.bodys = res;
+      const { id, sort } = this.$route.query;
+      // this.activeId = id || '1';
+      console.log(this.bodys[id])
+      this.obj = this.bodys[id] && this.bodys[id].find(v => +v.sort === +sort);
     },
     isImg(str) {
       return /^https?\:\/\//g.test(str)
     },
     change() {
       this.obj = '';
+      this.$router.push(`/help?id=${this.activeId}`)
+    },
+    toOther(sort) {
+      this.$router.push(`/help?id=${this.activeId}&sort=${sort}`)
     }
   },
   watch: {
-    activeId(id) {
-      this.obj = '';
+    '$route'({ query }) {
+      const { id, sort } = query;
+      this.activeId = id || '1';
+      this.obj = this.bodys[id] && this.bodys[id].find(v => +v.sort === +sort);
     }
   },
   computed: {
@@ -95,7 +109,8 @@ export default Vue.extend({
 }
 .help-problem {
   font-size: 24px;
-  line-height: 2;
+  line-height: 1.5;
+  margin-bottom: 12px;
   &:hover {
     cursor: pointer;
     color: $color;
