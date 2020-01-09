@@ -62,7 +62,7 @@ export default Vue.extend({
       this.bodys = res;
     },
     isImg(str) {
-      return /^http[s]\:\/\//g.test(str)
+      return /^https?\:\/\//g.test(str)
     },
     change() {
       this.obj = '';
