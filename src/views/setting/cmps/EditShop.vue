@@ -80,8 +80,8 @@ export default {
           { required: true, message: "账号还没有填写" },
           {
             validator(rule, value, cb) {
-              if (!/^[a-zA-Z]+$/g.test(value)) {
-                cb(new Error('保存失败，账号只能由英文字母构成'));
+              if (!/^\w+$/g.test(value)) {
+                cb(new Error('保存失败，账号只能由数字或英文字母构成'));
               } else {
                 validateLen(value, `账号`, cb, 4, 12)
               }
