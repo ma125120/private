@@ -50,7 +50,7 @@ export class Users {
     const obj = assign(this, data) as Users;
     // const overTime = dayjs(getOvertime(obj.version, obj.createTime)) ;
     const overTime = toDayjs(obj.overTime)
-    obj.overTimeStr = overTime.format(`YYYY年M月D日H:m`);
+    obj.overTimeStr = overTime.format(`YYYY年M月D日H:mm`);
     obj.overTime = overTime.format(`YYYY-MM-DD HH:mm`);
     obj.createTime = toDayjs(obj.createTime || Date.now()).format(DATE_STR);
     obj.accountType = roles[obj.jurisdictionType]

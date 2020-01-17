@@ -21,6 +21,17 @@ export default {
     }
 
     await api.user.edit(obj);
+    // commit("changeAttr", {
+    //   name: "user",
+    //   value: {
+    //     ...user,
+    //     isFirst: false,
+    //   }
+    // });
+    commit("saveUser", {
+      ...user,
+      isFirst: false
+    });
   },
   async selectChildren({ commit, dispatch, }, user) {
     if (user.jurisdictionType === 0) {
